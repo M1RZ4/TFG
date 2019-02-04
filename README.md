@@ -1,8 +1,4 @@
 # Trabajo Fin de Grado
-
-<p>Mirza Ojeda Veira</p>
-<p>Francisco Javier Gil gala y Ramiro José Varela Arias</p>
-
 ## Generador de instancias y visualizador gráfico de soluciones para problemas de scheduling
 
 <p>En este trabajo se propone el desarrollo de una herramienta gráfica que permita generar instancias de problemas de scheduling, atendiendo a unos parámetros indicados por el usuario, resolverlas utilizando un algoritmo, y por último visualizar de forma gráfica tanto las instancias como sus soluciones. La implementación se hará mediante una aplicación de escritorio.
@@ -22,3 +18,7 @@ Se propone el uso de las librerías:
 [3] JFreeChat http://www.jfree.org/jfreechart/
 
 En cualquier caso, el alumno es libre de seleccionar las librerías que considere oportunas.</p>
+
+
+**Mirza Ojeda Veira
+Francisco Javier Gil gala y Ramiro José Varela Arias**
