@@ -20,5 +20,4 @@ Se propone el uso de las librerías:
 En cualquier caso, el alumno es libre de seleccionar las librerías que considere oportunas.</p>
 
 
-**Mirza Ojeda Veira
-Francisco Javier Gil gala y Ramiro José Varela Arias**
+**Mirza Ojeda Veira, Francisco Javier Gil gala y Ramiro José Varela Arias**
