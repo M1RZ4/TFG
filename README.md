@@ -1,11 +1,10 @@
 # Trabajo Fin de Grado
 
-**Alumno**: <p>Mirza Ojeda Veira</p>
-**Tutores**: <p>Francisco Javier Gil gala y Ramiro José Varela Arias</p>
+<p>Mirza Ojeda Veira</p>
+<p>Francisco Javier Gil gala y Ramiro José Varela Arias</p>
 
-**Título**: Generador de instancias y visualizador gráfico de soluciones para problemas de scheduling
+## Generador de instancias y visualizador gráfico de soluciones para problemas de scheduling
 
-**Resumen**:
 <p>En este trabajo se propone el desarrollo de una herramienta gráfica que permita generar instancias de problemas de scheduling, atendiendo a unos parámetros indicados por el usuario, resolverlas utilizando un algoritmo, y por último visualizar de forma gráfica tanto las instancias como sus soluciones. La implementación se hará mediante una aplicación de escritorio.
 
 Como ejemplo de prueba, se utilizará el problema de secuenciamiento de una máquina con capacidad variable. Actualmente se dispone de un prototipo software para resolver este problema que fue presentado en
