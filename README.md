@@ -1,3 +1,25 @@
-# TFG
+# Trabajo Fin de Grado
 
-Repositorio para la realización del Trabajo Fin de Grado "Generador de instancias y visualizador gráfico de soluciones para problemas de scheduling"
+**Alumno**: <p>Mirza Ojeda Veira</p>
+**Tutores**: <p>Francisco Javier Gil gala y Ramiro José Varela Arias</p>
+
+**Título**: Generador de instancias y visualizador gráfico de soluciones para problemas de scheduling
+
+**Resumen**:
+<p>En este trabajo se propone el desarrollo de una herramienta gráfica que permita generar instancias de problemas de scheduling, atendiendo a unos parámetros indicados por el usuario, resolverlas utilizando un algoritmo, y por último visualizar de forma gráfica tanto las instancias como sus soluciones. La implementación se hará mediante una aplicación de escritorio.
+
+Como ejemplo de prueba, se utilizará el problema de secuenciamiento de una máquina con capacidad variable. Actualmente se dispone de un prototipo software para resolver este problema que fue presentado en
+
+[1] Francisco Gil, Carlos Mencía, María R. Sierra, Ramiro Varela. Genetic programming to evolve priority rules for on-line scheduling on single machine with variable capacity. MAEB 2018.
+
+El alumno hará uso de este código de forma completamente transparente y lo integrará en la herramienta desarrollada en el trabajo.
+
+Es recomendable conocer el lenguaje de programación Java, así como tener conocimientos de librerías gráficas.
+
+Se propone el uso de las librerías:
+
+[2] Swing https://docs.oracle.com/javase/7/docs/api/javax/swing/package-summary.html
+
+[3] JFreeChat http://www.jfree.org/jfreechart/
+
+En cualquier caso, el alumno es libre de seleccionar las librerías que considere oportunas.</p>
