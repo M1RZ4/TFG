@@ -4,7 +4,7 @@ import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 
-public class Application {
+public class ApplicationWindow {
 
 	private JFrame frame;
 
@@ -15,7 +15,7 @@ public class Application {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Application window = new Application();
+					ApplicationWindow window = new ApplicationWindow();
 					window.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -27,7 +27,7 @@ public class Application {
 	/**
 	 * Create the application.
 	 */
-	public Application() {
+	public ApplicationWindow() {
 		initialize();
 	}
 
@@ -37,7 +37,6 @@ public class Application {
 	private void initialize() {
 		frame = new JFrame();
 		frame.setBounds(100, 100, 450, 300);
-		frame.setResizable(true);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 
