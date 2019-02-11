@@ -4,9 +4,14 @@ import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 
+import logic.ChartGenerator;
+import logic.InstanceManager;
+
 public class ApplicationWindow {
 
 	private JFrame frame;
+	private InstanceManager manager;
+	private ChartGenerator generator;
 
 	/**
 	 * Launch the application.
