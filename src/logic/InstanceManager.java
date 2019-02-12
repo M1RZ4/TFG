@@ -3,7 +3,8 @@ package logic;
 public class InstanceManager {
 
 	private Reader reader;
-	private InstanceWriter writer;
-	private InstanceGenerator generator;
+	private Writer writer;
+	private InstanceGenerator instanceGenerator;
+	private ChartManager chartManager;
 
 }
