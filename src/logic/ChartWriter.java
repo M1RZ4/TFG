@@ -1,5 +1,5 @@
 package logic;
 
-public class ChartWriter implements Writer {
+public class ChartWriter {
 
 }
