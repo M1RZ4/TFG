@@ -4,12 +4,9 @@ import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 
-import logic.InstanceManager;
-
-public class ApplicationWindow {
+public class Application {
 
 	private JFrame frame;
-	private InstanceManager manager;
 
 	/**
 	 * Launch the application.
@@ -18,7 +15,7 @@ public class ApplicationWindow {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					ApplicationWindow window = new ApplicationWindow();
+					Application window = new Application();
 					window.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -30,7 +27,7 @@ public class ApplicationWindow {
 	/**
 	 * Create the application.
 	 */
-	public ApplicationWindow() {
+	public Application() {
 		initialize();
 	}
 
@@ -41,6 +38,7 @@ public class ApplicationWindow {
 		frame = new JFrame();
 		frame.setBounds(100, 100, 450, 300);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setTitle("My Application");
 	}
 
 }
