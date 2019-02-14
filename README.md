@@ -23,3 +23,4 @@ En cualquier caso, el alumno es libre de seleccionar las librerías que consider
 **Mirza Ojeda Veira, Francisco Javier Gil gala y Ramiro José Varela Arias**
 
 [![Build Status](https://travis-ci.com/M1RZ4/TFG.svg?branch=master)](https://travis-ci.com/M1RZ4/TFG)
+[![codecov](https://codecov.io/gh/M1RZ4/TFG/branch/master/graph/badge.svg)](https://codecov.io/gh/M1RZ4/TFG)
