@@ -1,4 +1,7 @@
 # Trabajo Fin de Grado
+[![Build Status](https://travis-ci.com/M1RZ4/TFG.svg?branch=master)](https://travis-ci.com/M1RZ4/TFG)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/f2f0d0b009384c8aba7deacb39b7b541)](https://app.codacy.com/project/M1RZ4/TFG/dashboard)
+[![codecov](https://codecov.io/gh/M1RZ4/TFG/branch/master/graph/badge.svg)](https://codecov.io/gh/M1RZ4/TFG)
 ## Generador de instancias y visualizador gráfico de soluciones para problemas de scheduling
 
 <p>En este trabajo se propone el desarrollo de una herramienta gráfica que permita generar instancias de problemas de scheduling, atendiendo a unos parámetros indicados por el usuario, resolverlas utilizando un algoritmo, y por último visualizar de forma gráfica tanto las instancias como sus soluciones. La implementación se hará mediante una aplicación de escritorio.
@@ -21,7 +24,3 @@ En cualquier caso, el alumno es libre de seleccionar las librerías que consider
 
 
 **Mirza Ojeda Veira, Francisco Javier Gil gala y Ramiro José Varela Arias**
-
-[![Build Status](https://travis-ci.com/M1RZ4/TFG.svg?branch=master)](https://travis-ci.com/M1RZ4/TFG)
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/f2f0d0b009384c8aba7deacb39b7b541)](https://app.codacy.com/project/M1RZ4/TFG/dashboard)
-[![codecov](https://codecov.io/gh/M1RZ4/TFG/branch/master/graph/badge.svg)](https://codecov.io/gh/M1RZ4/TFG)
