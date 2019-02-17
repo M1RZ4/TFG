@@ -12,6 +12,7 @@
 
 # Package Files #
 *.jar
+!GestorProblema1maquina.jar
 *.war
 *.nar
 *.ear
