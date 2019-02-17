@@ -1,5 +1,8 @@
 package logic;
 
+import logic.io.Reader;
+import logic.io.Writer;
+
 /**
  * 
  * @author Mirza Ojeda Veira

@@ -1,14 +1,14 @@
-package logic;
+package logic.io;
 
 /**
  * 
  * @author Mirza Ojeda Veira
  *
  */
-public class ChartWriter implements Writer {
+public class InstanceReader implements Reader {
 
 	@Override
-	public void write() {
+	public void read() {
 		// TODO Auto-generated method stub
 
 	}

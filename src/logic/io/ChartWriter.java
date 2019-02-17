@@ -1,11 +1,11 @@
-package logic;
+package logic.io;
 
 /**
  * 
  * @author Mirza Ojeda Veira
  *
  */
-public class InstanceWriter implements Writer {
+public class ChartWriter implements Writer {
 
 	@Override
 	public void write() {
