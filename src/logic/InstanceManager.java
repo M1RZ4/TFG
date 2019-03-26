@@ -1,5 +1,6 @@
 package logic;
 
+import dominio.Instancia;
 import logic.io.Reader;
 import logic.io.Writer;
 
@@ -14,21 +15,5 @@ public class InstanceManager {
 	private Writer writer;
 	private InstanceGenerator instanceGenerator;
 	private ChartManager chartManager;
-
-	public Reader getReader() {
-		return reader;
-	}
-
-	public Writer getWriter() {
-		return writer;
-	}
-
-	public InstanceGenerator getInstanceGenerator() {
-		return instanceGenerator;
-	}
-
-	public ChartManager getChartManager() {
-		return chartManager;
-	}
-
+	private Instancia instance;
 }

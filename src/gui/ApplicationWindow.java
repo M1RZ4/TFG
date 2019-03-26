@@ -4,9 +4,17 @@ import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 
-public class Application {
+import logic.InstanceManager;
+
+public class ApplicationWindow {
 
 	private JFrame frame;
+	
+	private DueDatesDialog dd;
+	private DurationsDialog pd;
+	private TasksDialog td;
+	
+	private InstanceManager manager;
 
 	/**
 	 * Launch the application.
@@ -15,7 +23,7 @@ public class Application {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Application window = new Application();
+					ApplicationWindow window = new ApplicationWindow();
 					window.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -27,7 +35,7 @@ public class Application {
 	/**
 	 * Create the application.
 	 */
-	public Application() {
+	public ApplicationWindow() {
 		initialize();
 	}
 
