@@ -41,5 +41,12 @@
 		<artifactId>itextpdf</artifactId>
 		<version>5.0.6</version>
 	</dependency>
+	<dependency>
+    	<groupId>com.gestor</groupId>
+    	<artifactId>GestorProblema1maquina</artifactId>
+    	<version>1.0</version>
+    	<scope>system</scope>
+    	<systemPath>${project.basedir}/lib/GestorProblema1maquina.jar</systemPath>
+	</dependency>
 	</dependencies>
 </project>
