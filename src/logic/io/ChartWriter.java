@@ -26,12 +26,12 @@ public class ChartWriter implements Writer {
 	private JFreeChart chart;
 
 	/**
-	 * Método auxiliar que modifica el valor de la variable chart de la clase
+	 * Constructor de la clase ChartWriter
 	 * 
 	 * @param chart
-	 *            Gráfico a asignar a la variable chart de la clase
+	 *            gráfico jfreechart a guardar en PDF
 	 */
-	public void setChart(JFreeChart chart) {
+	public ChartWriter(JFreeChart chart) {
 		this.chart = chart;
 	}
 

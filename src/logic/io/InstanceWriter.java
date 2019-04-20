@@ -19,19 +19,7 @@ public class InstanceWriter implements Writer {
 	private List<Double> intervalDurations;
 	private List<Integer> intervalCapacities;
 
-	/**
-	 * Método auxiliar que inicializa las variables de la clase
-	 * 
-	 * @param durations
-	 *            vector de duraciones de las tareas
-	 * @param dueDates
-	 *            vector de due dates de las tareas
-	 * @param intervalDurations
-	 *            lista de duraciones de los intervalos
-	 * @param intervalCapacities
-	 *            lista de capacidades de los intervalos
-	 */
-	public void initializeParameters(double[] durations, double[] dueDates, List<Double> intervalDurations,
+	public InstanceWriter(double[] durations, double[] dueDates, List<Double> intervalDurations,
 			List<Integer> intervalCapacities) {
 		this.durations = durations;
 		this.dueDates = dueDates;
@@ -43,7 +31,8 @@ public class InstanceWriter implements Writer {
 	 * Método implementado de la interfaz {@link Writer} que crea un archivo de
 	 * texto de nombre fileName con los parámetros de una instancia
 	 * 
-	 * @param fileName nombre dle fichero
+	 * @param fileName
+	 *            nombre dle fichero
 	 */
 	@Override
 	public void write(String fileName) {
