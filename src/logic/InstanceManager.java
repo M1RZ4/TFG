@@ -1,6 +1,7 @@
 package logic;
 
 import java.util.List;
+import java.util.ResourceBundle;
 
 import org.jfree.chart.JFreeChart;
 
@@ -11,6 +12,7 @@ import logic.io.InstanceWriter;
 import logic.io.Writer;
 
 /**
+ * Clase InstanceManager
  * 
  * @author Mirza Ojeda Veira
  *
@@ -20,8 +22,13 @@ public class InstanceManager {
 	private InstanceReader reader = new InstanceReader();
 	private Writer writer;
 	private InstanceGenerator instanceGenerator;
-	private ChartManager chartManager = new ChartManager();
+	private ChartManager chartManager; // TODO inicializar
 	private Instancia instance;
+
+	// InstanceManager
+	public Instancia getInstance() {
+		return instance;
+	}
 
 	// Reader
 	public void readInstance(String fileName) {
@@ -29,8 +36,24 @@ public class InstanceManager {
 	}
 
 	// ChartManager
+	public void initializeChartManager(ResourceBundle texts) {
+		chartManager = new ChartManager(texts, instance);
+	}
+
 	public JFreeChart getChart() {
 		return chartManager.getChart();
+	}
+
+	public void loadMainChart(int tickUnit) {
+		chartManager.loadMainChart(tickUnit);
+	}
+	
+	public JFreeChart createDurationsChart(double[] durations) {
+		return chartManager.createDurationsChart(durations);
+	}
+	
+	public void createDueDatesChart() {
+		
 	}
 
 	// InstanceGenerator
