@@ -1,24 +1,17 @@
 package gui;
 
-import java.awt.BasicStroke;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
-import java.awt.Shape;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowEvent;
-import java.awt.geom.Rectangle2D;
 import java.io.File;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 import java.util.ResourceBundle;
 
 import javax.swing.DefaultComboBoxModel;
@@ -43,26 +36,13 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.table.DefaultTableModel;
 
-import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
-import org.jfree.chart.JFreeChart;
-import org.jfree.chart.annotations.XYShapeAnnotation;
-import org.jfree.chart.annotations.XYTextAnnotation;
 import org.jfree.chart.axis.NumberAxis;
 import org.jfree.chart.axis.NumberTickUnit;
-import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.plot.XYPlot;
-import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
-import org.jfree.data.xy.XYDataset;
-import org.jfree.data.xy.XYSeries;
-import org.jfree.data.xy.XYSeriesCollection;
-import org.jfree.ui.Layer;
 
-import dominio.Gestor;
-import dominio.Instancia;
-import dominio.Intervalo;
-import dominio.Planificacion;
 import gui.enums.Language;
+import gui.enums.Rule;
 import gui.menu.BackgroundMenuBar;
 import logic.InstanceManager;
 
@@ -79,7 +59,7 @@ public class ApplicationWindow {
 	DueDatesDialog dd;
 	boolean displayedDuedates = false;
 
-	private JFrame frmVisuzalizadorYGenerador;
+	private JFrame frame;
 	private JPanel configPanel;
 	private JButton btnCargar;
 	private JButton btnGuardar;
@@ -129,8 +109,8 @@ public class ApplicationWindow {
 					UIManager.put("CheckBoxMenuItem.opaque", true);
 					UIManager.put("MenuItem.opaque", true);
 					ApplicationWindow window = new ApplicationWindow();
-					window.frmVisuzalizadorYGenerador.setVisible(true);
-					window.frmVisuzalizadorYGenerador.setBackground(Color.WHITE);
+					window.frame.setVisible(true);
+					window.frame.setBackground(Color.WHITE);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -149,19 +129,19 @@ public class ApplicationWindow {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		frmVisuzalizadorYGenerador = new JFrame();
-		frmVisuzalizadorYGenerador.getContentPane().setBackground(Color.WHITE);
-		BorderLayout borderLayout = (BorderLayout) frmVisuzalizadorYGenerador.getContentPane().getLayout();
+		frame = new JFrame();
+		frame.getContentPane().setBackground(Color.WHITE);
+		BorderLayout borderLayout = (BorderLayout) frame.getContentPane().getLayout();
 		borderLayout.setVgap(10);
 		borderLayout.setHgap(10);
 		texts = ResourceBundle.getBundle("rcs/texts", new Locale("en"));
 		language = Language.ENGLISH;
-		frmVisuzalizadorYGenerador.setTitle(texts.getString("menu_title"));
-		frmVisuzalizadorYGenerador.setBounds(100, 100, 1100, 600);
-		frmVisuzalizadorYGenerador.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frmVisuzalizadorYGenerador.setLocationRelativeTo(null);
-		frmVisuzalizadorYGenerador.getContentPane().add(getConfigPanel(), BorderLayout.SOUTH);
-		frmVisuzalizadorYGenerador.getContentPane().add(getMenuBar(), BorderLayout.NORTH);
+		frame.setTitle(texts.getString("menu_title"));
+		frame.setBounds(100, 100, 1100, 600);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setLocationRelativeTo(null);
+		frame.getContentPane().add(getConfigPanel(), BorderLayout.SOUTH);
+		frame.getContentPane().add(getMenuBar(), BorderLayout.NORTH);
 	}
 
 	private JPanel getConfigPanel() {
@@ -214,10 +194,10 @@ public class ApplicationWindow {
 	 */
 	private void load() {
 		if (cp != null)
-			frmVisuzalizadorYGenerador.remove(cp);
+			frame.remove(cp);
 
 		JFileChooser jfc = new JFileChooser();
-		int returnVal = jfc.showOpenDialog(frmVisuzalizadorYGenerador);
+		int returnVal = jfc.showOpenDialog(frame);
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
 			File file = jfc.getSelectedFile();
 
@@ -226,8 +206,8 @@ public class ApplicationWindow {
 			manager.loadMainChart((int) getAxisSpinner().getValue());
 
 			cp = new ChartPanel(manager.getChart());
-			frmVisuzalizadorYGenerador.getContentPane().add(cp, BorderLayout.CENTER);
-			frmVisuzalizadorYGenerador.revalidate();
+			frame.getContentPane().add(cp, BorderLayout.CENTER);
+			frame.revalidate();
 
 			getRulesComboBox().setEnabled(true);
 
@@ -243,6 +223,8 @@ public class ApplicationWindow {
 			getBtnGuardar().setEnabled(true);
 
 			if (getChckbxmntmTareas().isSelected()) {
+				if (td != null)
+					td.dispose();
 				createTasksTable();
 				displayedTasks = true;
 			} else if (td != null) {
@@ -250,6 +232,8 @@ public class ApplicationWindow {
 				displayedTasks = false;
 			}
 			if (getChckbxmntmDuracin().isSelected()) {
+				if (pd != null)
+					pd.dispose();
 				createDurationsChart();
 				displayedDurations = true;
 			} else if (pd != null) {
@@ -257,6 +241,8 @@ public class ApplicationWindow {
 				displayedDurations = false;
 			}
 			if (getChckbxmntmFechaDeVencimiento().isSelected()) {
+				if (dd != null)
+					dd.dispose();
 				createDueDatesChart();
 				displayedDuedates = true;
 			} else if (dd != null) {
@@ -273,7 +259,7 @@ public class ApplicationWindow {
 			btnGuardar.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					JFileChooser jfc = new JFileChooser();
-					int returnVal = jfc.showOpenDialog(frmVisuzalizadorYGenerador);
+					int returnVal = jfc.showOpenDialog(frame);
 					if (returnVal == JFileChooser.APPROVE_OPTION) {
 						File file = jfc.getSelectedFile();
 						manager.writeChart(file.getAbsolutePath() + ".pdf");
@@ -421,7 +407,7 @@ public class ApplicationWindow {
 			// TODO actualizar textos diálogo de duedates
 		}
 		// Menu
-		frmVisuzalizadorYGenerador.setTitle(texts.getString("menu_title"));
+		frame.setTitle(texts.getString("menu_title"));
 		mnArchivo.setText(texts.getString("menu_file"));
 		mnVer.setText(texts.getString("menu_view"));
 		mnHerramientas.setText(texts.getString("menu_tools"));
@@ -529,7 +515,7 @@ public class ApplicationWindow {
 			mntmGuardar.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					JFileChooser jfc = new JFileChooser();
-					int returnVal = jfc.showOpenDialog(frmVisuzalizadorYGenerador);
+					int returnVal = jfc.showOpenDialog(frame);
 					if (returnVal == JFileChooser.APPROVE_OPTION) {
 						File file = jfc.getSelectedFile();
 						manager.writeChart(file.getAbsolutePath() + ".pdf");
@@ -546,8 +532,7 @@ public class ApplicationWindow {
 			mntmSalir.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Q, ActionEvent.CTRL_MASK));
 			mntmSalir.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					frmVisuzalizadorYGenerador
-							.dispatchEvent(new WindowEvent(frmVisuzalizadorYGenerador, WindowEvent.WINDOW_CLOSING));
+					frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
 				}
 			});
 
@@ -576,8 +561,11 @@ public class ApplicationWindow {
 
 	}
 
+	/**
+	 * Método auxiliar que crea el diálogo para mostrar la distibución de duraciones
+	 */
 	private void createDurationsChart() {
-		ChartPanel cp = new ChartPanel(manager.createDurationsChart(manager.getInstance().getP()));
+		ChartPanel cp = new ChartPanel(manager.createDurationsChart(manager.getP()));
 		pd = new DurationsDialog(texts);
 		pd.getContentPane().add(cp, BorderLayout.CENTER);
 		pd.setVisible(true);
@@ -585,61 +573,16 @@ public class ApplicationWindow {
 		pd.revalidate();
 	}
 
+	/**
+	 * Método auxiliar que crea el diálogo para mostrar la distribución de due dates
+	 */
 	private void createDueDatesChart() {
-		dueDates = i.getD();
-		XYDataset ds = dueDatesDataset();
-		JFreeChart durationsChart = ChartFactory.createXYLineChart("", "Tareas", "t", ds, PlotOrientation.VERTICAL,
-				true, true, false);
-		XYPlot plot = durationsChart.getXYPlot();
-		plot.setDomainGridlinePaint(Color.BLACK);
-		plot.setRangeGridlinePaint(Color.BLACK);
-		plot.setBackgroundPaint(Color.WHITE);
-
-		NumberAxis domain = (NumberAxis) plot.getDomainAxis();
-
-		int maxDomain = dueDates.length; // Nº Tareas
-
-		domain.setRange(0.00, maxDomain);
-		domain.setTickUnit(new NumberTickUnit(1));
-		domain.setVerticalTickLabels(true);
-		domain.setLabelPaint(Color.BLACK);
-		domain.setTickMarkPaint(Color.BLACK);
-		domain.setAxisLinePaint(Color.BLACK);
-
-		NumberAxis range = (NumberAxis) plot.getRangeAxis();
-
-		double maxRange = 0;
-		for (Double d : dueDates)
-			if (d > maxRange)
-				maxRange = d; // Max due-date
-
-		range.setRange(0.0, maxRange + 10);
-		range.setTickUnit(new NumberTickUnit(10)); // TODO personalizable mejor?
-		range.setTickMarkPaint(Color.BLACK);
-		range.setAxisLinePaint(Color.BLACK);
-
-		XYLineAndShapeRenderer renderer = new XYLineAndShapeRenderer();
-		renderer.setSeriesShapesVisible(0, false);
-		renderer.setSeriesPaint(0, Color.RED);
-
-		renderer.setSeriesStroke(0, new BasicStroke(2.0f));
-		plot.setRenderer(renderer);
-		ChartPanel cp = new ChartPanel(durationsChart);
-
-		dd = new DueDatesDialog();
+		ChartPanel cp = new ChartPanel(manager.createDueDatesChart(manager.getD()));
+		dd = new DueDatesDialog(texts);
 		dd.getContentPane().add(cp, BorderLayout.CENTER);
 		dd.setVisible(true);
 		dd.setLocationRelativeTo(null);
 		dd.revalidate();
-	}
-
-	private XYDataset dueDatesDataset() {
-		XYSeries dueDate = new XYSeries("Fecha de vencimiento");
-		XYSeriesCollection dataset = new XYSeriesCollection();
-		for (int i = 0; i < dueDates.length; i++)
-			dueDate.add(i, dueDates[i]);
-		dataset.addSeries(dueDate);
-		return dataset;
 	}
 
 	private JCheckBoxMenuItem getChckbxmntmFechaDeVencimiento() {
@@ -682,10 +625,13 @@ public class ApplicationWindow {
 		return chckbxmntmTareas;
 	}
 
+	/**
+	 * Método auxiliar que crea el diálogo para mostrar la información de la stareas
+	 */
 	private void createTasksTable() {
-		dueDates = i.getD();
-		durations = i.getP();
-		td = new TasksDialog();
+		dueDates = manager.getD();
+		durations = manager.getP();
+		td = new TasksDialog(texts);
 		DefaultTableModel model = (DefaultTableModel) td.getTasksTable().getModel();
 		model.setRowCount(0);
 		for (int t = 0; t < dueDates.length; t++) {
@@ -807,7 +753,7 @@ public class ApplicationWindow {
 						XYPlot plot = manager.getChart().getXYPlot();
 						NumberAxis domain = (NumberAxis) plot.getDomainAxis();
 						domain.setTickUnit(new NumberTickUnit((int) getAxisSpinner().getValue()));
-						frmVisuzalizadorYGenerador.revalidate();
+						frame.revalidate();
 					}
 
 				}
@@ -835,7 +781,9 @@ public class ApplicationWindow {
 			btnFinal = new JButton(texts.getString("button_final"));
 			btnFinal.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					goToEnd(); // TODO disable btnFinal?
+					goToEnd();
+					btnFinal.setEnabled(false); // TODO así no puedes recargar con otra regla
+					btnSiguiente.setEnabled(false);
 				}
 			});
 			btnFinal.setEnabled(false);
@@ -844,237 +792,11 @@ public class ApplicationWindow {
 	}
 
 	private void goToEnd() {
-		frmVisuzalizadorYGenerador.remove(cp);
-
-		String rule = (String) getRulesComboBox().getSelectedItem();
-		switch (rule) {
-		case "ATC":
-			p = Gestor.planificaATC((double) getRulesSpinner().getValue(), i);
-			break;
-		case "EDD":
-			p = Gestor.planificaEDD(i);
-			break;
-		case "SPT":
-			p = Gestor.planificaSPT(i);
-			break;
-		default:
-			break;
-		}
-		intervals = i.getPerfilMaquina();
-
-		// Modify renderer (jfreechart)
-		XYLineAndShapeRenderer renderer = new XYLineAndShapeRenderer();
-		renderer.setSeriesShapesVisible(0, false);
-		renderer.setSeriesShapesVisible(1, false);
-		renderer.setSeriesPaint(0, Color.RED);
-		renderer.setSeriesPaint(1, Color.BLACK);
-		renderer.setSeriesStroke(0, new BasicStroke(2.0f));
-		renderer.setSeriesStroke(1, new BasicStroke(2.0f));
-
-		// Create tasks (jfreechart)
-		Map<Integer, Integer> capacity = createTasks(renderer, i, p);
-
-		// Create dataset (jfreechart)
-		// XYDataset ds = createDataset();
-		XYDataset ds = createDataset(i, p, capacity);
-
-		// Create chart (jfreechart)
-		xylineChart = ChartFactory.createXYLineChart("", "t", "", ds, PlotOrientation.VERTICAL, true, true, false);
-
-		// Modify plot (jfreechart)
-		XYPlot plot = xylineChart.getXYPlot();
-		plot.setDomainGridlinePaint(Color.BLACK);
-		plot.setRangeGridlinePaint(Color.BLACK);
-		plot.setBackgroundPaint(Color.WHITE);
-
-		// Modify axis (jfreechart)
-		NumberAxis domain = (NumberAxis) plot.getDomainAxis();
-
-		Intervalo interval = intervals.get(intervals.size() - 1);
-		double maxDomain = interval.getInicio(); // TODO menor en instancias grandes
-		if (interval.getFin() < 300000)
-			maxDomain = interval.getFin();
-
-		domain.setRange(0.00, maxDomain + 1);
-		domain.setTickUnit(new NumberTickUnit((int) getAxisSpinner().getValue()));
-		domain.setVerticalTickLabels(true);
-		domain.setLabelPaint(Color.BLACK);
-		domain.setTickMarkPaint(Color.BLACK);
-		domain.setAxisLinePaint(Color.BLACK);
-
-		NumberAxis range = (NumberAxis) plot.getRangeAxis();
-
-		int maxRange = 0;
-		for (Intervalo aux : intervals)
-			if (aux.getCap() > maxRange)
-				maxRange = aux.getCap();
-
-		range.setRange(0.0, maxRange + 1);
-		range.setTickUnit(new NumberTickUnit(1));
-		range.setTickMarkPaint(Color.BLACK);
-		range.setAxisLinePaint(Color.BLACK);
-
-		// Set renderer (jfreechart)
-		plot.setRenderer(renderer);
-
-		// Create chart panel (jfreechart)
-		cp = new ChartPanel(xylineChart);
-
-		// Add chart to panel (swing)
-		frmVisuzalizadorYGenerador.getContentPane().add(cp);
-		getBtnSiguiente().setEnabled(false);
-
-		frmVisuzalizadorYGenerador.revalidate();
-	}
-
-	private Map<Integer, Integer> createTasks(XYLineAndShapeRenderer renderer, Instancia i, Planificacion p) {
-
-		BasicStroke stroke = new BasicStroke(1.0f);
-		Color border = Color.BLACK;
-		Color fill = Color.LIGHT_GRAY;
-		double height = 1;
-		double y = 0;
-		double[] durations = i.getP();
-		double[] dueDates = i.getD();
-		int[] startTimes = p.getSti();
-		double[] endTimes = durations.clone(); // startTime[t-1]
-		HashMap<Double, Double> tasks = new HashMap<Double, Double>(); // [y][endTime]
-		HashMap<Integer, Integer> ids = new HashMap<Integer, Integer>(); // [startTime][taskID] startTime !único falla
-		HashMap<Integer, Integer> capacity = new HashMap<Integer, Integer>(); // [time][occupied]
-
-		for (int j = 0; j < startTimes.length; j++)
-			ids.put(startTimes[j], j);
-
-		for (int j = 0; j < endTimes.length; j++)
-			endTimes[j] += startTimes[j];
-
-		for (int s = 0; s <= startTimes.length - 1; s++) {
-			for (int k = 0; k <= startTimes.length - 2; k++) {
-				if (startTimes[k] > startTimes[k + 1]) {
-					double temp = 0d;
-
-					temp = startTimes[k];
-					startTimes[k] = startTimes[k + 1];
-					startTimes[k + 1] = (int) temp;
-
-					temp = endTimes[k];
-					endTimes[k] = endTimes[k + 1];
-					endTimes[k + 1] = temp;
-
-					temp = durations[k];
-					durations[k] = durations[k + 1];
-					durations[k + 1] = temp;
-
-					temp = dueDates[k];
-					dueDates[k] = dueDates[k + 1];
-					dueDates[k + 1] = temp;
-
-				}
-			}
-		}
-
-		for (int t = 0; t < startTimes.length; t++) {
-			if (t == 0) {
-				tasks.put(0d, endTimes[t]);
-				// capacity.put(0, 1);
-			} else {
-				Object[] sortedKeys = tasks.keySet().toArray();
-				Arrays.sort(sortedKeys);
-				boolean found = false;
-				for (int j = 0; j < sortedKeys.length; j++)
-					if (tasks.get(sortedKeys[j]) <= startTimes[t]) {
-						y = (double) sortedKeys[j];
-						found = true;
-						break;
-					}
-				if (!found) {
-					y = (double) sortedKeys[sortedKeys.length - 1] + 1;
-				}
-				tasks.put(y, endTimes[t]);
-			}
-
-			Shape rectangle = new Rectangle2D.Double(startTimes[t], y, durations[t], height);
-			XYShapeAnnotation note = new XYShapeAnnotation(rectangle, stroke, border, fill);
-			XYTextAnnotation text = new XYTextAnnotation("" + ids.get(startTimes[t]),
-					rectangle.getBounds().getCenterX(), rectangle.getBounds().getCenterY());
-			renderer.addAnnotation(note, Layer.BACKGROUND);
-			renderer.addAnnotation(text); // TODO omitir en instancias grandes
-		}
-
-		for (int j = 0; j < endTimes[endTimes.length - 1]; j++) {
-			for (int k = 0; k < startTimes.length; k++) { // recorrer tareas
-
-				if (j >= startTimes[k] && j < endTimes[k]) {
-					if (capacity.get(j) == null) {
-						capacity.put(j, 1);
-					} else {
-						capacity.put(j, capacity.get(j) + 1);
-					}
-				}
-			}
-
-		}
-		capacity.put((int) endTimes[endTimes.length - 1], 1); // endTime !unico falla
-		return capacity;
-	}
-
-	private XYDataset createDataset(Instancia i, Planificacion p, Map<Integer, Integer> occupied) {
-		double[] durations = i.getP();
-		int[] startTimes = p.getSti();
-		double[] endTimes = durations.clone();
-
-		for (int j = 0; j < endTimes.length; j++)
-			endTimes[j] += startTimes[j];
-
-		for (int s = 0; s <= startTimes.length - 1; s++) {
-			for (int k = 0; k <= startTimes.length - 2; k++) {
-				if (startTimes[k] > startTimes[k + 1]) {
-					double temp = 0d;
-
-					temp = startTimes[k];
-					startTimes[k] = startTimes[k + 1];
-					startTimes[k + 1] = (int) temp;
-
-					temp = endTimes[k];
-					endTimes[k] = endTimes[k + 1];
-					endTimes[k + 1] = temp;
-
-					temp = durations[k];
-					durations[k] = durations[k + 1];
-					durations[k + 1] = temp;
-
-				}
-			}
-		}
-
-		final XYSeries tasks = new XYSeries("Capacidad Ocupada");
-		Object[] sortedKeys = occupied.keySet().toArray();
-		Arrays.sort(sortedKeys);
-		for (int j = 0; j < sortedKeys.length; j++) {
-			for (int t = 0; t < startTimes.length; t++) {
-				int key = (int) sortedKeys[j];
-				if (key == startTimes[t] || key == endTimes[t]) {
-					if (key > 0 && occupied.get(key) > occupied.get(sortedKeys[j - 1]))
-						tasks.add(key, occupied.get(key) - 1);
-					else if (key > 0 && occupied.get(key) < occupied.get(sortedKeys[j - 1]))
-						tasks.add(key, occupied.get(key - 1));
-					tasks.add(key, occupied.get(key));
-				}
-			}
-		}
-		tasks.add(endTimes[endTimes.length - 1], 0);
-
-		final XYSeries capacity = new XYSeries("Capacidad disponible");
-		for (int j = 0; j < i.getPerfilMaquina().size(); j++) {
-			if (j == i.getPerfilMaquina().size() - 1)
-				break;
-			capacity.add(i.getPerfilMaquina().get(j).getInicio(), i.getPerfilMaquina().get(j).getCap());
-			capacity.add(i.getPerfilMaquina().get(j).getFin(), i.getPerfilMaquina().get(j).getCap());
-		}
-
-		final XYSeriesCollection dataset = new XYSeriesCollection();
-		dataset.addSeries(tasks);
-		dataset.addSeries(capacity);
-		return dataset;
+		frame.remove(cp);
+		Rule rule = Rule.valueOf((String) getRulesComboBox().getSelectedItem());
+		manager.createMainChart(rule, (double) getRulesSpinner().getValue(), (int) getAxisSpinner().getValue());
+		cp = new ChartPanel(manager.getChart());
+		frame.getContentPane().add(cp);
+		frame.revalidate();
 	}
 }

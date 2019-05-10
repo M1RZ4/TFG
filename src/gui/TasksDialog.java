@@ -2,6 +2,7 @@ package gui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.util.ResourceBundle;
 
 import javax.swing.JDialog;
 import javax.swing.JScrollPane;
@@ -16,10 +17,12 @@ public class TasksDialog extends JDialog {
 	private static final long serialVersionUID = 1L;
 	private JScrollPane scrollPane;
 	private JTable tasksTable;
+	private ResourceBundle texts;
 
-	public TasksDialog() {
+	public TasksDialog(ResourceBundle texts) {
+		this.texts = texts;
 		getContentPane().setBackground(Color.WHITE);
-		setTitle("Tareas");
+		setTitle(this.texts.getString("table_tasks"));
 		setBounds(100, 100, 400, 300);
 		setResizable(true);
 		getContentPane().setLayout(new BorderLayout(0, 0));
@@ -39,7 +42,8 @@ public class TasksDialog extends JDialog {
 	JTable getTasksTable() {
 		if (tasksTable == null) {
 			tasksTable = new JTable(
-					new DefaultTableModel(new Object[] { "ID", "Duración", "Fecha de vencimiento", "Inicio" }, 0) {
+					new DefaultTableModel(new Object[] { texts.getString("table_id"), texts.getString("table_duration"),
+							texts.getString("table_due_date"), texts.getString("table_start_time") }, 0) {
 
 						private static final long serialVersionUID = 1L;
 

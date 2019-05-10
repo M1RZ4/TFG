@@ -6,6 +6,7 @@ import java.util.ResourceBundle;
 import org.jfree.chart.JFreeChart;
 
 import dominio.Instancia;
+import gui.enums.Rule;
 import logic.io.ChartWriter;
 import logic.io.InstanceReader;
 import logic.io.InstanceWriter;
@@ -30,6 +31,14 @@ public class InstanceManager {
 		return instance;
 	}
 
+	public double[] getP() {
+		return instance.getP();
+	}
+
+	public double[] getD() {
+		return instance.getD();
+	}
+
 	// Reader
 	public void readInstance(String fileName) {
 		instance = reader.readInstance(fileName);
@@ -37,7 +46,7 @@ public class InstanceManager {
 
 	// ChartManager
 	public void initializeChartManager(ResourceBundle texts) {
-		chartManager = new ChartManager(texts, instance);
+		chartManager = new ChartManager(texts);
 	}
 
 	public JFreeChart getChart() {
@@ -45,15 +54,19 @@ public class InstanceManager {
 	}
 
 	public void loadMainChart(int tickUnit) {
-		chartManager.loadMainChart(tickUnit);
+		chartManager.loadMainChart(instance, tickUnit);
 	}
-	
+
 	public JFreeChart createDurationsChart(double[] durations) {
 		return chartManager.createDurationsChart(durations);
 	}
-	
-	public void createDueDatesChart() {
-		
+
+	public JFreeChart createDueDatesChart(double[] dueDates) {
+		return chartManager.createDueDatesChart(dueDates);
+	}
+
+	public void createMainChart(Rule rule, double g, int tickUnit) {
+		chartManager.createMainChart(instance, rule, g, tickUnit);
 	}
 
 	// InstanceGenerator
