@@ -13,7 +13,7 @@ import logic.io.InstanceWriter;
 import logic.io.Writer;
 
 /**
- * Clase InstanceManager
+ * Clase InstanceManager ...
  * 
  * @author Mirza Ojeda Veira
  *
@@ -23,7 +23,7 @@ public class InstanceManager {
 	private InstanceReader reader = new InstanceReader();
 	private Writer writer;
 	private InstanceGenerator instanceGenerator;
-	private ChartManager chartManager; // TODO inicializar
+	private ChartManager chartManager;
 	private Instancia instance;
 
 	// InstanceManager
@@ -65,8 +65,8 @@ public class InstanceManager {
 		return chartManager.createDueDatesChart(dueDates);
 	}
 
-	public void createMainChart(Rule rule, double g, int tickUnit) {
-		chartManager.createMainChart(instance, rule, g, tickUnit);
+	public void setMainChart(int step, Rule rule, double g, int tickUnit) {
+		chartManager.setMainChart(new PartialInstance(step, instance), rule, g, tickUnit);
 	}
 
 	// InstanceGenerator

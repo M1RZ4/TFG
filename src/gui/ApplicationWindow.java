@@ -6,6 +6,7 @@ import java.awt.EventQueue;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -27,6 +28,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
 import javax.swing.JSpinner;
+import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingConstants;
@@ -41,6 +43,9 @@ import org.jfree.chart.axis.NumberAxis;
 import org.jfree.chart.axis.NumberTickUnit;
 import org.jfree.chart.plot.XYPlot;
 
+import dominio.Gestor;
+import dominio.Instancia;
+import dominio.Planificacion;
 import gui.enums.Language;
 import gui.enums.Rule;
 import gui.menu.BackgroundMenuBar;
@@ -51,13 +56,13 @@ public class ApplicationWindow {
 	ChartPanel cp;
 
 	TasksDialog td;
-	double[] durations;
-	double[] dueDates;
 	boolean displayedTasks = false;
 	DurationsDialog pd;
 	boolean displayedDurations = false;
 	DueDatesDialog dd;
 	boolean displayedDuedates = false;
+
+	private int step;
 
 	private JFrame frame;
 	private JPanel configPanel;
@@ -92,10 +97,14 @@ public class ApplicationWindow {
 	private JSpinner axisSpinner;
 	private JButton btnSiguiente;
 	private JButton btnFinal;
+	private JButton btnAnterior;
 
 	private ResourceBundle texts;
 	private InstanceManager manager = new InstanceManager();
 	private Language language;
+	private JLabel lblTardiness;
+	private JTextField textFieldTardiness;
+	private JPanel tardinessPanel;
 
 	/**
 	 * Launch the application.
@@ -137,7 +146,7 @@ public class ApplicationWindow {
 		texts = ResourceBundle.getBundle("rcs/texts", new Locale("en"));
 		language = Language.ENGLISH;
 		frame.setTitle(texts.getString("menu_title"));
-		frame.setBounds(100, 100, 1100, 600);
+		frame.setBounds(100, 100, 1300, 650);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setLocationRelativeTo(null);
 		frame.getContentPane().add(getConfigPanel(), BorderLayout.SOUTH);
@@ -151,25 +160,34 @@ public class ApplicationWindow {
 			configPanel.setBackground(Color.DARK_GRAY);
 			GridBagLayout gbl_configPanel = new GridBagLayout();
 			gbl_configPanel.columnWidths = new int[] { 254, 254, 254, 0 };
-			gbl_configPanel.rowHeights = new int[] { 23, 0 };
-			gbl_configPanel.columnWeights = new double[] { 0.75, 0, 0.5, Double.MIN_VALUE };
-			gbl_configPanel.rowWeights = new double[] { 0.0, Double.MIN_VALUE };
+			gbl_configPanel.rowHeights = new int[] { 23, 0, 0 };
+			gbl_configPanel.columnWeights = new double[] { 1.0, 0, 0.5, Double.MIN_VALUE };
+			gbl_configPanel.rowWeights = new double[] { 0.0, 1.0, Double.MIN_VALUE };
 			configPanel.setLayout(gbl_configPanel);
 			GridBagConstraints gbc_buttonPanel = new GridBagConstraints();
+			gbc_buttonPanel.insets = new Insets(0, 0, 5, 5);
 			gbc_buttonPanel.fill = GridBagConstraints.BOTH;
 			gbc_buttonPanel.gridx = 0;
 			gbc_buttonPanel.gridy = 0;
 			configPanel.add(getButtonPanel(), gbc_buttonPanel);
 			GridBagConstraints gbc_rulesPanel = new GridBagConstraints();
+			gbc_rulesPanel.insets = new Insets(0, 0, 5, 5);
 			gbc_rulesPanel.fill = GridBagConstraints.BOTH;
 			gbc_rulesPanel.gridx = 1;
 			gbc_rulesPanel.gridy = 0;
 			configPanel.add(getRulesPanel(), gbc_rulesPanel);
 			GridBagConstraints gbc_axisPanel = new GridBagConstraints();
+			gbc_axisPanel.insets = new Insets(0, 0, 5, 0);
 			gbc_axisPanel.fill = GridBagConstraints.BOTH;
 			gbc_axisPanel.gridx = 2;
 			gbc_axisPanel.gridy = 0;
 			configPanel.add(getAxisPanel(), gbc_axisPanel);
+			GridBagConstraints gbc_tardinessPanel = new GridBagConstraints();
+			gbc_tardinessPanel.insets = new Insets(0, 0, 0, 5);
+			gbc_tardinessPanel.fill = GridBagConstraints.BOTH;
+			gbc_tardinessPanel.gridx = 0;
+			gbc_tardinessPanel.gridy = 1;
+			configPanel.add(getTardinessPanel(), gbc_tardinessPanel);
 		}
 		return configPanel;
 	}
@@ -250,6 +268,7 @@ public class ApplicationWindow {
 				displayedDuedates = false;
 			}
 		}
+		step = 0;
 	}
 
 	private JButton getBtnGuardar() {
@@ -430,10 +449,12 @@ public class ApplicationWindow {
 		btnGuardar.setText(texts.getString("button_save"));
 		btnSiguiente.setText(texts.getString("button_next"));
 		btnFinal.setText(texts.getString("button_final"));
+		btnAnterior.setText(texts.getString("button_previous"));
 		// Labels
 		lblRegla.setText(texts.getString("label_rule"));
 		lblG.setText(texts.getString("label_g_parameter"));
 		lblSeparacinEntreMarcas.setText(texts.getString("label_separation_between_marks"));
+		lblTardiness.setText(texts.getString("label_tardiness"));
 		// TODO charts?
 	}
 
@@ -629,8 +650,8 @@ public class ApplicationWindow {
 	 * Método auxiliar que crea el diálogo para mostrar la información de la stareas
 	 */
 	private void createTasksTable() {
-		dueDates = manager.getD();
-		durations = manager.getP();
+		double[] dueDates = manager.getD();
+		double[] durations = manager.getP();
 		td = new TasksDialog(texts);
 		DefaultTableModel model = (DefaultTableModel) td.getTasksTable().getModel();
 		model.setRowCount(0);
@@ -713,13 +734,16 @@ public class ApplicationWindow {
 		if (rulesPanel == null) {
 			rulesPanel = new JPanel();
 			rulesPanel.setBackground(Color.DARK_GRAY);
-			rulesPanel.setLayout(new GridLayout(0, 7, 5, 0));
+			rulesPanel.setLayout(new GridLayout(0, 9, 5, 0));
 			rulesPanel.add(getLblRegla());
 			rulesPanel.add(getRulesComboBox());
 			rulesPanel.add(getLblG());
 			rulesPanel.add(getRulesSpinner());
+			rulesPanel.add(getBtnAnterior());
 			rulesPanel.add(getBtnSiguiente());
 			rulesPanel.add(getBtnFinal());
+			rulesPanel.add(getLblTardiness());
+			rulesPanel.add(getTextFieldTardiness());
 		}
 		return rulesPanel;
 	}
@@ -769,34 +793,130 @@ public class ApplicationWindow {
 			btnSiguiente.setEnabled(false);
 			btnSiguiente.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					// TODO
+					if (step < manager.getD().length)
+						step++;
+					if (step >= manager.getD().length) {
+						btnSiguiente.setEnabled(false);
+						calculateTardiness();
+					}
+					setMainChart();
+					if (!btnAnterior.isEnabled())
+						btnAnterior.setEnabled(true);
 				}
 			});
 		}
 		return btnSiguiente;
 	}
 
+	private JButton getBtnAnterior() {
+		if (btnAnterior == null) {
+			btnAnterior = new JButton(texts.getString("button_previous"));
+			btnAnterior.setEnabled(false);
+			btnAnterior.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					if (step > 0)
+						step--;
+					if (step <= 0) {
+						btnAnterior.setEnabled(false);
+						frame.remove(cp);
+						manager.loadMainChart((int) getAxisSpinner().getValue());
+						cp = new ChartPanel(manager.getChart());
+						frame.getContentPane().add(cp);
+						frame.revalidate();
+					} else {
+						setMainChart();
+					}
+					if (!btnSiguiente.isEnabled())
+						btnSiguiente.setEnabled(true);
+				}
+			});
+		}
+		return btnAnterior;
+	}
+
 	private JButton getBtnFinal() {
 		if (btnFinal == null) {
 			btnFinal = new JButton(texts.getString("button_final"));
+			btnFinal.setEnabled(false);
 			btnFinal.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					goToEnd();
-					btnFinal.setEnabled(false); // TODO así no puedes recargar con otra regla
+					step = manager.getD().length;
+					setMainChart();
 					btnSiguiente.setEnabled(false);
+					if (!btnAnterior.isEnabled())
+						btnAnterior.setEnabled(true);
+					calculateTardiness();
 				}
 			});
-			btnFinal.setEnabled(false);
 		}
 		return btnFinal;
 	}
 
-	private void goToEnd() {
+	/**
+	 * Método auxiliar que modifica el gráfico principal en función de los botones
+	 * de anterior, siguiente y final
+	 */
+	private void setMainChart() {
 		frame.remove(cp);
 		Rule rule = Rule.valueOf((String) getRulesComboBox().getSelectedItem());
-		manager.createMainChart(rule, (double) getRulesSpinner().getValue(), (int) getAxisSpinner().getValue());
+		manager.setMainChart(step, rule, (double) getRulesSpinner().getValue(), (int) getAxisSpinner().getValue());
 		cp = new ChartPanel(manager.getChart());
 		frame.getContentPane().add(cp);
 		frame.revalidate();
 	}
+
+	private JLabel getLblTardiness() {
+		if (lblTardiness == null) {
+			lblTardiness = new JLabel(texts.getString("label_tardiness"));
+			lblTardiness.setForeground(Color.WHITE);
+			lblTardiness.setHorizontalAlignment(JLabel.CENTER);
+		}
+		return lblTardiness;
+	}
+
+	private JTextField getTextFieldTardiness() {
+		if (textFieldTardiness == null) {
+			textFieldTardiness = new JTextField();
+			textFieldTardiness.setText("0");
+			textFieldTardiness.setEditable(false);
+			textFieldTardiness.setColumns(10);
+			textFieldTardiness.setHorizontalAlignment(JTextField.CENTER);
+		}
+		return textFieldTardiness;
+	}
+
+	private JPanel getTardinessPanel() {
+		if (tardinessPanel == null) {
+			tardinessPanel = new JPanel();
+			tardinessPanel.setLayout(new GridLayout(2, 0, 0, 0));
+		}
+		return tardinessPanel;
+	}
+
+	private void calculateTardiness() {
+		double tardiness = 0;
+		Planificacion p = null;
+		Instancia i = manager.getInstance();
+		double g = (double) rulesSpinner.getValue();
+		switch (Rule.valueOf((String) getRulesComboBox().getSelectedItem())) {
+		case ATC:
+			p = Gestor.planificaATC(g, i);
+			break;
+		case EDD:
+			p = Gestor.planificaEDD(i);
+			break;
+		case SPT:
+			p = Gestor.planificaSPT(i);
+			break;
+		default:
+			break;
+		}
+		int[] startTimes = p.getSti();
+		double[] dueDates = i.getD();
+		double[] durations = i.getP();
+		for (int j = 0; j < startTimes.length; j++)
+			tardiness += Math.max(0, startTimes[j] + durations[j] - dueDates[j]);
+		textFieldTardiness.setText(String.valueOf(tardiness));
+	}
+
 }
