@@ -8,7 +8,6 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.ResourceBundle;
 
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.JFreeChart;
@@ -28,7 +27,7 @@ import dominio.Gestor;
 import dominio.Instancia;
 import dominio.Intervalo;
 import dominio.Planificacion;
-import gui.enums.Rule;
+import logic.enums.Rule;
 
 /**
  * Clase ChartManager encargada de generar los gráficos que se mostrarán en la
@@ -41,11 +40,6 @@ import gui.enums.Rule;
 public class ChartManager {
 
 	private JFreeChart chart;
-	ResourceBundle texts;
-
-	public ChartManager(ResourceBundle texts) {
-		this.texts = texts;
-	}
 
 	public JFreeChart getChart() {
 		return chart;
@@ -102,7 +96,8 @@ public class ChartManager {
 	 */
 	public JFreeChart createDurationsChart(double[] durations) {
 		// Crear el gráfico
-		JFreeChart durationsChart = ChartFactory.createXYLineChart("", texts.getString("chart_tasks"), "t",
+		JFreeChart durationsChart = ChartFactory.createXYLineChart("",
+				LanguageManager.getInstance().getTexts().getString("chart_tasks"), "t",
 				createDataset(durations, "chart_durations"), PlotOrientation.VERTICAL, true, true, false);
 
 		// Modificar el fondo
@@ -143,7 +138,8 @@ public class ChartManager {
 	 */
 	public JFreeChart createDueDatesChart(double[] dueDates) {
 		// Crear el gráfico
-		JFreeChart dueDatesChart = ChartFactory.createXYLineChart("", texts.getString("chart_tasks"), "t",
+		JFreeChart dueDatesChart = ChartFactory.createXYLineChart("",
+				LanguageManager.getInstance().getTexts().getString("chart_tasks"), "t",
 				createDataset(dueDates, "chart_due_dates"), PlotOrientation.VERTICAL, true, true, false);
 
 		// Modificar el fondo
@@ -251,7 +247,8 @@ public class ChartManager {
 	 * @return dataset con el perfil de máquina
 	 */
 	private XYDataset loadMainChartDataset(Instancia i) {
-		final XYSeries capacity = new XYSeries(texts.getString("chart_avaliable_capacity"));
+		final XYSeries capacity = new XYSeries(
+				LanguageManager.getInstance().getTexts().getString("chart_avaliable_capacity"));
 		for (int j = 0; j < i.getPerfilMaquina().size(); j++) {
 			if (j == i.getPerfilMaquina().size() - 1) {
 				// capacity.add(i.getPerfilMaquina().get(j).getInicio(),
@@ -281,7 +278,7 @@ public class ChartManager {
 	 * @return dataset con el perfil de máquina
 	 */
 	private XYDataset createDataset(double[] array, String series) {
-		XYSeries dueDate = new XYSeries(texts.getString(series));
+		XYSeries dueDate = new XYSeries(LanguageManager.getInstance().getTexts().getString(series));
 		XYSeriesCollection dataset = new XYSeriesCollection();
 		for (int i = 0; i < array.length; i++)
 			dueDate.add(i, array[i]);
@@ -527,7 +524,8 @@ public class ChartManager {
 		}
 
 		// Crear serie para la capacidad ocupada
-		final XYSeries tasks = new XYSeries(texts.getString("chart_occupied_capacity"));
+		final XYSeries tasks = new XYSeries(
+				LanguageManager.getInstance().getTexts().getString("chart_occupied_capacity"));
 		Object[] sortedKeys = occupied.keySet().toArray();
 		Arrays.sort(sortedKeys);
 		for (int j = 0; j < sortedKeys.length; j++) {
@@ -545,7 +543,8 @@ public class ChartManager {
 		tasks.add(endTimes[endTimes.length - 1], 0);
 
 		// Crear serie para la capacidad disponible
-		final XYSeries capacity = new XYSeries(texts.getString("chart_avaliable_capacity"));
+		final XYSeries capacity = new XYSeries(
+				LanguageManager.getInstance().getTexts().getString("chart_avaliable_capacity"));
 		for (int j = 0; j < i.getPerfilMaquina().size(); j++) {
 			if (j == i.getPerfilMaquina().size() - 1)
 				break;

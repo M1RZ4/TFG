@@ -1,4 +1,4 @@
-package gui.enums;
+package logic.enums;
 
 public enum Language {
 	SPANISH, ENGLISH;

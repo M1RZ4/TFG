@@ -1,19 +1,19 @@
 package logic;
 
 import java.util.List;
-import java.util.ResourceBundle;
 
 import org.jfree.chart.JFreeChart;
 
 import dominio.Instancia;
-import gui.enums.Rule;
+import logic.enums.Rule;
 import logic.io.ChartWriter;
 import logic.io.InstanceReader;
 import logic.io.InstanceWriter;
 import logic.io.Writer;
 
 /**
- * Clase InstanceManager ...
+ * Clase principal InstanceManager que gestiona las distintas funcionalidades
+ * del proyecto a través de sus distintos componentes
  * 
  * @author Mirza Ojeda Veira
  *
@@ -23,7 +23,7 @@ public class InstanceManager {
 	private InstanceReader reader = new InstanceReader();
 	private Writer writer;
 	private InstanceGenerator instanceGenerator;
-	private ChartManager chartManager;
+	private ChartManager chartManager = new ChartManager();
 	private Instancia instance;
 
 	// InstanceManager
@@ -45,9 +45,6 @@ public class InstanceManager {
 	}
 
 	// ChartManager
-	public void initializeChartManager(ResourceBundle texts) {
-		chartManager = new ChartManager(texts);
-	}
 
 	public JFreeChart getChart() {
 		return chartManager.getChart();

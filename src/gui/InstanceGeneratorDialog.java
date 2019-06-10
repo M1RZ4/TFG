@@ -22,6 +22,8 @@ import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingConstants;
 
+import logic.LanguageManager;
+
 public class InstanceGeneratorDialog extends JDialog {
 
 	private static final long serialVersionUID = 1L;
@@ -40,7 +42,7 @@ public class InstanceGeneratorDialog extends JDialog {
 	List<Integer> intervalCapacities;
 
 	public InstanceGeneratorDialog() {
-		setTitle("Generar instancias");
+		setTitle(LanguageManager.getInstance().getTexts().getString("menu_instance_generator"));
 		setModal(true);
 		setResizable(false);
 		setBounds(100, 100, 250, 150);
@@ -74,7 +76,7 @@ public class InstanceGeneratorDialog extends JDialog {
 
 	private JButton getBtnGuardar() {
 		if (btnGuardar == null) {
-			btnGuardar = new JButton("Guardar");
+			btnGuardar = new JButton(LanguageManager.getInstance().getTexts().getString("button_save"));
 			btnGuardar.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					createTasks();
@@ -165,7 +167,7 @@ public class InstanceGeneratorDialog extends JDialog {
 
 	private JButton getBtnCancelar() {
 		if (btnCancelar == null) {
-			btnCancelar = new JButton("Cancelar");
+			btnCancelar = new JButton(LanguageManager.getInstance().getTexts().getString("button_cancel"));
 			btnCancelar.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					dispose();
@@ -177,7 +179,7 @@ public class InstanceGeneratorDialog extends JDialog {
 
 	private JLabel getLblNmeroDeTareas() {
 		if (lblNmeroDeTareas == null) {
-			lblNmeroDeTareas = new JLabel("Número de tareas:");
+			lblNmeroDeTareas = new JLabel(LanguageManager.getInstance().getTexts().getString("label_number_of_tasks"));
 			lblNmeroDeTareas.setBounds(10, 11, 90, 14);
 			lblNmeroDeTareas.setHorizontalAlignment(SwingConstants.CENTER);
 		}
@@ -195,7 +197,7 @@ public class InstanceGeneratorDialog extends JDialog {
 
 	private JLabel getLblCapacidadMxima() {
 		if (lblCapacidadMxima == null) {
-			lblCapacidadMxima = new JLabel("Capacidad máxima:");
+			lblCapacidadMxima = new JLabel(LanguageManager.getInstance().getTexts().getString("label_max_capacity"));
 			lblCapacidadMxima.setBounds(10, 46, 93, 14);
 			lblCapacidadMxima.setHorizontalAlignment(SwingConstants.CENTER);
 		}

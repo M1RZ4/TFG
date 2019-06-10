@@ -2,7 +2,6 @@ package gui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.util.ResourceBundle;
 
 import javax.swing.JDialog;
 import javax.swing.JScrollPane;
@@ -12,17 +11,17 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 
+import logic.LanguageManager;
+
 public class TasksDialog extends JDialog {
 
 	private static final long serialVersionUID = 1L;
 	private JScrollPane scrollPane;
 	private JTable tasksTable;
-	private ResourceBundle texts;
 
-	public TasksDialog(ResourceBundle texts) {
-		this.texts = texts;
+	public TasksDialog() {
 		getContentPane().setBackground(Color.WHITE);
-		setTitle(this.texts.getString("table_tasks"));
+		setTitle(LanguageManager.getInstance().getTexts().getString("table_tasks"));
 		setBounds(100, 100, 400, 300);
 		setResizable(true);
 		getContentPane().setLayout(new BorderLayout(0, 0));
@@ -39,11 +38,13 @@ public class TasksDialog extends JDialog {
 		return scrollPane;
 	}
 
-	JTable getTasksTable() {
+	public JTable getTasksTable() {
 		if (tasksTable == null) {
 			tasksTable = new JTable(
-					new DefaultTableModel(new Object[] { texts.getString("table_id"), texts.getString("table_duration"),
-							texts.getString("table_due_date"), texts.getString("table_start_time") }, 0) {
+					new DefaultTableModel(new Object[] { LanguageManager.getInstance().getTexts().getString("table_id"),
+							LanguageManager.getInstance().getTexts().getString("table_duration"),
+							LanguageManager.getInstance().getTexts().getString("table_due_date"),
+							LanguageManager.getInstance().getTexts().getString("table_start_time") }, 0) {
 
 						private static final long serialVersionUID = 1L;
 
@@ -69,4 +70,5 @@ public class TasksDialog extends JDialog {
 		}
 		return tasksTable;
 	}
+
 }
