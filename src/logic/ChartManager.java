@@ -197,7 +197,7 @@ public class ChartManager {
 	 * @return eje X modificado
 	 */
 	private NumberAxis setDomain(NumberAxis domain, double maxDomain, int tickUnit) {
-		domain.setRange(0.00, maxDomain + 1);
+		domain.setRange(0.00, maxDomain - 1);
 		domain.setTickUnit(new NumberTickUnit(tickUnit));
 		domain.setVerticalTickLabels(true);
 		domain.setLabelPaint(Color.BLACK);
@@ -218,7 +218,7 @@ public class ChartManager {
 	 * @return eje Y modificado
 	 */
 	private NumberAxis setRange(NumberAxis range, double maxRange, int tickUnit) {
-		range.setRange(0.0, maxRange + 1);
+		range.setRange(0.0, maxRange + 1); //TODO en setDomain se tuvo que cambiar
 		range.setTickUnit(new NumberTickUnit(tickUnit));
 		range.setTickMarkPaint(Color.BLACK);
 		range.setAxisLinePaint(Color.BLACK);
