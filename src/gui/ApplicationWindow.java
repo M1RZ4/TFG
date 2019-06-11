@@ -7,6 +7,7 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Insets;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -51,6 +52,7 @@ import dominio.Planificacion;
 import gui.menu.BackgroundMenuBar;
 import logic.InstanceManager;
 import logic.LanguageManager;
+import logic.PartialInstance;
 import logic.enums.Language;
 import logic.enums.Rule;
 
@@ -409,9 +411,11 @@ public class ApplicationWindow {
 	 */
 	private void changeLocaleTexts() {
 		if (td != null && displayedTasks) {
+			Point location = td.getLocationOnScreen();
 			td.dispose();
 			td = null;
 			createTasksTable();
+			showTaskTable(location);
 		}
 		if (pd != null && displayedDurations) {
 			pd.dispose();
@@ -721,6 +725,7 @@ public class ApplicationWindow {
 				public void actionPerformed(ActionEvent e) {
 					if (!displayedTasks) {
 						createTasksTable();
+						showTaskTable(null);
 						displayedTasks = true;
 					} else {
 						td.dispose();
@@ -736,18 +741,48 @@ public class ApplicationWindow {
 	 * Método auxiliar que crea el diálogo para mostrar la información de la stareas
 	 */
 	private void createTasksTable() {
+		Planificacion p = null;
+		Instancia i = null;
+		if (step < manager.getD().length)
+			i = new PartialInstance(step, manager.getInstance());
+		else
+			i = manager.getInstance();
+		double g = (double) rulesSpinner.getValue();
+		switch (Rule.valueOf((String) getRulesComboBox().getSelectedItem())) {
+		case ATC:
+			p = Gestor.planificaATC(g, i);
+			break;
+		case EDD:
+			p = Gestor.planificaEDD(i);
+			break;
+		case SPT:
+			p = Gestor.planificaSPT(i);
+			break;
+		default:
+			break;
+		}
+		int[] startTimes = p.getSti();
 		double[] dueDates = manager.getD();
 		double[] durations = manager.getP();
+
 		td = new TasksDialog();
 		DefaultTableModel model = (DefaultTableModel) td.getTasksTable().getModel();
 		model.setRowCount(0);
 		for (int t = 0; t < dueDates.length; t++) {
 			model = (DefaultTableModel) td.getTasksTable().getModel();
-			model.addRow(new Object[] { t, durations[t], dueDates[t], null });
+			if (t >= startTimes.length)
+				model.addRow(new Object[] { t, durations[t], dueDates[t], null });
+			else
+				model.addRow(new Object[] { t, durations[t], dueDates[t], startTimes[t] });
 		}
+	}
 
+	private void showTaskTable(Point location) {
 		td.setVisible(true);
-		td.setLocationRelativeTo(null);
+		if (location == null)
+			td.setLocationRelativeTo(null);
+		else
+			td.setLocation(location);
 		td.getTasksTable().revalidate();
 		td.addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
@@ -892,6 +927,12 @@ public class ApplicationWindow {
 						btnSiguiente.setEnabled(false);
 						calculateTardiness();
 					}
+					if (displayedTasks) {
+						Point location = td.getLocationOnScreen();
+						td.dispose();
+						createTasksTable();
+						showTaskTable(location);
+					}
 					setMainChart();
 					if (!btnAnterior.isEnabled())
 						btnAnterior.setEnabled(true);
@@ -919,6 +960,12 @@ public class ApplicationWindow {
 					} else {
 						setMainChart();
 					}
+					if (displayedTasks) {
+						Point location = td.getLocationOnScreen();
+						td.dispose();
+						createTasksTable();
+						showTaskTable(location);
+					}
 					if (!btnSiguiente.isEnabled())
 						btnSiguiente.setEnabled(true);
 				}
@@ -934,6 +981,12 @@ public class ApplicationWindow {
 			btnFinal.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					step = manager.getD().length;
+					if (displayedTasks) {
+						Point location = td.getLocationOnScreen();
+						td.dispose();
+						createTasksTable();
+						showTaskTable(location);
+					}
 					setMainChart();
 					btnSiguiente.setEnabled(false);
 					if (!btnAnterior.isEnabled())
@@ -1004,7 +1057,7 @@ public class ApplicationWindow {
 		default:
 			break;
 		}
-		int[] startTimes = p.getSti();
+		int[] startTimes = p.getSti(); // TODO planificación paso a paso?
 		double[] dueDates = i.getD();
 		double[] durations = i.getP();
 		for (int j = 0; j < startTimes.length; j++)
