@@ -42,6 +42,7 @@ import javax.swing.event.ChangeListener;
 import javax.swing.table.DefaultTableModel;
 
 import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
 import org.jfree.chart.axis.NumberAxis;
 import org.jfree.chart.axis.NumberTickUnit;
 import org.jfree.chart.plot.XYPlot;
@@ -655,8 +656,9 @@ public class ApplicationWindow {
 	 * Método auxiliar que crea el diálogo para mostrar la distibución de duraciones
 	 */
 	private void createDurationsChart() {
-		ChartPanel cp = new ChartPanel(manager.createDurationsChart(manager.getP()));
-		pd = new DurationsDialog(LanguageManager.getInstance().getTexts());
+		JFreeChart chart = manager.createDurationsChart(manager.getP());
+		ChartPanel cp = new ChartPanel(chart);
+		pd = new DurationsDialog(chart);
 		pd.getContentPane().add(cp, BorderLayout.CENTER);
 		pd.setVisible(true);
 		pd.setLocationRelativeTo(null);
@@ -673,8 +675,9 @@ public class ApplicationWindow {
 	 * Método auxiliar que crea el diálogo para mostrar la distribución de due dates
 	 */
 	private void createDueDatesChart() {
-		ChartPanel cp = new ChartPanel(manager.createDueDatesChart(manager.getD()));
-		dd = new DueDatesDialog();
+		JFreeChart chart = manager.createDueDatesChart(manager.getD());
+		ChartPanel cp = new ChartPanel(chart);
+		dd = new DueDatesDialog(chart);
 		dd.getContentPane().add(cp, BorderLayout.CENTER);
 		dd.setVisible(true);
 		dd.setLocationRelativeTo(null);
@@ -907,7 +910,6 @@ public class ApplicationWindow {
 						domain.setTickUnit(new NumberTickUnit((int) getAxisSpinner().getValue()));
 						frame.revalidate();
 					}
-
 				}
 			});
 			axisSpinner.setModel(new SpinnerNumberModel(new Integer(10), new Integer(1), null, new Integer(1)));
