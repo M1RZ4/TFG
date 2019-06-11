@@ -10,6 +10,7 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
 import java.util.Locale;
@@ -239,34 +240,6 @@ public class ApplicationWindow {
 			getChckbxmntmTareas().setEnabled(true);
 
 			getBtnGuardar().setEnabled(true);
-
-			if (getChckbxmntmTareas().isSelected()) {
-				if (td != null)
-					td.dispose();
-				createTasksTable();
-				displayedTasks = true;
-			} else if (td != null) {
-				td.dispose();
-				displayedTasks = false;
-			}
-			if (getChckbxmntmDuracin().isSelected()) {
-				if (pd != null)
-					pd.dispose();
-				createDurationsChart();
-				displayedDurations = true;
-			} else if (pd != null) {
-				pd.dispose();
-				displayedDurations = false;
-			}
-			if (getChckbxmntmFechaDeVencimiento().isSelected()) {
-				if (dd != null)
-					dd.dispose();
-				createDueDatesChart();
-				displayedDuedates = true;
-			} else if (dd != null) {
-				dd.dispose();
-				displayedDuedates = false;
-			}
 		}
 		step = 0;
 	}
@@ -350,6 +323,10 @@ public class ApplicationWindow {
 		if (mntmGenerarInstancias == null) {
 			mntmGenerarInstancias = new JMenuItem(
 					LanguageManager.getInstance().getTexts().getString("menu_instance_generator"));
+			if (language == Language.ENGLISH)
+				mntmGenerarInstancias.setMnemonic('I');
+			else if (language.equals(Language.SPANISH))
+				mntmGenerarInstancias.setMnemonic('G');
 			mntmGenerarInstancias.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_G, ActionEvent.CTRL_MASK));
 			mntmGenerarInstancias.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
@@ -376,6 +353,10 @@ public class ApplicationWindow {
 	private JMenu getMnIdioma() {
 		if (mnIdioma == null) {
 			mnIdioma = new JMenu(LanguageManager.getInstance().getTexts().getString("menu_language"));
+			if (language == Language.ENGLISH)
+				mnIdioma.setMnemonic('L');
+			else if (language.equals(Language.SPANISH))
+				mnIdioma.setMnemonic('I');
 			mnIdioma.add(getMntmEspanol());
 			mnIdioma.add(getMntmIngles());
 		}
@@ -385,6 +366,10 @@ public class ApplicationWindow {
 	private JMenuItem getMntmEspanol() {
 		if (mntmEspanol == null) {
 			mntmEspanol = new JMenuItem(LanguageManager.getInstance().getTexts().getString("menu_spanish"));
+			if (language == Language.ENGLISH)
+				mntmEspanol.setMnemonic('S');
+			else if (language.equals(Language.SPANISH))
+				mntmEspanol.setMnemonic('E');
 			mntmEspanol.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					LanguageManager.getInstance()
@@ -401,6 +386,10 @@ public class ApplicationWindow {
 	private JMenuItem getMntmIngles() {
 		if (mntmIngles == null) {
 			mntmIngles = new JMenuItem(LanguageManager.getInstance().getTexts().getString("menu_english"));
+			if (language == Language.ENGLISH)
+				mntmIngles.setMnemonic('E');
+			else if (language.equals(Language.SPANISH))
+				mntmIngles.setMnemonic('G');
 			mntmIngles.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					LanguageManager.getInstance()
@@ -484,14 +473,44 @@ public class ApplicationWindow {
 	 * producirse un cambio en el idioma
 	 */
 	private void updateMnemonics() {
-		if (language == Language.ENGLISH) {
+		if (language.equals(Language.ENGLISH)) {
+			// Archivo
 			mnArchivo.setMnemonic('F');
+			mntmCargar.setMnemonic('L');
+			mntmGuardar.setMnemonic('S');
+			mntmSalir.setMnemonic('E');
+			// Ver
+			chckbxmntmFechaDeVencimiento.setMnemonic('T');
+			chckbxmntmTareas.setMnemonic('K');
+			// Herramientas
 			mnHerramientas.setMnemonic('T');
+			mntmGenerarInstancias.setMnemonic('I');
+			// Configuración
+			mnIdioma.setMnemonic('L');
+			mntmEspanol.setMnemonic('S');
+			mntmIngles.setMnemonic('E');
+			// Ayuda
 			mnAyuda.setMnemonic('H');
+			mntmManual.setMnemonic('U');
 		} else if (language.equals(Language.SPANISH)) {
+			// Archivo
 			mnArchivo.setMnemonic('A');
+			mntmCargar.setMnemonic('C');
+			mntmGuardar.setMnemonic('G');
+			mntmSalir.setMnemonic('S');
+			// Ver
+			chckbxmntmFechaDeVencimiento.setMnemonic('F');
+			chckbxmntmTareas.setMnemonic('T');
+			// Herramientas
 			mnHerramientas.setMnemonic('H');
+			mntmGenerarInstancias.setMnemonic('G');
+			// Configuración
+			mnIdioma.setMnemonic('I');
+			mntmEspanol.setMnemonic('E');
+			mntmIngles.setMnemonic('G');
+			// Ayuda
 			mnAyuda.setMnemonic('Y');
+			mntmManual.setMnemonic('M');
 		}
 	}
 
@@ -513,6 +532,10 @@ public class ApplicationWindow {
 	private JMenuItem getMntmManual() {
 		if (mntmManual == null) {
 			mntmManual = new JMenuItem(LanguageManager.getInstance().getTexts().getString("menu_user_manual"));
+			if (language == Language.ENGLISH)
+				mntmManual.setMnemonic('U');
+			else if (language.equals(Language.SPANISH))
+				mntmManual.setMnemonic('M');
 			mntmManual.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_H, ActionEvent.CTRL_MASK));
 			mntmManual.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
@@ -526,16 +549,17 @@ public class ApplicationWindow {
 	private JMenuItem getMntmInformacion() {
 		if (mntmInformacion == null) {
 			mntmInformacion = new JMenuItem(LanguageManager.getInstance().getTexts().getString("menu_information"));
+			mntmInformacion.setMnemonic('I');
 			mntmInformacion.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_I, ActionEvent.CTRL_MASK));
 			mntmInformacion.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					JOptionPane.showMessageDialog(frame, LanguageManager.getInstance().getTexts().getString("info_tfg")
+					JOptionPane.showOptionDialog(frame, LanguageManager.getInstance().getTexts().getString("info_tfg")
 							+ "\n\n" + LanguageManager.getInstance().getTexts().getString("info_author")
 							+ " Mirza Ojeda Veira\n" + LanguageManager.getInstance().getTexts().getString("info_tutors")
 							+ " Ramiro José Varela Arias & Francisco Javier Gil Gala\n\n"
 							+ LanguageManager.getInstance().getTexts().getString("info_university"),
 							LanguageManager.getInstance().getTexts().getString("info_title"),
-							JOptionPane.INFORMATION_MESSAGE);
+							JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, new Object[] {}, null);
 				}
 			});
 		}
@@ -545,6 +569,10 @@ public class ApplicationWindow {
 	private JMenuItem getMntmCargar() {
 		if (mntmCargar == null) {
 			mntmCargar = new JMenuItem(LanguageManager.getInstance().getTexts().getString("menu_load"));
+			if (language == Language.ENGLISH)
+				mntmCargar.setMnemonic('L');
+			else if (language.equals(Language.SPANISH))
+				mntmCargar.setMnemonic('C');
 			mntmCargar.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.CTRL_MASK));
 			mntmCargar.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
@@ -558,6 +586,10 @@ public class ApplicationWindow {
 	private JMenuItem getMntmGuardar() {
 		if (mntmGuardar == null) {
 			mntmGuardar = new JMenuItem(LanguageManager.getInstance().getTexts().getString("menu_save"));
+			if (language == Language.ENGLISH)
+				mntmGuardar.setMnemonic('S');
+			else if (language.equals(Language.SPANISH))
+				mntmGuardar.setMnemonic('G');
 			mntmGuardar.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK));
 			mntmGuardar.setEnabled(false);
 			mntmGuardar.addActionListener(new ActionListener() {
@@ -577,6 +609,10 @@ public class ApplicationWindow {
 	private JMenuItem getMntmSalir() {
 		if (mntmSalir == null) {
 			mntmSalir = new JMenuItem(LanguageManager.getInstance().getTexts().getString("menu_exit"));
+			if (language == Language.ENGLISH)
+				mntmSalir.setMnemonic('E');
+			else if (language.equals(Language.SPANISH))
+				mntmSalir.setMnemonic('S');
 			mntmSalir.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Q, ActionEvent.CTRL_MASK));
 			mntmSalir.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
@@ -592,6 +628,7 @@ public class ApplicationWindow {
 		if (chckbxmntmDuracin == null) {
 			chckbxmntmDuracin = new JCheckBoxMenuItem(
 					LanguageManager.getInstance().getTexts().getString("menu_duration"));
+			chckbxmntmDuracin.setMnemonic('D');
 			chckbxmntmDuracin.setEnabled(false);
 			chckbxmntmDuracin.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_P, ActionEvent.CTRL_MASK));
 			chckbxmntmDuracin.addActionListener(new ActionListener() {
@@ -620,6 +657,12 @@ public class ApplicationWindow {
 		pd.setVisible(true);
 		pd.setLocationRelativeTo(null);
 		pd.revalidate();
+		pd.addWindowListener(new WindowAdapter() {
+			public void windowClosing(WindowEvent e) {
+				displayedDurations = false;
+				chckbxmntmDuracin.setSelected(false);
+			}
+		});
 	}
 
 	/**
@@ -632,12 +675,22 @@ public class ApplicationWindow {
 		dd.setVisible(true);
 		dd.setLocationRelativeTo(null);
 		dd.revalidate();
+		dd.addWindowListener(new WindowAdapter() {
+			public void windowClosing(WindowEvent e) {
+				displayedDuedates = false;
+				chckbxmntmFechaDeVencimiento.setSelected(false);
+			}
+		});
 	}
 
 	private JCheckBoxMenuItem getChckbxmntmFechaDeVencimiento() {
 		if (chckbxmntmFechaDeVencimiento == null) {
 			chckbxmntmFechaDeVencimiento = new JCheckBoxMenuItem(
 					LanguageManager.getInstance().getTexts().getString("menu_due_date"));
+			if (language == Language.ENGLISH)
+				chckbxmntmFechaDeVencimiento.setMnemonic('T');
+			else if (language.equals(Language.SPANISH))
+				chckbxmntmFechaDeVencimiento.setMnemonic('F');
 			chckbxmntmFechaDeVencimiento.setEnabled(false);
 			chckbxmntmFechaDeVencimiento.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_D, ActionEvent.CTRL_MASK));
 			chckbxmntmFechaDeVencimiento.addActionListener(new ActionListener() {
@@ -658,6 +711,10 @@ public class ApplicationWindow {
 	private JCheckBoxMenuItem getChckbxmntmTareas() {
 		if (chckbxmntmTareas == null) {
 			chckbxmntmTareas = new JCheckBoxMenuItem(LanguageManager.getInstance().getTexts().getString("menu_tasks"));
+			if (language == Language.ENGLISH)
+				chckbxmntmTareas.setMnemonic('K');
+			else if (language.equals(Language.SPANISH))
+				chckbxmntmTareas.setMnemonic('T');
 			chckbxmntmTareas.setEnabled(false);
 			chckbxmntmTareas.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_T, ActionEvent.CTRL_MASK));
 			chckbxmntmTareas.addActionListener(new ActionListener() {
@@ -692,6 +749,12 @@ public class ApplicationWindow {
 		td.setVisible(true);
 		td.setLocationRelativeTo(null);
 		td.getTasksTable().revalidate();
+		td.addWindowListener(new WindowAdapter() {
+			public void windowClosing(WindowEvent e) {
+				displayedTasks = false;
+				chckbxmntmTareas.setSelected(false);
+			}
+		});
 	}
 
 	private JComboBox<String> getRulesComboBox() {
