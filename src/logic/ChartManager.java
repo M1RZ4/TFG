@@ -88,7 +88,7 @@ public class ChartManager {
 
 	/**
 	 * Método que retorna un gráfico con la distribución de duraciones de las tareas
-	 * de una instancia para mostarlo en {@link gui.DurationsDialog DurationsDialog}
+	 * de una instancia para mostarlo en {@link gui.dialogs.DurationsDialog DurationsDialog}
 	 * 
 	 * @param durations
 	 *            vector de duraciones de las tareas
@@ -130,7 +130,7 @@ public class ChartManager {
 
 	/**
 	 * Método que retorna un gráfico con la distribución de due dates de las tareas
-	 * de una instancia para mostarlo en {@link gui.DueDatesDialog DueDatesDialog}
+	 * de una instancia para mostarlo en {@link gui.dialogs.DueDatesDialog DueDatesDialog}
 	 * 
 	 * @param dueDates
 	 *            vector de due dates de las tareas

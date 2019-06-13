@@ -14,6 +14,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
@@ -50,13 +51,25 @@ import org.jfree.chart.plot.XYPlot;
 import dominio.Gestor;
 import dominio.Instancia;
 import dominio.Planificacion;
+import gui.dialogs.DueDatesDialog;
+import gui.dialogs.DurationsDialog;
+import gui.dialogs.ExperimentalStudyDialog;
+import gui.dialogs.InstanceGeneratorDialog;
+import gui.dialogs.TasksDialog;
 import gui.menu.BackgroundMenuBar;
 import logic.InstanceManager;
 import logic.LanguageManager;
 import logic.PartialInstance;
-import logic.enums.Language;
 import logic.enums.Rule;
 
+/**
+ * Clase ApplicationWindow que representa la ventana principal de la aplicación.
+ * Se comunica con {@link logic.InstanceManager InstanceManager} para dar
+ * respuesta a las principales funcionalidades de la aplicación
+ * 
+ * @author Mirza Ojeda Veira
+ *
+ */
 public class ApplicationWindow {
 
 	ChartPanel cp;
@@ -86,6 +99,7 @@ public class ApplicationWindow {
 	private JMenuItem mntmManual;
 	private JMenuItem mntmInformacion;
 	private JMenuItem mntmGenerarInstancias;
+	private JMenuItem mntmEstudioExperimental;
 	private JMenu mnIdioma;
 	private JMenuItem mntmEspanol;
 	private JMenuItem mntmIngles;
@@ -106,7 +120,6 @@ public class ApplicationWindow {
 	private JButton btnAnterior;
 
 	private InstanceManager manager = new InstanceManager();
-	private Language language;
 	private JLabel lblTardiness;
 	private JTextField textFieldTardiness;
 	private JPanel tardinessPanel;
@@ -149,8 +162,7 @@ public class ApplicationWindow {
 		borderLayout.setVgap(10);
 		borderLayout.setHgap(10);
 		LanguageManager.getInstance().setTexts(ResourceBundle.getBundle("rcs/texts", new Locale("en")));
-		language = Language.ENGLISH;
-		frame.setTitle(LanguageManager.getInstance().getTexts().getString("menu_title"));
+		frame.setTitle(manager.getText("menu_title"));
 		frame.setBounds(100, 100, 1300, 650);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setLocationRelativeTo(null);
@@ -199,7 +211,7 @@ public class ApplicationWindow {
 
 	private JButton getBtnCargar() {
 		if (btnCargar == null) {
-			btnCargar = new JButton(LanguageManager.getInstance().getTexts().getString("button_load"));
+			btnCargar = new JButton(manager.getText("button_load"));
 			btnCargar.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					load();
@@ -224,7 +236,18 @@ public class ApplicationWindow {
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
 			File file = jfc.getSelectedFile();
 
-			manager.readInstance(file.getAbsolutePath());
+			try {
+				manager.readInstance(file.getAbsolutePath());
+			} catch (IllegalArgumentException e) {
+				JOptionPane.showMessageDialog(frame, e.getMessage(), manager.getText("error_title"),
+						JOptionPane.INFORMATION_MESSAGE);
+				return;
+			} catch (FileNotFoundException e) {
+				JOptionPane.showMessageDialog(frame, manager.getText("error_not_found"), manager.getText("error_title"),
+						JOptionPane.INFORMATION_MESSAGE);
+				return;
+			}
+
 			manager.loadMainChart((int) getAxisSpinner().getValue());
 
 			cp = new ChartPanel(manager.getChart());
@@ -249,7 +272,7 @@ public class ApplicationWindow {
 
 	private JButton getBtnGuardar() {
 		if (btnGuardar == null) {
-			btnGuardar = new JButton(LanguageManager.getInstance().getTexts().getString("button_save"));
+			btnGuardar = new JButton(manager.getText("button_save"));
 			btnGuardar.setEnabled(false);
 			btnGuardar.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
@@ -280,11 +303,8 @@ public class ApplicationWindow {
 
 	private JMenu getMnArchivo() {
 		if (mnArchivo == null) {
-			mnArchivo = new JMenu(LanguageManager.getInstance().getTexts().getString("menu_file"));
-			if (language.equals(Language.ENGLISH))
-				mnArchivo.setMnemonic('F');
-			else if (language.equals(Language.SPANISH))
-				mnArchivo.setMnemonic('A');
+			mnArchivo = new JMenu(manager.getText("menu_file"));
+			mnArchivo.setMnemonic(manager.getMnemonic("mnemonic_file"));
 			mnArchivo.setBackground(Color.DARK_GRAY);
 			mnArchivo.setForeground(Color.WHITE);
 			mnArchivo.add(getMntmCargar());
@@ -297,8 +317,8 @@ public class ApplicationWindow {
 
 	private JMenu getMnVer() {
 		if (mnVer == null) {
-			mnVer = new JMenu(LanguageManager.getInstance().getTexts().getString("menu_view"));
-			mnVer.setMnemonic('V');
+			mnVer = new JMenu(manager.getText("menu_view"));
+			mnVer.setMnemonic(manager.getMnemonic("mnemonic_view"));
 			mnVer.setBackground(Color.DARK_GRAY);
 			mnVer.setForeground(Color.WHITE);
 			mnVer.add(getChckbxmntmDuracin());
@@ -310,26 +330,20 @@ public class ApplicationWindow {
 
 	private JMenu getMnHerramientas() {
 		if (mnHerramientas == null) {
-			mnHerramientas = new JMenu(LanguageManager.getInstance().getTexts().getString("menu_tools"));
-			if (language == Language.ENGLISH)
-				mnHerramientas.setMnemonic('T');
-			else if (language.equals(Language.SPANISH))
-				mnHerramientas.setMnemonic('H');
+			mnHerramientas = new JMenu(manager.getText("menu_tools"));
+			mnHerramientas.setMnemonic(manager.getMnemonic("mnemonic_tools"));
 			mnHerramientas.setBackground(Color.DARK_GRAY);
 			mnHerramientas.setForeground(Color.WHITE);
 			mnHerramientas.add(getMntmGenerarInstancias());
+			mnHerramientas.add(getMntmEstudioExperimental());
 		}
 		return mnHerramientas;
 	}
 
 	private JMenuItem getMntmGenerarInstancias() {
 		if (mntmGenerarInstancias == null) {
-			mntmGenerarInstancias = new JMenuItem(
-					LanguageManager.getInstance().getTexts().getString("menu_instance_generator"));
-			if (language == Language.ENGLISH)
-				mntmGenerarInstancias.setMnemonic('I');
-			else if (language.equals(Language.SPANISH))
-				mntmGenerarInstancias.setMnemonic('G');
+			mntmGenerarInstancias = new JMenuItem(manager.getText("menu_instance_generator"));
+			mntmGenerarInstancias.setMnemonic(manager.getMnemonic("mnemonic_instance_generator"));
 			mntmGenerarInstancias.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_G, ActionEvent.CTRL_MASK));
 			mntmGenerarInstancias.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
@@ -342,10 +356,26 @@ public class ApplicationWindow {
 		return mntmGenerarInstancias;
 	}
 
+	private JMenuItem getMntmEstudioExperimental() {
+		if (mntmEstudioExperimental == null) {
+			mntmEstudioExperimental = new JMenuItem(manager.getText("menu_experimental_study"));
+			mntmEstudioExperimental.setMnemonic(manager.getMnemonic("mnemonic_experimental_study"));
+			mntmEstudioExperimental.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_E, ActionEvent.CTRL_MASK));
+			mntmEstudioExperimental.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					ExperimentalStudyDialog ed = new ExperimentalStudyDialog();
+					ed.setLocationRelativeTo(null);
+					ed.setVisible(true);
+				}
+			});
+		}
+		return mntmEstudioExperimental;
+	}
+
 	private JMenu getMnConfiguracin() {
 		if (mnConfiguracin == null) {
-			mnConfiguracin = new JMenu(LanguageManager.getInstance().getTexts().getString("menu_configuration"));
-			mnConfiguracin.setMnemonic('C');
+			mnConfiguracin = new JMenu(manager.getText("menu_configuration"));
+			mnConfiguracin.setMnemonic(manager.getMnemonic("mnemonic_configuration"));
 			mnConfiguracin.setBackground(Color.DARK_GRAY);
 			mnConfiguracin.setForeground(Color.WHITE);
 			mnConfiguracin.add(getMnIdioma());
@@ -355,11 +385,8 @@ public class ApplicationWindow {
 
 	private JMenu getMnIdioma() {
 		if (mnIdioma == null) {
-			mnIdioma = new JMenu(LanguageManager.getInstance().getTexts().getString("menu_language"));
-			if (language == Language.ENGLISH)
-				mnIdioma.setMnemonic('L');
-			else if (language.equals(Language.SPANISH))
-				mnIdioma.setMnemonic('I');
+			mnIdioma = new JMenu(manager.getText("menu_language"));
+			mnIdioma.setMnemonic(manager.getMnemonic("mnemonic_language"));
 			mnIdioma.add(getMntmEspanol());
 			mnIdioma.add(getMntmIngles());
 		}
@@ -368,16 +395,12 @@ public class ApplicationWindow {
 
 	private JMenuItem getMntmEspanol() {
 		if (mntmEspanol == null) {
-			mntmEspanol = new JMenuItem(LanguageManager.getInstance().getTexts().getString("menu_spanish"));
-			if (language == Language.ENGLISH)
-				mntmEspanol.setMnemonic('S');
-			else if (language.equals(Language.SPANISH))
-				mntmEspanol.setMnemonic('E');
+			mntmEspanol = new JMenuItem(manager.getText("menu_spanish"));
+			mntmEspanol.setMnemonic(manager.getMnemonic("mnemonic_spanish"));
 			mntmEspanol.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					LanguageManager.getInstance()
 							.setTexts(ResourceBundle.getBundle("rcs/texts", Locale.forLanguageTag("es")));
-					language = Language.SPANISH;
 					changeLocaleTexts();
 					updateMnemonics();
 				}
@@ -388,16 +411,12 @@ public class ApplicationWindow {
 
 	private JMenuItem getMntmIngles() {
 		if (mntmIngles == null) {
-			mntmIngles = new JMenuItem(LanguageManager.getInstance().getTexts().getString("menu_english"));
-			if (language == Language.ENGLISH)
-				mntmIngles.setMnemonic('E');
-			else if (language.equals(Language.SPANISH))
-				mntmIngles.setMnemonic('G');
+			mntmIngles = new JMenuItem(manager.getText("menu_english"));
+			mntmIngles.setMnemonic(manager.getMnemonic("mnemonic_english"));
 			mntmIngles.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					LanguageManager.getInstance()
 							.setTexts(ResourceBundle.getBundle("rcs/texts", Locale.forLanguageTag("en")));
-					language = Language.ENGLISH;
 					changeLocaleTexts();
 					updateMnemonics();
 				}
@@ -429,36 +448,35 @@ public class ApplicationWindow {
 			createDueDatesChart();
 		}
 		// Menu
-		frame.setTitle(LanguageManager.getInstance().getTexts().getString("menu_title"));
-		mnArchivo.setText(LanguageManager.getInstance().getTexts().getString("menu_file"));
-		mnVer.setText(LanguageManager.getInstance().getTexts().getString("menu_view"));
-		mnHerramientas.setText(LanguageManager.getInstance().getTexts().getString("menu_tools"));
-		mntmGenerarInstancias.setText(LanguageManager.getInstance().getTexts().getString("menu_instance_generator"));
-		mnConfiguracin.setText(LanguageManager.getInstance().getTexts().getString("menu_configuration"));
-		mnIdioma.setText(LanguageManager.getInstance().getTexts().getString("menu_language"));
-		mntmEspanol.setText(LanguageManager.getInstance().getTexts().getString("menu_spanish"));
-		mntmIngles.setText(LanguageManager.getInstance().getTexts().getString("menu_english"));
-		mnAyuda.setText(LanguageManager.getInstance().getTexts().getString("menu_help"));
-		mntmManual.setText(LanguageManager.getInstance().getTexts().getString("menu_user_manual"));
-		mntmInformacion.setText(LanguageManager.getInstance().getTexts().getString("menu_information"));
-		mntmCargar.setText(LanguageManager.getInstance().getTexts().getString("menu_load"));
-		mntmGuardar.setText(LanguageManager.getInstance().getTexts().getString("menu_save"));
-		mntmSalir.setText(LanguageManager.getInstance().getTexts().getString("menu_exit"));
-		chckbxmntmDuracin.setText(LanguageManager.getInstance().getTexts().getString("menu_duration"));
-		chckbxmntmFechaDeVencimiento.setText(LanguageManager.getInstance().getTexts().getString("menu_due_date"));
-		chckbxmntmTareas.setText(LanguageManager.getInstance().getTexts().getString("menu_tasks"));
+		frame.setTitle(manager.getText("menu_title"));
+		mnArchivo.setText(manager.getText("menu_file"));
+		mnVer.setText(manager.getText("menu_view"));
+		mnHerramientas.setText(manager.getText("menu_tools"));
+		mntmGenerarInstancias.setText(manager.getText("menu_instance_generator"));
+		mnConfiguracin.setText(manager.getText("menu_configuration"));
+		mnIdioma.setText(manager.getText("menu_language"));
+		mntmEspanol.setText(manager.getText("menu_spanish"));
+		mntmIngles.setText(manager.getText("menu_english"));
+		mnAyuda.setText(manager.getText("menu_help"));
+		mntmManual.setText(manager.getText("menu_user_manual"));
+		mntmInformacion.setText(manager.getText("menu_information"));
+		mntmCargar.setText(manager.getText("menu_load"));
+		mntmGuardar.setText(manager.getText("menu_save"));
+		mntmSalir.setText(manager.getText("menu_exit"));
+		chckbxmntmDuracin.setText(manager.getText("menu_duration"));
+		chckbxmntmFechaDeVencimiento.setText(manager.getText("menu_due_date"));
+		chckbxmntmTareas.setText(manager.getText("menu_tasks"));
 		// Botones
-		btnCargar.setText(LanguageManager.getInstance().getTexts().getString("button_load"));
-		btnGuardar.setText(LanguageManager.getInstance().getTexts().getString("button_save"));
-		btnSiguiente.setText(LanguageManager.getInstance().getTexts().getString("button_next"));
-		btnFinal.setText(LanguageManager.getInstance().getTexts().getString("button_final"));
-		btnAnterior.setText(LanguageManager.getInstance().getTexts().getString("button_previous"));
+		btnCargar.setText(manager.getText("button_load"));
+		btnGuardar.setText(manager.getText("button_save"));
+		btnSiguiente.setText(manager.getText("button_next"));
+		btnFinal.setText(manager.getText("button_final"));
+		btnAnterior.setText(manager.getText("button_previous"));
 		// Labels
-		lblRegla.setText(LanguageManager.getInstance().getTexts().getString("label_rule"));
-		lblG.setText(LanguageManager.getInstance().getTexts().getString("label_g_parameter"));
-		lblSeparacinEntreMarcas
-				.setText(LanguageManager.getInstance().getTexts().getString("label_separation_between_marks"));
-		lblTardiness.setText(LanguageManager.getInstance().getTexts().getString("label_tardiness"));
+		lblRegla.setText(manager.getText("label_rule"));
+		lblG.setText(manager.getText("label_g_parameter"));
+		lblSeparacinEntreMarcas.setText(manager.getText("label_separation_between_marks"));
+		lblTardiness.setText(manager.getText("label_tardiness"));
 		// Gráfico
 		if (manager.getChart() != null) {
 			if (step > 0)
@@ -478,54 +496,30 @@ public class ApplicationWindow {
 	 * producirse un cambio en el idioma
 	 */
 	private void updateMnemonics() {
-		if (language.equals(Language.ENGLISH)) {
-			// Archivo
-			mnArchivo.setMnemonic('F');
-			mntmCargar.setMnemonic('L');
-			mntmGuardar.setMnemonic('S');
-			mntmSalir.setMnemonic('E');
-			// Ver
-			chckbxmntmFechaDeVencimiento.setMnemonic('T');
-			chckbxmntmTareas.setMnemonic('K');
-			// Herramientas
-			mnHerramientas.setMnemonic('T');
-			mntmGenerarInstancias.setMnemonic('I');
-			// Configuración
-			mnIdioma.setMnemonic('L');
-			mntmEspanol.setMnemonic('S');
-			mntmIngles.setMnemonic('E');
-			// Ayuda
-			mnAyuda.setMnemonic('H');
-			mntmManual.setMnemonic('U');
-		} else if (language.equals(Language.SPANISH)) {
-			// Archivo
-			mnArchivo.setMnemonic('A');
-			mntmCargar.setMnemonic('C');
-			mntmGuardar.setMnemonic('G');
-			mntmSalir.setMnemonic('S');
-			// Ver
-			chckbxmntmFechaDeVencimiento.setMnemonic('F');
-			chckbxmntmTareas.setMnemonic('T');
-			// Herramientas
-			mnHerramientas.setMnemonic('H');
-			mntmGenerarInstancias.setMnemonic('G');
-			// Configuración
-			mnIdioma.setMnemonic('I');
-			mntmEspanol.setMnemonic('E');
-			mntmIngles.setMnemonic('G');
-			// Ayuda
-			mnAyuda.setMnemonic('Y');
-			mntmManual.setMnemonic('M');
-		}
+		// Archivo
+		mnArchivo.setMnemonic(manager.getMnemonic("mnemonic_file"));
+		mntmCargar.setMnemonic(manager.getMnemonic("mnemonic_load"));
+		mntmGuardar.setMnemonic(manager.getMnemonic("mnemonic_save"));
+		mntmSalir.setMnemonic(manager.getMnemonic("mnemonic_exit"));
+		// Ver
+		chckbxmntmFechaDeVencimiento.setMnemonic(manager.getMnemonic("mnemonic_due_date"));
+		chckbxmntmTareas.setMnemonic(manager.getMnemonic("mnemonic_tasks"));
+		// Herramientas
+		mnHerramientas.setMnemonic(manager.getMnemonic("mnemonic_tools"));
+		mntmGenerarInstancias.setMnemonic(manager.getMnemonic("mnemonic_instance_generator"));
+		// Configuración
+		mnIdioma.setMnemonic(manager.getMnemonic("mnemonic_language"));
+		mntmEspanol.setMnemonic(manager.getMnemonic("mnemonic_spanish"));
+		mntmIngles.setMnemonic(manager.getMnemonic("mnemonic_english"));
+		// Ayuda
+		mnAyuda.setMnemonic(manager.getMnemonic("mnemonic_help"));
+		mntmManual.setMnemonic(manager.getMnemonic("mnemonic_user_manual"));
 	}
 
 	private JMenu getMnAyuda() {
 		if (mnAyuda == null) {
-			mnAyuda = new JMenu(LanguageManager.getInstance().getTexts().getString("menu_help"));
-			if (language == Language.ENGLISH)
-				mnAyuda.setMnemonic('H');
-			else if (language.equals(Language.SPANISH))
-				mnAyuda.setMnemonic('Y');
+			mnAyuda = new JMenu(manager.getText("menu_help"));
+			mnAyuda.setMnemonic(manager.getMnemonic("mnemonic_help"));
 			mnAyuda.setBackground(Color.DARK_GRAY);
 			mnAyuda.setForeground(Color.WHITE);
 			mnAyuda.add(getMntmManual());
@@ -536,11 +530,8 @@ public class ApplicationWindow {
 
 	private JMenuItem getMntmManual() {
 		if (mntmManual == null) {
-			mntmManual = new JMenuItem(LanguageManager.getInstance().getTexts().getString("menu_user_manual"));
-			if (language == Language.ENGLISH)
-				mntmManual.setMnemonic('U');
-			else if (language.equals(Language.SPANISH))
-				mntmManual.setMnemonic('M');
+			mntmManual = new JMenuItem(manager.getText("menu_user_manual"));
+			mntmManual.setMnemonic(manager.getMnemonic("mnemonic_user_manual"));
 			mntmManual.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_H, ActionEvent.CTRL_MASK));
 			mntmManual.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
@@ -553,18 +544,18 @@ public class ApplicationWindow {
 
 	private JMenuItem getMntmInformacion() {
 		if (mntmInformacion == null) {
-			mntmInformacion = new JMenuItem(LanguageManager.getInstance().getTexts().getString("menu_information"));
+			mntmInformacion = new JMenuItem(manager.getText("menu_information"));
 			mntmInformacion.setMnemonic('I');
 			mntmInformacion.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_I, ActionEvent.CTRL_MASK));
 			mntmInformacion.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					JOptionPane.showOptionDialog(frame, LanguageManager.getInstance().getTexts().getString("info_tfg")
-							+ "\n\n" + LanguageManager.getInstance().getTexts().getString("info_author")
-							+ " Mirza Ojeda Veira\n" + LanguageManager.getInstance().getTexts().getString("info_tutors")
-							+ " Ramiro José Varela Arias & Francisco Javier Gil Gala\n\n"
-							+ LanguageManager.getInstance().getTexts().getString("info_university"),
-							LanguageManager.getInstance().getTexts().getString("info_title"),
-							JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, new Object[] {}, null);
+					JOptionPane.showOptionDialog(frame,
+							manager.getText("info_tfg") + "\n\n" + manager.getText("info_author")
+									+ " Mirza Ojeda Veira\n" + manager.getText("info_tutors")
+									+ " Ramiro José Varela Arias & Francisco Javier Gil Gala\n\n"
+									+ manager.getText("info_university"),
+							manager.getText("info_title"), JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE,
+							null, new Object[] {}, null);
 				}
 			});
 		}
@@ -573,11 +564,8 @@ public class ApplicationWindow {
 
 	private JMenuItem getMntmCargar() {
 		if (mntmCargar == null) {
-			mntmCargar = new JMenuItem(LanguageManager.getInstance().getTexts().getString("menu_load"));
-			if (language == Language.ENGLISH)
-				mntmCargar.setMnemonic('L');
-			else if (language.equals(Language.SPANISH))
-				mntmCargar.setMnemonic('C');
+			mntmCargar = new JMenuItem(manager.getText("menu_load"));
+			mntmCargar.setMnemonic(manager.getMnemonic("mnemonic_load"));
 			mntmCargar.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.CTRL_MASK));
 			mntmCargar.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
@@ -590,11 +578,8 @@ public class ApplicationWindow {
 
 	private JMenuItem getMntmGuardar() {
 		if (mntmGuardar == null) {
-			mntmGuardar = new JMenuItem(LanguageManager.getInstance().getTexts().getString("menu_save"));
-			if (language == Language.ENGLISH)
-				mntmGuardar.setMnemonic('S');
-			else if (language.equals(Language.SPANISH))
-				mntmGuardar.setMnemonic('G');
+			mntmGuardar = new JMenuItem(manager.getText("menu_save"));
+			mntmGuardar.setMnemonic(manager.getMnemonic("mnemonic_save"));
 			mntmGuardar.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK));
 			mntmGuardar.setEnabled(false);
 			mntmGuardar.addActionListener(new ActionListener() {
@@ -613,11 +598,8 @@ public class ApplicationWindow {
 
 	private JMenuItem getMntmSalir() {
 		if (mntmSalir == null) {
-			mntmSalir = new JMenuItem(LanguageManager.getInstance().getTexts().getString("menu_exit"));
-			if (language == Language.ENGLISH)
-				mntmSalir.setMnemonic('E');
-			else if (language.equals(Language.SPANISH))
-				mntmSalir.setMnemonic('S');
+			mntmSalir = new JMenuItem(manager.getText("menu_exit"));
+			mntmSalir.setMnemonic(manager.getMnemonic("mnemonic_exit"));
 			mntmSalir.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Q, ActionEvent.CTRL_MASK));
 			mntmSalir.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
@@ -631,9 +613,8 @@ public class ApplicationWindow {
 
 	private JCheckBoxMenuItem getChckbxmntmDuracin() {
 		if (chckbxmntmDuracin == null) {
-			chckbxmntmDuracin = new JCheckBoxMenuItem(
-					LanguageManager.getInstance().getTexts().getString("menu_duration"));
-			chckbxmntmDuracin.setMnemonic('D');
+			chckbxmntmDuracin = new JCheckBoxMenuItem(manager.getText("menu_duration"));
+			chckbxmntmDuracin.setMnemonic(manager.getMnemonic("mnemonic_duration"));
 			chckbxmntmDuracin.setEnabled(false);
 			chckbxmntmDuracin.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_P, ActionEvent.CTRL_MASK));
 			chckbxmntmDuracin.addActionListener(new ActionListener() {
@@ -692,12 +673,8 @@ public class ApplicationWindow {
 
 	private JCheckBoxMenuItem getChckbxmntmFechaDeVencimiento() {
 		if (chckbxmntmFechaDeVencimiento == null) {
-			chckbxmntmFechaDeVencimiento = new JCheckBoxMenuItem(
-					LanguageManager.getInstance().getTexts().getString("menu_due_date"));
-			if (language == Language.ENGLISH)
-				chckbxmntmFechaDeVencimiento.setMnemonic('T');
-			else if (language.equals(Language.SPANISH))
-				chckbxmntmFechaDeVencimiento.setMnemonic('F');
+			chckbxmntmFechaDeVencimiento = new JCheckBoxMenuItem(manager.getText("menu_due_date"));
+			chckbxmntmFechaDeVencimiento.setMnemonic(manager.getMnemonic("mnemonic_due_date"));
 			chckbxmntmFechaDeVencimiento.setEnabled(false);
 			chckbxmntmFechaDeVencimiento.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_D, ActionEvent.CTRL_MASK));
 			chckbxmntmFechaDeVencimiento.addActionListener(new ActionListener() {
@@ -717,11 +694,8 @@ public class ApplicationWindow {
 
 	private JCheckBoxMenuItem getChckbxmntmTareas() {
 		if (chckbxmntmTareas == null) {
-			chckbxmntmTareas = new JCheckBoxMenuItem(LanguageManager.getInstance().getTexts().getString("menu_tasks"));
-			if (language == Language.ENGLISH)
-				chckbxmntmTareas.setMnemonic('K');
-			else if (language.equals(Language.SPANISH))
-				chckbxmntmTareas.setMnemonic('T');
+			chckbxmntmTareas = new JCheckBoxMenuItem(manager.getText("menu_tasks"));
+			chckbxmntmTareas.setMnemonic(manager.getMnemonic("mnemonic_tasks"));
 			chckbxmntmTareas.setEnabled(false);
 			chckbxmntmTareas.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_T, ActionEvent.CTRL_MASK));
 			chckbxmntmTareas.addActionListener(new ActionListener() {
@@ -824,7 +798,7 @@ public class ApplicationWindow {
 
 	private JLabel getLblRegla() {
 		if (lblRegla == null) {
-			lblRegla = new JLabel(LanguageManager.getInstance().getTexts().getString("label_rule"));
+			lblRegla = new JLabel(manager.getText("label_rule"));
 			lblRegla.setHorizontalAlignment(SwingConstants.CENTER);
 			lblRegla.setForeground(Color.WHITE);
 		}
@@ -833,7 +807,7 @@ public class ApplicationWindow {
 
 	private JLabel getLblG() {
 		if (lblG == null) {
-			lblG = new JLabel(LanguageManager.getInstance().getTexts().getString("label_g_parameter"));
+			lblG = new JLabel(manager.getText("label_g_parameter"));
 			lblG.setHorizontalAlignment(SwingConstants.CENTER);
 			lblG.setForeground(Color.WHITE);
 		}
@@ -842,8 +816,7 @@ public class ApplicationWindow {
 
 	private JLabel getLblSeparacinEntreMarcas() {
 		if (lblSeparacinEntreMarcas == null) {
-			lblSeparacinEntreMarcas = new JLabel(
-					LanguageManager.getInstance().getTexts().getString("label_separation_between_marks"));
+			lblSeparacinEntreMarcas = new JLabel(manager.getText("label_separation_between_marks"));
 			lblSeparacinEntreMarcas.setHorizontalAlignment(SwingConstants.CENTER);
 			lblSeparacinEntreMarcas.setForeground(Color.WHITE);
 		}
@@ -919,7 +892,7 @@ public class ApplicationWindow {
 
 	private JButton getBtnSiguiente() {
 		if (btnSiguiente == null) {
-			btnSiguiente = new JButton(LanguageManager.getInstance().getTexts().getString("button_next"));
+			btnSiguiente = new JButton(manager.getText("button_next"));
 			btnSiguiente.setEnabled(false);
 			btnSiguiente.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
@@ -938,6 +911,7 @@ public class ApplicationWindow {
 					setMainChart();
 					if (!btnAnterior.isEnabled())
 						btnAnterior.setEnabled(true);
+					calculateTardiness();
 				}
 			});
 		}
@@ -946,7 +920,7 @@ public class ApplicationWindow {
 
 	private JButton getBtnAnterior() {
 		if (btnAnterior == null) {
-			btnAnterior = new JButton(LanguageManager.getInstance().getTexts().getString("button_previous"));
+			btnAnterior = new JButton(manager.getText("button_previous"));
 			btnAnterior.setEnabled(false);
 			btnAnterior.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
@@ -970,6 +944,7 @@ public class ApplicationWindow {
 					}
 					if (!btnSiguiente.isEnabled())
 						btnSiguiente.setEnabled(true);
+					calculateTardiness();
 				}
 			});
 		}
@@ -978,7 +953,7 @@ public class ApplicationWindow {
 
 	private JButton getBtnFinal() {
 		if (btnFinal == null) {
-			btnFinal = new JButton(LanguageManager.getInstance().getTexts().getString("button_final"));
+			btnFinal = new JButton(manager.getText("button_final"));
 			btnFinal.setEnabled(false);
 			btnFinal.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
@@ -1015,7 +990,7 @@ public class ApplicationWindow {
 
 	private JLabel getLblTardiness() {
 		if (lblTardiness == null) {
-			lblTardiness = new JLabel(LanguageManager.getInstance().getTexts().getString("label_tardiness"));
+			lblTardiness = new JLabel(manager.getText("label_tardiness"));
 			lblTardiness.setForeground(Color.WHITE);
 			lblTardiness.setHorizontalAlignment(JLabel.CENTER);
 		}
@@ -1044,7 +1019,11 @@ public class ApplicationWindow {
 	private void calculateTardiness() {
 		double tardiness = 0;
 		Planificacion p = null;
-		Instancia i = manager.getInstance();
+		Instancia i = null;
+		if (step < manager.getD().length)
+			i = new PartialInstance(step, manager.getInstance());
+		else
+			i = manager.getInstance();
 		double g = (double) rulesSpinner.getValue();
 		switch (Rule.valueOf((String) getRulesComboBox().getSelectedItem())) {
 		case ATC:
@@ -1059,11 +1038,13 @@ public class ApplicationWindow {
 		default:
 			break;
 		}
-		int[] startTimes = p.getSti(); // TODO planificación paso a paso?
-		double[] dueDates = i.getD();
-		double[] durations = i.getP();
-		for (int j = 0; j < startTimes.length; j++)
+		int[] startTimes = p.getSti();
+		double[] dueDates = manager.getD();
+		double[] durations = manager.getP();
+
+		for (int j = 0; j < startTimes.length; j++) {
 			tardiness += Math.max(0, startTimes[j] + durations[j] - dueDates[j]);
+		}
 		textFieldTardiness.setText(String.valueOf(tardiness));
 	}
 

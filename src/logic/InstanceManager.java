@@ -1,5 +1,6 @@
 package logic;
 
+import java.io.FileNotFoundException;
 import java.util.List;
 
 import org.jfree.chart.JFreeChart;
@@ -12,8 +13,8 @@ import logic.io.InstanceWriter;
 import logic.io.Writer;
 
 /**
- * Clase principal InstanceManager que gestiona las distintas funcionalidades
- * del proyecto a través de sus distintos componentes
+ * Clase principal InstanceManager que gestiona las diversas funcionalidades del
+ * proyecto a través de sus distintos componentes
  * 
  * @author Mirza Ojeda Veira
  *
@@ -40,7 +41,7 @@ public class InstanceManager {
 	}
 
 	// Reader
-	public void readInstance(String fileName) {
+	public void readInstance(String fileName) throws FileNotFoundException {
 		instance = reader.readInstance(fileName);
 	}
 
@@ -104,5 +105,14 @@ public class InstanceManager {
 	public void writeChart(String fileName) {
 		writer = new ChartWriter(getChart());
 		writer.write(fileName);
+	}
+
+	// LanguageManager
+	public String getText(String key) {
+		return LanguageManager.getInstance().getTexts().getString(key);
+	}
+	
+	public char getMnemonic(String key) {
+		return LanguageManager.getInstance().getTexts().getString(key).charAt(0);
 	}
 }
