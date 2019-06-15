@@ -1,4 +1,4 @@
-package gui.dialogs;
+package main.java.gui.dialogs;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -22,8 +22,15 @@ import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingConstants;
 
-import logic.LanguageManager;
+import main.java.logic.LanguageManager;
 
+/**
+ * Clase InstanceGeneratorDialog que representa una diálogo para interactuar con
+ * la herramienta de generación de instancias
+ * 
+ * @author Mirza Ojeda Veira
+ *
+ */
 public class InstanceGeneratorDialog extends JDialog {
 
 	private static final long serialVersionUID = 1L;
@@ -103,7 +110,7 @@ public class InstanceGeneratorDialog extends JDialog {
 	private void createCapacity() {
 		intervalDurations = new ArrayList<Double>();
 		intervalCapacities = new ArrayList<Integer>();
-		
+
 		int maxCapacity = (int) getCapacitySpinner().getValue();
 		int initialCapacity = new Random().nextInt(2) + 1;
 		intervalCapacities.add(initialCapacity);
@@ -159,7 +166,7 @@ public class InstanceGeneratorDialog extends JDialog {
 				if (i < durations.length - 1)
 					fw.write("\n");
 			}
-			
+
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

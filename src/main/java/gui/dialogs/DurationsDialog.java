@@ -1,11 +1,11 @@
-package gui.dialogs;
+package main.java.gui.dialogs;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
 
 import javax.swing.JDialog;
 
-import logic.LanguageManager;
+import main.java.logic.LanguageManager;
 
 /**
  * Clase DurationsDialog que representa una diálogo para mostrar la distribución

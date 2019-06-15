@@ -1,4 +1,4 @@
-package gui.menu;
+package main.java.gui.menu;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -8,7 +8,7 @@ import javax.swing.JMenuBar;
 
 /**
  * Clase BackGround MenuBar empleada en la interfaz visual de
- * {@link gui.ApplicationWindow ApplicationWindow} con fines estéticos
+ * {@link main.java.gui.ApplicationWindow ApplicationWindow} con fines estéticos
  * 
  * @author Mirza Ojeda Veira
  *

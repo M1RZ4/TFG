@@ -1,4 +1,4 @@
-package logic.io;
+package main.java.logic.io;
 
 import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
@@ -15,7 +15,7 @@ import com.itextpdf.text.pdf.PdfWriter;
 
 /**
  * Clase ChartWriter encargada de generar los ficheros PDF con los gráficos
- * generados con {@link logic.ChartManager ChartManager}. Implementa la interfaz
+ * generados con {@link main.java.logic.ChartManager ChartManager}. Implementa la interfaz
  * {@link Writer}
  * 
  * @author Mirza Ojeda Veira

@@ -1,4 +1,4 @@
-package logic;
+package main.java.logic;
 
 import java.util.Arrays;
 import java.util.stream.IntStream;
@@ -6,7 +6,7 @@ import java.util.stream.IntStream;
 import dominio.Gestor;
 import dominio.Instancia;
 import dominio.Planificacion;
-import logic.enums.Rule;
+import main.java.logic.enums.Rule;
 
 /**
  * Clase SheduledInstancia que representa una instancia planificada

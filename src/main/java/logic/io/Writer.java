@@ -1,4 +1,4 @@
-package logic.io;
+package main.java.logic.io;
 
 /**
  * Interfaz Writer encargada de la escritura de ficheros de diversos formatos

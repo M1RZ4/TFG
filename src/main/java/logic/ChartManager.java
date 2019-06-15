@@ -1,4 +1,4 @@
-package logic;
+package main.java.logic;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
@@ -28,12 +28,12 @@ import org.jfree.ui.Layer;
 
 import dominio.Instancia;
 import dominio.Intervalo;
-import logic.enums.Rule;
+import main.java.logic.enums.Rule;
 
 /**
  * Clase ChartManager encargada de generar los gráficos que se mostrarán en la
- * aplicación y que podrán ser exportados por {@link logic.io.ChartWriter
- * ChartWriter}
+ * aplicación y que podrán ser exportados por
+ * {@link main.java.logic.io.ChartWriter ChartWriter}
  * 
  * @author Mirza Ojeda Veira
  *
@@ -172,7 +172,7 @@ public class ChartManager {
 	 * @return eje Y modificado
 	 */
 	private NumberAxis setRange(NumberAxis range, double maxRange, int tickUnit) {
-		range.setRange(0.0, maxRange + 1); // TODO en setDomain se tuvo que cambiar
+		range.setRange(0.0, maxRange + 1);
 		range.setTickUnit(new NumberTickUnit(tickUnit));
 		range.setTickMarkPaint(Color.BLACK);
 		range.setAxisLinePaint(Color.BLACK);

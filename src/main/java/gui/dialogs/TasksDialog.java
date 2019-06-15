@@ -1,4 +1,4 @@
-package gui.dialogs;
+package main.java.gui.dialogs;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -11,8 +11,15 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 
-import logic.LanguageManager;
+import main.java.logic.LanguageManager;
 
+/**
+ * Clase TasksDialog que representa una diálogo para mostrar la información de
+ * las tareas
+ * 
+ * @author Mirza Ojeda Veira
+ *
+ */
 public class TasksDialog extends JDialog {
 
 	private static final long serialVersionUID = 1L;

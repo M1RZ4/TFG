@@ -1,4 +1,4 @@
-package logic;
+package main.java.logic;
 
 import java.io.FileNotFoundException;
 import java.util.List;
@@ -6,11 +6,11 @@ import java.util.List;
 import org.jfree.chart.JFreeChart;
 
 import dominio.Instancia;
-import logic.enums.Rule;
-import logic.io.ChartWriter;
-import logic.io.InstanceReader;
-import logic.io.InstanceWriter;
-import logic.io.Writer;
+import main.java.logic.enums.Rule;
+import main.java.logic.io.ChartWriter;
+import main.java.logic.io.InstanceReader;
+import main.java.logic.io.InstanceWriter;
+import main.java.logic.io.Writer;
 
 /**
  * Clase principal InstanceManager que gestiona las diversas funcionalidades del

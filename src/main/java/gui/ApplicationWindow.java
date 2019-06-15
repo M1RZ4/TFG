@@ -1,4 +1,4 @@
-package gui;
+package main.java.gui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -52,20 +52,20 @@ import org.jfree.chart.plot.XYPlot;
 import dominio.Gestor;
 import dominio.Instancia;
 import dominio.Planificacion;
-import gui.dialogs.DueDatesDialog;
-import gui.dialogs.DurationsDialog;
-import gui.dialogs.ExperimentalAnalysisDialog;
-import gui.dialogs.InstanceGeneratorDialog;
-import gui.dialogs.TasksDialog;
-import gui.menu.BackgroundMenuBar;
-import logic.InstanceManager;
-import logic.LanguageManager;
-import logic.ScheduledInstance;
-import logic.enums.Rule;
+import main.java.gui.dialogs.DueDatesDialog;
+import main.java.gui.dialogs.DurationsDialog;
+import main.java.gui.dialogs.ExperimentalAnalysisDialog;
+import main.java.gui.dialogs.InstanceGeneratorDialog;
+import main.java.gui.dialogs.TasksDialog;
+import main.java.gui.menu.BackgroundMenuBar;
+import main.java.logic.InstanceManager;
+import main.java.logic.LanguageManager;
+import main.java.logic.ScheduledInstance;
+import main.java.logic.enums.Rule;
 
 /**
  * Clase ApplicationWindow que representa la ventana principal de la aplicación.
- * Se comunica con {@link logic.InstanceManager InstanceManager} para dar
+ * Se comunica con {@link main.java.logic.InstanceManager InstanceManager} para dar
  * respuesta a las principales funcionalidades de la aplicación
  * 
  * @author Mirza Ojeda Veira
@@ -162,7 +162,7 @@ public class ApplicationWindow {
 		BorderLayout borderLayout = (BorderLayout) frame.getContentPane().getLayout();
 		borderLayout.setVgap(10);
 		borderLayout.setHgap(10);
-		LanguageManager.getInstance().setTexts(ResourceBundle.getBundle("rcs/texts", new Locale("en")));
+		LanguageManager.getInstance().setTexts(ResourceBundle.getBundle("main/resources/texts", new Locale("en")));
 		frame.setTitle(manager.getText("menu_title"));
 		frame.setBounds(100, 100, 1300, 650);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -1125,11 +1125,8 @@ public class ApplicationWindow {
 		double[] dueDates = manager.getD();
 		double[] durations = manager.getP();
 
-		for (int j = 0; j < startTimes.length; j++) {
+		for (int j = 0; j < startTimes.length; j++)
 			tardiness += Math.max(0, startTimes[j] + durations[j] - dueDates[j]);
-			System.out.println("sti: " + startTimes[j] + " + durations: " + durations[j] + " - due date: " + dueDates[j]
-					+ " = result: " + (startTimes[j] + durations[j] - dueDates[j]));
-		}
 		textFieldTardiness.setText(String.valueOf(tardiness));
 	}
 

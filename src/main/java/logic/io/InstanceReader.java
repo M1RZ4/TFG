@@ -1,11 +1,11 @@
-package logic.io;
+package main.java.logic.io;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 
 import dominio.Gestor;
 import dominio.Instancia;
-import logic.LanguageManager;
+import main.java.logic.LanguageManager;
 
 /**
  * Clase InstanceReader encargada de la lectura de archivos de texto para

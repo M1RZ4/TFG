@@ -1,4 +1,4 @@
-package logic;
+package main.java.logic;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -8,8 +8,8 @@ import java.util.Random;
 /**
  * Clase InstanceGenerator encargada de generar los vectores y listas con los
  * distintos parámtros de tareas e intervalos necesarios para generar los
- * ficheros de instancias por parte de la clase {@link logic.io.InstanceWriter
- * InstanceWriter}
+ * ficheros de instancias por parte de la clase
+ * {@link main.java.logic.io.InstanceWriter InstanceWriter}
  * 
  * @author Mirza Ojeda Veira
  *

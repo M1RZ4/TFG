@@ -1,4 +1,4 @@
-package logic.enums;
+package main.java.logic.enums;
 
 /**
  * Enumerado creado para representar las distintas reglas de prioridad
