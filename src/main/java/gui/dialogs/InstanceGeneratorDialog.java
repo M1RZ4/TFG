@@ -17,6 +17,7 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
@@ -148,6 +149,10 @@ public class InstanceGeneratorDialog extends JDialog {
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
 			File file = jfc.getSelectedFile();
 			writeInstance(file.getAbsolutePath() + ".txt");
+			JOptionPane.showMessageDialog(null,
+					LanguageManager.getInstance().getTexts().getString("message_instance_generator"),
+					LanguageManager.getInstance().getTexts().getString("message_title"),
+					JOptionPane.INFORMATION_MESSAGE);
 		}
 	}
 

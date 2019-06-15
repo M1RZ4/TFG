@@ -401,7 +401,7 @@ public class ApplicationWindow {
 			mntmEspanol.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					LanguageManager.getInstance()
-							.setTexts(ResourceBundle.getBundle("rcs/texts", Locale.forLanguageTag("es")));
+							.setTexts(ResourceBundle.getBundle("main/resources/texts", Locale.forLanguageTag("es")));
 					changeLocaleTexts();
 					updateMnemonics();
 				}
@@ -417,7 +417,7 @@ public class ApplicationWindow {
 			mntmIngles.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					LanguageManager.getInstance()
-							.setTexts(ResourceBundle.getBundle("rcs/texts", Locale.forLanguageTag("en")));
+							.setTexts(ResourceBundle.getBundle("main/resources/texts", Locale.forLanguageTag("en")));
 					changeLocaleTexts();
 					updateMnemonics();
 				}
@@ -458,6 +458,7 @@ public class ApplicationWindow {
 		mnVer.setText(manager.getText("menu_view"));
 		mnHerramientas.setText(manager.getText("menu_tools"));
 		mntmGenerarInstancias.setText(manager.getText("menu_instance_generator"));
+		mntmEstudioExperimental.setText(manager.getText("menu_experimental_study"));
 		mnConfiguracin.setText(manager.getText("menu_configuration"));
 		mnIdioma.setText(manager.getText("menu_language"));
 		mntmEspanol.setText(manager.getText("menu_spanish"));
