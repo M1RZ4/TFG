@@ -439,14 +439,18 @@ public class ApplicationWindow {
 			showTaskTable(location);
 		}
 		if (pd != null && displayedDurations) {
+			Point location = pd.getLocation();
 			pd.dispose();
 			pd = null;
 			createDurationsChart();
+			showDurationsDialog(location);
 		}
 		if (dd != null && displayedDuedates) {
+			Point location = dd.getLocation();
 			dd.dispose();
 			dd = null;
 			createDueDatesChart();
+			showDueDatesDialog(location);
 		}
 		// Menu
 		frame.setTitle(manager.getText("menu_title"));
@@ -731,9 +735,9 @@ public class ApplicationWindow {
 		for (int t = 0; t < dueDates.length; t++) {
 			model = (DefaultTableModel) td.getTasksTable().getModel();
 			if (t >= startTimes.length)
-				model.addRow(new Object[] { ids[t], durations[t], dueDates[t], null });
+				model.addRow(new Object[] { ids[t], durations[ids[t]], dueDates[ids[t]], null });
 			else
-				model.addRow(new Object[] { ids[t], durations[t], dueDates[t], startTimes[t] });
+				model.addRow(new Object[] { ids[t], i.getP()[t], i.getD()[t], startTimes[t] });
 		}
 	}
 
@@ -1123,6 +1127,8 @@ public class ApplicationWindow {
 
 		for (int j = 0; j < startTimes.length; j++) {
 			tardiness += Math.max(0, startTimes[j] + durations[j] - dueDates[j]);
+			System.out.println("sti: " + startTimes[j] + " + durations: " + durations[j] + " - due date: " + dueDates[j]
+					+ " = result: " + (startTimes[j] + durations[j] - dueDates[j]));
 		}
 		textFieldTardiness.setText(String.valueOf(tardiness));
 	}

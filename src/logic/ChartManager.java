@@ -67,7 +67,8 @@ public class ChartManager {
 		NumberAxis domain = (NumberAxis) plot.getDomainAxis();
 
 		Intervalo interval = intervals.get(intervals.size() - 1);
-		int maxDomain = interval.getInicio(); // TODO menor en instancias grandes
+		int maxDomain = interval.getInicio();
+		maxDomain += maxDomain / 10;
 		if (interval.getFin() < 300000)
 			maxDomain = interval.getFin();
 
@@ -98,8 +99,8 @@ public class ChartManager {
 	 */
 	public JFreeChart createDurationsChart(double[] durations, int[] ids) {
 		JFreeChart chart = ChartFactory.createPieChart(
-				LanguageManager.getInstance().getTexts().getString("chart_durations"), createDataset(durations ,ids), true,
-				true, false);
+				LanguageManager.getInstance().getTexts().getString("chart_durations"), createDataset(durations, ids),
+				true, true, false);
 		Plot plot = chart.getPlot();
 		plot.setBackgroundPaint(Color.WHITE);
 		return chart;
@@ -116,8 +117,8 @@ public class ChartManager {
 	 */
 	public JFreeChart createDueDatesChart(double[] dueDates, int[] ids) {
 		JFreeChart chart = ChartFactory.createPieChart(
-				LanguageManager.getInstance().getTexts().getString("chart_due_dates"), createDataset(dueDates, ids), true,
-				true, false);
+				LanguageManager.getInstance().getTexts().getString("chart_due_dates"), createDataset(dueDates, ids),
+				true, true, false);
 		Plot plot = chart.getPlot();
 		plot.setBackgroundPaint(Color.WHITE);
 		return chart;
@@ -200,23 +201,36 @@ public class ChartManager {
 	 * @return dataset con el perfil de máquina
 	 */
 	private XYDataset loadMainChartDataset(Instancia i) {
+		final XYSeries capacity = createCapacity(i);
+		final XYSeriesCollection dataset = new XYSeriesCollection();
+		dataset.addSeries(capacity);
+		return dataset;
+	}
+
+	/**
+	 * Método auxiliar que genera la serie para la capacidad disponible de la
+	 * máquina
+	 * 
+	 * @param i
+	 *            instancia
+	 * @return serie con la capacidad
+	 */
+	private XYSeries createCapacity(Instancia i) {
 		final XYSeries capacity = new XYSeries(
 				LanguageManager.getInstance().getTexts().getString("chart_avaliable_capacity"));
 		for (int j = 0; j < i.getPerfilMaquina().size(); j++) {
 			if (j == i.getPerfilMaquina().size() - 1) {
-				// capacity.add(i.getPerfilMaquina().get(j).getInicio(),
-				// i.getPerfilMaquina().get(j).getCap());
-				// capacity.add(i.getPerfilMaquina().get(j).getInicio() + 100,
-				// i.getPerfilMaquina().get(j).getCap()); //TODO el 100
+				capacity.add(i.getPerfilMaquina().get(j).getInicio(), i.getPerfilMaquina().get(j).getCap());
+				capacity.add(
+						i.getPerfilMaquina().get(j).getInicio()
+								+ i.getPerfilMaquina().get(i.getPerfilMaquina().size() - 1).getInicio() / 10,
+						i.getPerfilMaquina().get(j).getCap());
 			} else {
 				capacity.add(i.getPerfilMaquina().get(j).getInicio(), i.getPerfilMaquina().get(j).getCap());
 				capacity.add(i.getPerfilMaquina().get(j).getFin(), i.getPerfilMaquina().get(j).getCap());
 			}
 		}
-
-		final XYSeriesCollection dataset = new XYSeriesCollection();
-		dataset.addSeries(capacity);
-		return dataset;
+		return capacity;
 	}
 
 	/**
@@ -231,7 +245,8 @@ public class ChartManager {
 	private PieDataset createDataset(double[] array, int[] ids) {
 		DefaultPieDataset dataset = new DefaultPieDataset();
 		for (int i = 0; i < array.length; i++)
-			dataset.setValue(String.valueOf(LanguageManager.getInstance().getTexts().getString("chart_task") + " " + ids[i]),
+			dataset.setValue(
+					String.valueOf(LanguageManager.getInstance().getTexts().getString("chart_task") + " " + ids[i]),
 					array[i]);
 		return dataset;
 	}
@@ -279,7 +294,8 @@ public class ChartManager {
 		NumberAxis domain = (NumberAxis) plot.getDomainAxis();
 
 		Intervalo interval = intervals.get(intervals.size() - 1);
-		double maxDomain = interval.getInicio(); // TODO menor en instancias grandes
+		double maxDomain = interval.getInicio();
+		maxDomain += maxDomain / 10;
 		if (interval.getFin() < 300000)
 			maxDomain = interval.getFin();
 
@@ -429,14 +445,7 @@ public class ChartManager {
 		tasks.add(endTimes[endTimes.length - 1], 0);
 
 		// Crear serie para la capacidad disponible
-		final XYSeries capacity = new XYSeries(
-				LanguageManager.getInstance().getTexts().getString("chart_avaliable_capacity"));
-		for (int j = 0; j < i.getPerfilMaquina().size(); j++) {
-			if (j == i.getPerfilMaquina().size() - 1)
-				break;
-			capacity.add(i.getPerfilMaquina().get(j).getInicio(), i.getPerfilMaquina().get(j).getCap());
-			capacity.add(i.getPerfilMaquina().get(j).getFin(), i.getPerfilMaquina().get(j).getCap());
-		}
+		final XYSeries capacity = createCapacity(i);
 
 		final XYSeriesCollection dataset = new XYSeriesCollection();
 		dataset.addSeries(tasks);

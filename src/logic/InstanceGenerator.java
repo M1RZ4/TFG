@@ -62,12 +62,17 @@ public class InstanceGenerator {
 		durations = new double[numberOfTasks];
 		for (int i = 0; i < durations.length; i++)
 			durations[i] = new Random().nextInt(100) + 1;
+
 		// Due dates de las tareas
 		dueDates = new double[durations.length];
 		for (int i = 0; i < dueDates.length; i++) {
-			double sum = Arrays.stream(durations).sum() / 2;
-			dueDates[i] = new Random().nextInt((int) (Math.max(durations[i] + 2, sum) - durations[i] + 1))
-					+ durations[i];
+			double sum = 0;
+			for (int j = 0; j < i; j++)
+				sum += durations[j];
+			sum /= 2;
+			double low = durations[i];
+			double high = Math.max(durations[i] + 2, sum);
+			dueDates[i] = new Random().nextInt((int) (high - low)) + low;
 		}
 	}
 
