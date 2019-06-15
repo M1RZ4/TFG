@@ -1,5 +1,6 @@
 package logic.io;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 
 import dominio.Gestor;
@@ -28,7 +29,10 @@ public class InstanceReader {
 	 */
 	public Instancia readInstance(String fileName) throws FileNotFoundException {
 		if (!fileName.endsWith(".txt"))
-			throw new IllegalArgumentException(LanguageManager.getInstance().getTexts().getString("error_file_extension"));
+			throw new IllegalArgumentException(
+					LanguageManager.getInstance().getTexts().getString("error_file_extension"));
+		else if (!new File(fileName).exists())
+			throw new FileNotFoundException(LanguageManager.getInstance().getTexts().getString("error_not_found"));
 		return Gestor.cargarInstancia(fileName);
 	}
 
