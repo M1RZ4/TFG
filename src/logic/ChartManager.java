@@ -15,18 +15,19 @@ import org.jfree.chart.annotations.XYShapeAnnotation;
 import org.jfree.chart.annotations.XYTextAnnotation;
 import org.jfree.chart.axis.NumberAxis;
 import org.jfree.chart.axis.NumberTickUnit;
+import org.jfree.chart.plot.Plot;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
+import org.jfree.data.general.DefaultPieDataset;
+import org.jfree.data.general.PieDataset;
 import org.jfree.data.xy.XYDataset;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 import org.jfree.ui.Layer;
 
-import dominio.Gestor;
 import dominio.Instancia;
 import dominio.Intervalo;
-import dominio.Planificacion;
 import logic.enums.Rule;
 
 /**
@@ -88,86 +89,38 @@ public class ChartManager {
 
 	/**
 	 * Método que retorna un gráfico con la distribución de duraciones de las tareas
-	 * de una instancia para mostarlo en {@link gui.dialogs.DurationsDialog DurationsDialog}
+	 * de una instancia para mostarlo en {@link gui.dialogs.DurationsDialog
+	 * DurationsDialog}
 	 * 
 	 * @param durations
 	 *            vector de duraciones de las tareas
 	 * @return gráfico de duraciones
 	 */
-	public JFreeChart createDurationsChart(double[] durations) {
-		// Crear el gráfico
-		JFreeChart durationsChart = ChartFactory.createXYLineChart("",
-				LanguageManager.getInstance().getTexts().getString("chart_tasks"), "t",
-				createDataset(durations, "chart_durations"), PlotOrientation.VERTICAL, true, true, false);
-
-		// Modificar el fondo
-		XYPlot plot = setPlot(durationsChart);
-
-		// Modificar el eje X
-		NumberAxis domain = (NumberAxis) plot.getDomainAxis();
-
-		int maxDomain = durations.length; // Nº Tareas
-
-		domain = setDomain(domain, maxDomain, 1);
-
-		// Modificar el eje Y
-		NumberAxis range = (NumberAxis) plot.getRangeAxis();
-
-		double maxRange = 0;
-		for (Double d : durations)
-			if (d > maxRange)
-				maxRange = d; // Max duración
-
-		range = setRange(range, maxRange, 10);// TODO personalizar (el 10)
-
-		// Modificar el gráfico
-		XYLineAndShapeRenderer renderer = setRenderer(Color.RED);
-		plot.setRenderer(renderer);
-
-		// Retornar el resultado
-		return durationsChart;
+	public JFreeChart createDurationsChart(double[] durations, int[] ids) {
+		JFreeChart chart = ChartFactory.createPieChart(
+				LanguageManager.getInstance().getTexts().getString("chart_durations"), createDataset(durations ,ids), true,
+				true, false);
+		Plot plot = chart.getPlot();
+		plot.setBackgroundPaint(Color.WHITE);
+		return chart;
 	}
 
 	/**
 	 * Método que retorna un gráfico con la distribución de due dates de las tareas
-	 * de una instancia para mostarlo en {@link gui.dialogs.DueDatesDialog DueDatesDialog}
+	 * de una instancia para mostarlo en {@link gui.dialogs.DueDatesDialog
+	 * DueDatesDialog}
 	 * 
 	 * @param dueDates
 	 *            vector de due dates de las tareas
 	 * @return gráfico de duraciones
 	 */
-	public JFreeChart createDueDatesChart(double[] dueDates) {
-		// Crear el gráfico
-		JFreeChart dueDatesChart = ChartFactory.createXYLineChart("",
-				LanguageManager.getInstance().getTexts().getString("chart_tasks"), "t",
-				createDataset(dueDates, "chart_due_dates"), PlotOrientation.VERTICAL, true, true, false);
-
-		// Modificar el fondo
-		XYPlot plot = setPlot(dueDatesChart);
-
-		// Modificar el eje X
-		NumberAxis domain = (NumberAxis) plot.getDomainAxis();
-
-		int maxDomain = dueDates.length; // Nº Tareas
-
-		domain = setDomain(domain, maxDomain, 1);
-
-		// Modificar el eje Y
-		NumberAxis range = (NumberAxis) plot.getRangeAxis();
-
-		double maxRange = 0;
-		for (Double d : dueDates)
-			if (d > maxRange)
-				maxRange = d; // Max due date
-
-		range = setRange(range, maxRange, 10); // TODO personalizar (el 10)
-
-		// Modificar el gráfico
-		XYLineAndShapeRenderer renderer = setRenderer(Color.RED);
-		plot.setRenderer(renderer);
-
-		// Retornar el resultado
-		return dueDatesChart;
+	public JFreeChart createDueDatesChart(double[] dueDates, int[] ids) {
+		JFreeChart chart = ChartFactory.createPieChart(
+				LanguageManager.getInstance().getTexts().getString("chart_due_dates"), createDataset(dueDates, ids), true,
+				true, false);
+		Plot plot = chart.getPlot();
+		plot.setBackgroundPaint(Color.WHITE);
+		return chart;
 	}
 
 	/**
@@ -218,7 +171,7 @@ public class ChartManager {
 	 * @return eje Y modificado
 	 */
 	private NumberAxis setRange(NumberAxis range, double maxRange, int tickUnit) {
-		range.setRange(0.0, maxRange + 1); //TODO en setDomain se tuvo que cambiar
+		range.setRange(0.0, maxRange + 1); // TODO en setDomain se tuvo que cambiar
 		range.setTickUnit(new NumberTickUnit(tickUnit));
 		range.setTickMarkPaint(Color.BLACK);
 		range.setAxisLinePaint(Color.BLACK);
@@ -273,16 +226,13 @@ public class ChartManager {
 	 * 
 	 * @param array
 	 *            vector de duraciones o due dates
-	 * @param series
-	 *            nombre del parámetro
-	 * @return dataset con el perfil de máquina
+	 * @return dataset
 	 */
-	private XYDataset createDataset(double[] array, String series) {
-		XYSeries dueDate = new XYSeries(LanguageManager.getInstance().getTexts().getString(series));
-		XYSeriesCollection dataset = new XYSeriesCollection();
+	private PieDataset createDataset(double[] array, int[] ids) {
+		DefaultPieDataset dataset = new DefaultPieDataset();
 		for (int i = 0; i < array.length; i++)
-			dueDate.add(i, array[i]);
-		dataset.addSeries(dueDate);
+			dataset.setValue(String.valueOf(LanguageManager.getInstance().getTexts().getString("chart_task") + " " + ids[i]),
+					array[i]);
 		return dataset;
 	}
 
@@ -300,22 +250,8 @@ public class ChartManager {
 	 * @param tickUnit
 	 *            separación entre marcas de graduación
 	 */
-	public void setMainChart(Instancia i, Rule rule, double g, int tickUnit) {
-		// Escoger la planificación
-		Planificacion p = null;
-		switch (rule) {
-		case ATC:
-			p = Gestor.planificaATC(g, i);
-			break;
-		case EDD:
-			p = Gestor.planificaEDD(i);
-			break;
-		case SPT:
-			p = Gestor.planificaSPT(i);
-			break;
-		default:
-			break;
-		}
+	public void setMainChart(int step, Instancia instance, Rule rule, double g, int tickUnit) {
+		ScheduledInstance i = new ScheduledInstance(step, instance, rule, g);
 
 		// Modificar el gráfico
 		XYLineAndShapeRenderer renderer = new XYLineAndShapeRenderer();
@@ -327,10 +263,10 @@ public class ChartManager {
 		renderer.setSeriesStroke(1, new BasicStroke(2.0f));
 
 		// Crear las tareas
-		Map<Integer, Integer> capacity = createTasks(renderer, i, p);
+		Map<Integer, Integer> capacity = createTasks(renderer, i);
 
 		// Crear el dataset
-		XYDataset ds = setMainChartDataset(i, p, capacity);
+		XYDataset ds = setMainChartDataset(i, capacity);
 
 		// Crear el gráfico
 		chart = ChartFactory.createXYLineChart("", "t", "", ds, PlotOrientation.VERTICAL, true, true, false);
@@ -377,7 +313,7 @@ public class ChartManager {
 	 *            planificación
 	 * @return diccionario de capacidades en el tiempo
 	 */
-	private Map<Integer, Integer> createTasks(XYLineAndShapeRenderer renderer, Instancia i, Planificacion p) {
+	private Map<Integer, Integer> createTasks(XYLineAndShapeRenderer renderer, ScheduledInstance i) {
 		// Inicializar parámetros de visualización de las tareas
 		BasicStroke stroke = new BasicStroke(1.0f);
 		Color border = Color.BLACK;
@@ -387,8 +323,7 @@ public class ChartManager {
 		// Inicializar otros parámetros
 		double y = 0;
 		double[] durations = i.getP();
-		double[] dueDates = i.getD();
-		int[] startTimes = p.getSti();
+		int[] startTimes = i.getStartTimes();
 		double[] endTimes = durations.clone(); // Vector de tiempos de fin
 		HashMap<Double, Double> tasks = new HashMap<Double, Double>(); // Diccionario con clave [y] y valor [tiempo de
 																		// fin]
@@ -399,37 +334,11 @@ public class ChartManager {
 
 		// Asignar IDs
 		for (int j = 0; j < startTimes.length; j++)
-			ids.put(startTimes[j], j);
+			ids.put(startTimes[j], i.getIds()[j]);
 
 		// Asignar tiempos de fin
 		for (int j = 0; j < endTimes.length; j++)
 			endTimes[j] += startTimes[j];
-
-		// Ordenar los vectores de tiempos de inicio, fin, duraciones y due dates en
-		// función de los tiempos de inicio (la ordenación por defecto es en base al ID)
-		for (int s = 0; s <= startTimes.length - 1; s++) {
-			for (int k = 0; k <= startTimes.length - 2; k++) {
-				if (startTimes[k] > startTimes[k + 1]) {
-					double temp = 0d;
-
-					temp = startTimes[k];
-					startTimes[k] = startTimes[k + 1];
-					startTimes[k + 1] = (int) temp;
-
-					temp = endTimes[k];
-					endTimes[k] = endTimes[k + 1];
-					endTimes[k + 1] = temp;
-
-					temp = durations[k];
-					durations[k] = durations[k + 1];
-					durations[k + 1] = temp;
-
-					temp = dueDates[k];
-					dueDates[k] = dueDates[k + 1];
-					dueDates[k + 1] = temp;
-				}
-			}
-		}
 
 		// Asignar tareas
 		for (int t = 0; t < startTimes.length; t++) {
@@ -474,7 +383,7 @@ public class ChartManager {
 			}
 
 		}
-		capacity.put((int) endTimes[endTimes.length - 1], 1); // endTime !unico falla
+		capacity.put((int) endTimes[endTimes.length - 1], 1);
 		return capacity;
 	}
 
@@ -490,38 +399,15 @@ public class ChartManager {
 	 *            diccionario que representa la capacidad ocupada en el tiempo
 	 * @return dataset con las capacidades ocupada y disponible
 	 */
-	private XYDataset setMainChartDataset(Instancia i, Planificacion p, Map<Integer, Integer> occupied) {
+	private XYDataset setMainChartDataset(ScheduledInstance i, Map<Integer, Integer> occupied) {
 		// Inicializar parámetros
 		double[] durations = i.getP();
-		int[] startTimes = p.getSti();
-		double[] endTimes = durations.clone(); // Vector de tiempos de fin
+		int[] startTimes = i.getStartTimes();
+		double[] endTimes = durations.clone();
 
 		// Asignar tiempos de fin
 		for (int j = 0; j < endTimes.length; j++)
 			endTimes[j] += startTimes[j];
-
-		// Ordenar los vectores de tiempos de inicio, fin, duraciones y due dates en
-		// función de los tiempos de inicio (la ordenación por defecto es en base al ID)
-		for (int s = 0; s <= startTimes.length - 1; s++) {
-			for (int k = 0; k <= startTimes.length - 2; k++) {
-				if (startTimes[k] > startTimes[k + 1]) {
-					double temp = 0d;
-
-					temp = startTimes[k];
-					startTimes[k] = startTimes[k + 1];
-					startTimes[k + 1] = (int) temp;
-
-					temp = endTimes[k];
-					endTimes[k] = endTimes[k + 1];
-					endTimes[k + 1] = temp;
-
-					temp = durations[k];
-					durations[k] = durations[k + 1];
-					durations[k + 1] = temp;
-
-				}
-			}
-		}
 
 		// Crear serie para la capacidad ocupada
 		final XYSeries tasks = new XYSeries(

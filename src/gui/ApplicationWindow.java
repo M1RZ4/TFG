@@ -15,6 +15,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.Arrays;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
@@ -53,13 +54,13 @@ import dominio.Instancia;
 import dominio.Planificacion;
 import gui.dialogs.DueDatesDialog;
 import gui.dialogs.DurationsDialog;
-import gui.dialogs.ExperimentalStudyDialog;
+import gui.dialogs.ExperimentalAnalysisDialog;
 import gui.dialogs.InstanceGeneratorDialog;
 import gui.dialogs.TasksDialog;
 import gui.menu.BackgroundMenuBar;
 import logic.InstanceManager;
 import logic.LanguageManager;
-import logic.PartialInstance;
+import logic.ScheduledInstance;
 import logic.enums.Rule;
 
 /**
@@ -363,7 +364,7 @@ public class ApplicationWindow {
 			mntmEstudioExperimental.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_E, ActionEvent.CTRL_MASK));
 			mntmEstudioExperimental.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					ExperimentalStudyDialog ed = new ExperimentalStudyDialog();
+					ExperimentalAnalysisDialog ed = new ExperimentalAnalysisDialog();
 					ed.setLocationRelativeTo(null);
 					ed.setVisible(true);
 				}
@@ -621,6 +622,7 @@ public class ApplicationWindow {
 				public void actionPerformed(ActionEvent e) {
 					if (!displayedDurations) {
 						createDurationsChart();
+						showDurationsDialog(null);
 						displayedDurations = true;
 					} else {
 						pd.dispose();
@@ -637,38 +639,34 @@ public class ApplicationWindow {
 	 * Método auxiliar que crea el diálogo para mostrar la distibución de duraciones
 	 */
 	private void createDurationsChart() {
-		JFreeChart chart = manager.createDurationsChart(manager.getP());
+		int x = manager.getP().length - step;
+		ScheduledInstance i = new ScheduledInstance(step, manager.getInstance(),
+				Rule.valueOf((String) getRulesComboBox().getSelectedItem()), (double) rulesSpinner.getValue());
+		int[] ids = i.getIds();
+		int[] reversed = new int[ids.length];
+		for (int j = 0; j < ids.length; j++)
+			reversed[j] = ids[ids.length - 1 - j];
+		JFreeChart chart = manager.createDurationsChart(Arrays.copyOfRange(manager.getP(), 0, x), reversed);
 		ChartPanel cp = new ChartPanel(chart);
-		pd = new DurationsDialog(chart);
+		pd = new DurationsDialog();
 		pd.getContentPane().add(cp, BorderLayout.CENTER);
-		pd.setVisible(true);
-		pd.setLocationRelativeTo(null);
-		pd.revalidate();
-		pd.addWindowListener(new WindowAdapter() {
-			public void windowClosing(WindowEvent e) {
-				displayedDurations = false;
-				chckbxmntmDuracin.setSelected(false);
-			}
-		});
 	}
 
 	/**
 	 * Método auxiliar que crea el diálogo para mostrar la distribución de due dates
 	 */
 	private void createDueDatesChart() {
-		JFreeChart chart = manager.createDueDatesChart(manager.getD());
+		int x = manager.getD().length - step;
+		ScheduledInstance i = new ScheduledInstance(step, manager.getInstance(),
+				Rule.valueOf((String) getRulesComboBox().getSelectedItem()), (double) rulesSpinner.getValue());
+		int[] ids = i.getIds();
+		int[] reversed = new int[ids.length];
+		for (int j = 0; j < ids.length; j++)
+			reversed[j] = ids[ids.length - 1 - j];
+		JFreeChart chart = manager.createDueDatesChart(Arrays.copyOfRange(manager.getD(), 0, x), reversed);
 		ChartPanel cp = new ChartPanel(chart);
-		dd = new DueDatesDialog(chart);
+		dd = new DueDatesDialog();
 		dd.getContentPane().add(cp, BorderLayout.CENTER);
-		dd.setVisible(true);
-		dd.setLocationRelativeTo(null);
-		dd.revalidate();
-		dd.addWindowListener(new WindowAdapter() {
-			public void windowClosing(WindowEvent e) {
-				displayedDuedates = false;
-				chckbxmntmFechaDeVencimiento.setSelected(false);
-			}
-		});
 	}
 
 	private JCheckBoxMenuItem getChckbxmntmFechaDeVencimiento() {
@@ -681,6 +679,7 @@ public class ApplicationWindow {
 				public void actionPerformed(ActionEvent e) {
 					if (!displayedDuedates) {
 						createDueDatesChart();
+						showDueDatesDialog(null);
 						displayedDuedates = true;
 					} else {
 						dd.dispose();
@@ -718,29 +717,13 @@ public class ApplicationWindow {
 	 * Método auxiliar que crea el diálogo para mostrar la información de la stareas
 	 */
 	private void createTasksTable() {
-		Planificacion p = null;
-		Instancia i = null;
-		if (step < manager.getD().length)
-			i = new PartialInstance(step, manager.getInstance());
-		else
-			i = manager.getInstance();
-		double g = (double) rulesSpinner.getValue();
-		switch (Rule.valueOf((String) getRulesComboBox().getSelectedItem())) {
-		case ATC:
-			p = Gestor.planificaATC(g, i);
-			break;
-		case EDD:
-			p = Gestor.planificaEDD(i);
-			break;
-		case SPT:
-			p = Gestor.planificaSPT(i);
-			break;
-		default:
-			break;
-		}
-		int[] startTimes = p.getSti();
+		ScheduledInstance i = new ScheduledInstance(step, manager.getInstance(),
+				Rule.valueOf((String) getRulesComboBox().getSelectedItem()), (double) rulesSpinner.getValue());
+
+		int[] startTimes = i.getStartTimes();
 		double[] dueDates = manager.getD();
 		double[] durations = manager.getP();
+		int[] ids = i.getIds();
 
 		td = new TasksDialog();
 		DefaultTableModel model = (DefaultTableModel) td.getTasksTable().getModel();
@@ -748,12 +731,18 @@ public class ApplicationWindow {
 		for (int t = 0; t < dueDates.length; t++) {
 			model = (DefaultTableModel) td.getTasksTable().getModel();
 			if (t >= startTimes.length)
-				model.addRow(new Object[] { t, durations[t], dueDates[t], null });
+				model.addRow(new Object[] { ids[t], durations[t], dueDates[t], null });
 			else
-				model.addRow(new Object[] { t, durations[t], dueDates[t], startTimes[t] });
+				model.addRow(new Object[] { ids[t], durations[t], dueDates[t], startTimes[t] });
 		}
 	}
 
+	/**
+	 * Método auxiliar mostrar el diálogo de tareas
+	 * 
+	 * @param location
+	 *            localización del diálogo
+	 */
 	private void showTaskTable(Point location) {
 		td.setVisible(true);
 		if (location == null)
@@ -765,6 +754,48 @@ public class ApplicationWindow {
 			public void windowClosing(WindowEvent e) {
 				displayedTasks = false;
 				chckbxmntmTareas.setSelected(false);
+			}
+		});
+	}
+
+	/**
+	 * Método auxiliar mostrar el diálogo de due dates
+	 * 
+	 * @param location
+	 *            localización del diálogo
+	 */
+	private void showDueDatesDialog(Point location) {
+		dd.setVisible(true);
+		if (location == null)
+			dd.setLocationRelativeTo(null);
+		else
+			dd.setLocation(location);
+		dd.revalidate();
+		dd.addWindowListener(new WindowAdapter() {
+			public void windowClosing(WindowEvent e) {
+				displayedDuedates = false;
+				chckbxmntmFechaDeVencimiento.setSelected(false);
+			}
+		});
+	}
+
+	/**
+	 * Método auxiliar mostrar el diálogo de duraciones
+	 * 
+	 * @param location
+	 *            localización del diálogo
+	 */
+	private void showDurationsDialog(Point location) {
+		pd.setVisible(true);
+		if (location == null)
+			pd.setLocationRelativeTo(null);
+		else
+			pd.setLocation(location);
+		pd.revalidate();
+		pd.addWindowListener(new WindowAdapter() {
+			public void windowClosing(WindowEvent e) {
+				displayedDurations = false;
+				chckbxmntmDuracin.setSelected(false);
 			}
 		});
 	}
@@ -900,13 +931,15 @@ public class ApplicationWindow {
 						step++;
 					if (step >= manager.getD().length) {
 						btnSiguiente.setEnabled(false);
-						calculateTardiness();
 					}
 					if (displayedTasks) {
-						Point location = td.getLocationOnScreen();
-						td.dispose();
-						createTasksTable();
-						showTaskTable(location);
+						updateTasks();
+					}
+					if (displayedDurations) {
+						updateDurations();
+					}
+					if (displayedDuedates) {
+						updateDueDates();
 					}
 					setMainChart();
 					if (!btnAnterior.isEnabled())
@@ -937,10 +970,13 @@ public class ApplicationWindow {
 						setMainChart();
 					}
 					if (displayedTasks) {
-						Point location = td.getLocationOnScreen();
-						td.dispose();
-						createTasksTable();
-						showTaskTable(location);
+						updateTasks();
+					}
+					if (displayedDurations) {
+						updateDurations();
+					}
+					if (displayedDuedates) {
+						updateDueDates();
 					}
 					if (!btnSiguiente.isEnabled())
 						btnSiguiente.setEnabled(true);
@@ -959,10 +995,19 @@ public class ApplicationWindow {
 				public void actionPerformed(ActionEvent e) {
 					step = manager.getD().length;
 					if (displayedTasks) {
-						Point location = td.getLocationOnScreen();
-						td.dispose();
-						createTasksTable();
-						showTaskTable(location);
+						updateTasks();
+					}
+					if (displayedDurations) {
+						Point location = pd.getLocationOnScreen();
+						pd.dispose();
+						createDurationsChart();
+						showDurationsDialog(location);
+					}
+					if (displayedDuedates) {
+						Point location = dd.getLocationOnScreen();
+						dd.dispose();
+						createDueDatesChart();
+						showDueDatesDialog(location);
 					}
 					setMainChart();
 					btnSiguiente.setEnabled(false);
@@ -973,6 +1018,39 @@ public class ApplicationWindow {
 			});
 		}
 		return btnFinal;
+	}
+
+	/**
+	 * Método auxiliar que actualiza el diálogo con la tabla de tareas al hacer la
+	 * planificación paso a paso
+	 */
+	private void updateTasks() {
+		Point location = td.getLocationOnScreen();
+		td.dispose();
+		createTasksTable();
+		showTaskTable(location);
+	}
+
+	/**
+	 * Método auxiliar que actualiza el diálogo con el gráfico de duraciones al
+	 * hacer la planificación paso a paso
+	 */
+	private void updateDurations() {
+		Point location = pd.getLocationOnScreen();
+		pd.dispose();
+		createDurationsChart();
+		showDurationsDialog(location);
+	}
+
+	/**
+	 * Método auxiliar que actualiza el diálogo con el gráfico de due dates al hacer
+	 * la planificación paso a paso
+	 */
+	private void updateDueDates() {
+		Point location = dd.getLocationOnScreen();
+		dd.dispose();
+		createDueDatesChart();
+		showDueDatesDialog(location);
 	}
 
 	/**
@@ -1021,7 +1099,8 @@ public class ApplicationWindow {
 		Planificacion p = null;
 		Instancia i = null;
 		if (step < manager.getD().length)
-			i = new PartialInstance(step, manager.getInstance());
+			i = new ScheduledInstance(step, manager.getInstance(),
+					Rule.valueOf((String) getRulesComboBox().getSelectedItem()), (double) rulesSpinner.getValue());
 		else
 			i = manager.getInstance();
 		double g = (double) rulesSpinner.getValue();

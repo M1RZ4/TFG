@@ -55,16 +55,16 @@ public class InstanceManager {
 		chartManager.loadMainChart(instance, tickUnit);
 	}
 
-	public JFreeChart createDurationsChart(double[] durations) {
-		return chartManager.createDurationsChart(durations);
+	public JFreeChart createDurationsChart(double[] durations, int[] ids) {
+		return chartManager.createDurationsChart(durations, ids);
 	}
 
-	public JFreeChart createDueDatesChart(double[] dueDates) {
-		return chartManager.createDueDatesChart(dueDates);
+	public JFreeChart createDueDatesChart(double[] dueDates, int ids[]) {
+		return chartManager.createDueDatesChart(dueDates, ids);
 	}
 
 	public void setMainChart(int step, Rule rule, double g, int tickUnit) {
-		chartManager.setMainChart(new PartialInstance(step, instance), rule, g, tickUnit);
+		chartManager.setMainChart(step, instance, rule, g, tickUnit);
 	}
 
 	// InstanceGenerator
@@ -111,7 +111,7 @@ public class InstanceManager {
 	public String getText(String key) {
 		return LanguageManager.getInstance().getTexts().getString(key);
 	}
-	
+
 	public char getMnemonic(String key) {
 		return LanguageManager.getInstance().getTexts().getString(key).charAt(0);
 	}
