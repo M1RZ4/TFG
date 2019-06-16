@@ -24,6 +24,7 @@
 hs_err_pid*
 /bin/
 /target/
+/temp/
 
 # More files
 .classpath
