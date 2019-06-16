@@ -102,7 +102,7 @@ public class InstanceGeneratorDialog extends JDialog {
 	private void updateIntervals() {
 		app.getManager().initializeInstanceGenerator((int) tasksSpinner.getValue(), (int) capacitySpinner.getValue());
 		app.getManager().createTasks();
-		app.getManager().createCapacity();
+		app.getManager().createIntervals();
 		textField.setText(String.valueOf(app.getManager().getMaxInterval()));
 	}
 

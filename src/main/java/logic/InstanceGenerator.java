@@ -5,6 +5,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
+import dominio.Instancia;
+import dominio.Intervalo;
+
 /**
  * Clase InstanceGenerator encargada de generar los vectores y listas con los
  * distintos parámtros de tareas e intervalos necesarios para generar los
@@ -53,7 +56,7 @@ public class InstanceGenerator {
 	public List<Integer> getIntervalCapacities() {
 		return intervalCapacities;
 	}
-	
+
 	public int getMaxInterval() {
 		return maxInterval;
 	}
@@ -143,6 +146,40 @@ public class InstanceGenerator {
 		for (int i = maxCapacity; i > finalCapacity; i--)
 			intervalCapacities.add(i);
 		intervalCapacities.add(finalCapacity);
+	}
+
+	/**
+	 * Método que genera una lista de listas de {@link AnalysisInstance} para
+	 * después planificarlas y realizar el análisis experimental
+	 * 
+	 * @param analysis
+	 *            objeto análisis
+	 * @param step
+	 *            número de combinación
+	 * @return lista de listas de instancias, una por cada combinación de t y c
+	 */
+	public List<List<Instancia>> generateInstances(Analysis analysis) {
+		List<List<Instancia>> result = new ArrayList<List<Instancia>>();
+		for (int t = 0; t < analysis.getNumberOfTasks().length; t++) {
+			List<Instancia> instances = new ArrayList<Instancia>();
+			for (int i = 0; i < analysis.getNumberOfInstances(); i++) {
+				numberOfTasks = analysis.getNumberOfTasks()[t];
+				maxCapacity = analysis.getMaxCapacity()[t];
+				createTasks();
+				createIntervals();
+				AnalysisInstance instance = new AnalysisInstance(durations, dueDates);
+				int start = 0;
+				for (int j = 0; j < intervalCapacities.size(); j++) {
+					int end = (int) (start + intervalDurations.get(j));
+					Intervalo interval = new Intervalo(intervalCapacities.get(j), start, end);
+					instance.add(interval);
+					start = end;
+				}
+				instances.add(instance);
+			}
+			result.add(instances);
+		}
+		return result;
 	}
 
 }

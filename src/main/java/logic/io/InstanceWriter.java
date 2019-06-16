@@ -2,12 +2,17 @@ package main.java.logic.io;
 
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+
+import dominio.Instancia;
+import dominio.Intervalo;
 
 /**
  * Clase InstanceWriter encargada de generar ficheros de texto con instancias en
- * función de los parámetros generados con {@link main.java.logic.InstanceGenerator
- * InstanceGenerator}. Implementa la interfaz {@link Writer}
+ * función de los parámetros generados con
+ * {@link main.java.logic.InstanceGenerator InstanceGenerator}. Implementa la
+ * interfaz {@link Writer}
  * 
  * @author Mirza Ojeda Veira
  *
@@ -27,12 +32,24 @@ public class InstanceWriter implements Writer {
 		this.intervalCapacities = intervalCapacities;
 	}
 
+	public InstanceWriter(Instancia i) {
+		this.durations = i.getP();
+		this.dueDates = i.getD();
+		List<Intervalo> list = i.getPerfilMaquina();
+		intervalCapacities = new ArrayList<Integer>();
+		intervalDurations = new ArrayList<Double>();
+		for (Intervalo x : list) {
+			intervalCapacities.add(x.getCap());
+			intervalDurations.add((double) (x.getFin() - x.getInicio()));
+		}
+	}
+
 	/**
 	 * Método implementado de la interfaz {@link Writer} que crea un archivo de
 	 * texto de nombre fileName con los parámetros de una instancia
 	 * 
 	 * @param fileName
-	 *            nombre dle fichero
+	 *            nombre del fichero
 	 */
 	@Override
 	public void write(String fileName) {

@@ -373,13 +373,20 @@ public class ApplicationWindow {
 			mntmEstudioExperimental.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_E, ActionEvent.CTRL_MASK));
 			mntmEstudioExperimental.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					ExperimentalAnalysisDialog ed = new ExperimentalAnalysisDialog();
-					ed.setLocationRelativeTo(null);
-					ed.setVisible(true);
+					createExperimentalAnalysisDialog();
 				}
 			});
 		}
 		return mntmEstudioExperimental;
+	}
+
+	/**
+	 * Método auxiliar para desplegar la herramienta de estudio experimental
+	 */
+	private void createExperimentalAnalysisDialog() {
+		ExperimentalAnalysisDialog ed = new ExperimentalAnalysisDialog(this);
+		ed.setLocationRelativeTo(null);
+		ed.setVisible(true);
 	}
 
 	private JMenu getMnConfiguracin() {

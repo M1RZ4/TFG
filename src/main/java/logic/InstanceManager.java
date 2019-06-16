@@ -1,5 +1,6 @@
 package main.java.logic;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.List;
 
@@ -7,6 +8,8 @@ import org.jfree.chart.JFreeChart;
 
 import dominio.Instancia;
 import main.java.logic.enums.Rule;
+import main.java.logic.io.AnalysisReader;
+import main.java.logic.io.AnalysisWriter;
 import main.java.logic.io.ChartWriter;
 import main.java.logic.io.InstanceReader;
 import main.java.logic.io.InstanceWriter;
@@ -21,11 +24,11 @@ import main.java.logic.io.Writer;
  */
 public class InstanceManager {
 
-	private InstanceReader reader = new InstanceReader();
 	private Writer writer;
 	private InstanceGenerator instanceGenerator;
 	private ChartManager chartManager = new ChartManager();
 	private Instancia instance;
+	private Analysis analysis;
 
 	// InstanceManager
 	public Instancia getInstance() {
@@ -42,7 +45,19 @@ public class InstanceManager {
 
 	// Reader
 	public void readInstance(String fileName) throws FileNotFoundException {
-		instance = reader.readInstance(fileName);
+		instance = new InstanceReader().read(fileName);
+	}
+
+	public void readAnalysis(String fileName) throws FileNotFoundException {
+		analysis = new AnalysisReader().read(fileName);
+	}
+
+	public Analysis getAnalysis() {
+		return analysis;
+	}
+
+	public void setAnalysis(Analysis analysis) {
+		this.analysis = analysis;
 	}
 
 	// ChartManager
@@ -86,7 +101,7 @@ public class InstanceManager {
 		instanceGenerator.createTasks();
 	}
 
-	public void createCapacity() {
+	public void createIntervals() {
 		instanceGenerator.createIntervals();
 	}
 
@@ -110,14 +125,40 @@ public class InstanceManager {
 		return instanceGenerator.getMaxInterval();
 	}
 
+	public List<List<Instancia>> generateInstances() {
+		return instanceGenerator.generateInstances(analysis);
+	}
+
 	// Writer
 	public void writeInstance(String fileName) {
 		writer = new InstanceWriter(getDurations(), getDueDates(), getIntervalDurations(), getIntervalCapacities());
 		writer.write(fileName);
 	}
 
+	public void saveInstances(List<List<Instancia>> list) {
+		File dir = new File("temp");
+		dir.mkdir();
+
+		for (int i = 0; i < list.size(); i++) {
+			for (int j = 0; j < list.get(i).size(); j++) {
+				Instancia x = list.get(i).get(j);
+				String name = dir.getAbsolutePath() + "/" + i + "_" + j + ".txt";
+				((AnalysisInstance) x).setName(name);
+				writer = new InstanceWriter(x);
+				writer.write(name);
+			}
+		}
+	}
+
 	public void writeChart(String fileName) {
 		writer = new ChartWriter(getChart());
+		writer.write(fileName);
+	}
+
+	public void writeAnalysis(String fileName) {
+		List<List<Instancia>> list = generateInstances();
+		saveInstances(list);
+		writer = new AnalysisWriter(analysis, list);
 		writer.write(fileName);
 	}
 

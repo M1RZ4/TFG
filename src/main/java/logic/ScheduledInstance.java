@@ -40,8 +40,6 @@ public class ScheduledInstance extends Instancia {
 		case SPT:
 			p = Gestor.planificaSPT(i);
 			break;
-		case MyRule:
-			return;
 		default:
 			break;
 		}
