@@ -350,13 +350,20 @@ public class ApplicationWindow {
 			mntmGenerarInstancias.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_G, ActionEvent.CTRL_MASK));
 			mntmGenerarInstancias.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					InstanceGeneratorDialog id = new InstanceGeneratorDialog();
-					id.setLocationRelativeTo(null);
-					id.setVisible(true);
+					createInstanceGeneratorDialog();
 				}
 			});
 		}
 		return mntmGenerarInstancias;
+	}
+
+	/**
+	 * Método auxiliar para desplegar la herramienta de generación de instancias
+	 */
+	private void createInstanceGeneratorDialog() {
+		InstanceGeneratorDialog id = new InstanceGeneratorDialog(this);
+		id.setLocationRelativeTo(null);
+		id.setVisible(true);
 	}
 
 	private JMenuItem getMntmEstudioExperimental() {
@@ -765,6 +772,8 @@ public class ApplicationWindow {
 				chckbxmntmTareas.setSelected(false);
 			}
 		});
+		if (btnAnterior.isEnabled())
+			td.getBtnPlanificar().setEnabled(false);
 	}
 
 	/**
@@ -1093,7 +1102,7 @@ public class ApplicationWindow {
 		return lblTardiness;
 	}
 
-	private JTextField getTextFieldTardiness() {
+	public JTextField getTextFieldTardiness() {
 		if (textFieldTardiness == null) {
 			textFieldTardiness = new JTextField();
 			textFieldTardiness.setText("0");
@@ -1147,19 +1156,19 @@ public class ApplicationWindow {
 	public static ResourceBundle getTexts() {
 		return LanguageManager.getInstance().getTexts();
 	}
-	
+
 	public InstanceManager getManager() {
 		return manager;
 	}
-	
+
 	public ChartPanel getCp() {
 		return cp;
 	}
-	
+
 	public void setCp(ChartPanel cp) {
 		this.cp = cp;
 	}
-	
+
 	public JFrame getFrame() {
 		return frame;
 	}

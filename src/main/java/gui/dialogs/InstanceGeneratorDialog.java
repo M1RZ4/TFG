@@ -6,12 +6,6 @@ import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Random;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -20,9 +14,13 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
+import javax.swing.JTextField;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingConstants;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
+import main.java.gui.ApplicationWindow;
 import main.java.logic.LanguageManager;
 
 /**
@@ -43,17 +41,17 @@ public class InstanceGeneratorDialog extends JDialog {
 	private JSpinner tasksSpinner;
 	private JLabel lblCapacidadMxima;
 	private JSpinner capacitySpinner;
+	private JTextField textField;
+	private JLabel lblIntervalos;
 
-	private double[] durations;
-	private double[] dueDates;
-	List<Double> intervalDurations;
-	List<Integer> intervalCapacities;
+	private ApplicationWindow app;
 
-	public InstanceGeneratorDialog() {
+	public InstanceGeneratorDialog(ApplicationWindow app) {
+		this.app = app;
 		setTitle(LanguageManager.getInstance().getTexts().getString("menu_instance_generator"));
 		setModal(true);
 		setResizable(false);
-		setBounds(100, 100, 250, 150);
+		setBounds(100, 100, 315, 175);
 		getContentPane().add(getConfigPanel(), BorderLayout.CENTER);
 		getContentPane().add(getButtonPanel(), BorderLayout.SOUTH);
 	}
@@ -67,6 +65,8 @@ public class InstanceGeneratorDialog extends JDialog {
 			configPanel.add(getTasksSpinner());
 			configPanel.add(getLblCapacidadMxima());
 			configPanel.add(getCapacitySpinner());
+			configPanel.add(getTextField());
+			configPanel.add(getLblIntervalos());
 		}
 		return configPanel;
 	}
@@ -87,8 +87,7 @@ public class InstanceGeneratorDialog extends JDialog {
 			btnGuardar = new JButton(LanguageManager.getInstance().getTexts().getString("button_save"));
 			btnGuardar.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					createTasks();
-					createCapacity();
+					updateIntervals();
 					save();
 				}
 			});
@@ -96,84 +95,30 @@ public class InstanceGeneratorDialog extends JDialog {
 		return btnGuardar;
 	}
 
-	private void createTasks() {
-		durations = new double[(int) getTasksSpinner().getValue()];
-		for (int i = 0; i < durations.length; i++)
-			durations[i] = new Random().nextInt(100) + 1;
-		dueDates = new double[durations.length];
-		for (int i = 0; i < dueDates.length; i++) {
-			double sum = Arrays.stream(durations).sum() / 2;
-			dueDates[i] = new Random().nextInt((int) (Math.max(durations[i] + 2, sum) - durations[i] + 1))
-					+ durations[i];
-		}
+	/**
+	 * Método auxiliar que actualiza los valores de los parámetros del generador de
+	 * instancias en función de lo introducido por el usuario
+	 */
+	private void updateIntervals() {
+		app.getManager().initializeInstanceGenerator((int) tasksSpinner.getValue(), (int) capacitySpinner.getValue());
+		app.getManager().createTasks();
+		app.getManager().createCapacity();
+		textField.setText(String.valueOf(app.getManager().getMaxInterval()));
 	}
 
-	private void createCapacity() {
-		intervalDurations = new ArrayList<Double>();
-		intervalCapacities = new ArrayList<Integer>();
-
-		int maxCapacity = (int) getCapacitySpinner().getValue();
-		int initialCapacity = new Random().nextInt(2) + 1;
-		intervalCapacities.add(initialCapacity);
-		int finalCapacity = new Random().nextInt(2) + 1;
-		int maxInterval = 2 * maxCapacity;
-		if (initialCapacity == finalCapacity && initialCapacity == 1)
-			maxInterval -= 1;
-		else if (initialCapacity == finalCapacity && initialCapacity == 2)
-			maxInterval -= 3;
-		else
-			maxInterval -= 2;
-
-		double sum = Arrays.stream(durations).sum();
-		double initialDuration = new Random().nextInt((int) (sum / maxCapacity)) + 1;
-		intervalDurations.add(initialDuration);
-		double intervalSum = initialDuration;
-		for (int i = 0; i < maxInterval - 2; i++) {
-			double duration = new Random().nextInt((int) (sum / maxCapacity)) + 1;
-			intervalDurations.add(duration);
-			intervalSum += duration;
-		}
-		double finalDuration = 300000 - intervalSum;
-		intervalDurations.add(finalDuration);
-
-		for (int i = initialCapacity + 1; i < maxCapacity; i++)
-			intervalCapacities.add(i);
-		for (int i = maxCapacity; i > finalCapacity; i--)
-			intervalCapacities.add(i);
-		intervalCapacities.add(finalCapacity);
-	}
-
+	/**
+	 * Método auxiliar que guarda la instancia generada en un fichero de texto
+	 */
 	private void save() {
 		JFileChooser jfc = new JFileChooser();
 		int returnVal = jfc.showOpenDialog(this);
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
 			File file = jfc.getSelectedFile();
-			writeInstance(file.getAbsolutePath() + ".txt");
+			app.getManager().writeInstance(file.getAbsolutePath() + ".txt");
 			JOptionPane.showMessageDialog(null,
 					LanguageManager.getInstance().getTexts().getString("message_instance_generator"),
 					LanguageManager.getInstance().getTexts().getString("message_title"),
 					JOptionPane.INFORMATION_MESSAGE);
-		}
-	}
-
-	private void writeInstance(String file) {
-		try (FileWriter fw = new FileWriter(file)) {
-			fw.write("NOP: " + durations.length + "\n");
-			fw.write("NINT: " + intervalDurations.size() + "\n");
-			int previous = 0;
-			for (int i = 0; i < intervalDurations.size(); i++) {
-				int sum = (int) (previous + intervalDurations.get(i));
-				fw.write(previous + " " + sum + " " + intervalCapacities.get(i) + "\n");
-				previous = sum;
-			}
-			for (int i = 0; i < durations.length; i++) {
-				fw.write((i + 1) + " " + (int) durations[i] + " " + (int) dueDates[i]);
-				if (i < durations.length - 1)
-					fw.write("\n");
-			}
-
-		} catch (IOException e) {
-			e.printStackTrace();
 		}
 	}
 
@@ -192,7 +137,7 @@ public class InstanceGeneratorDialog extends JDialog {
 	private JLabel getLblNmeroDeTareas() {
 		if (lblNmeroDeTareas == null) {
 			lblNmeroDeTareas = new JLabel(LanguageManager.getInstance().getTexts().getString("label_number_of_tasks"));
-			lblNmeroDeTareas.setBounds(10, 11, 90, 14);
+			lblNmeroDeTareas.setBounds(10, 10, 165, 14);
 			lblNmeroDeTareas.setHorizontalAlignment(SwingConstants.CENTER);
 		}
 		return lblNmeroDeTareas;
@@ -202,7 +147,12 @@ public class InstanceGeneratorDialog extends JDialog {
 		if (tasksSpinner == null) {
 			tasksSpinner = new JSpinner();
 			tasksSpinner.setModel(new SpinnerNumberModel(new Integer(1), new Integer(1), null, new Integer(1)));
-			tasksSpinner.setBounds(110, 8, 114, 20);
+			tasksSpinner.setBounds(185, 10, 114, 20);
+			tasksSpinner.addChangeListener(new ChangeListener() {
+				public void stateChanged(ChangeEvent e) {
+					updateIntervals();
+				}
+			});
 		}
 		return tasksSpinner;
 	}
@@ -210,7 +160,7 @@ public class InstanceGeneratorDialog extends JDialog {
 	private JLabel getLblCapacidadMxima() {
 		if (lblCapacidadMxima == null) {
 			lblCapacidadMxima = new JLabel(LanguageManager.getInstance().getTexts().getString("label_max_capacity"));
-			lblCapacidadMxima.setBounds(10, 46, 93, 14);
+			lblCapacidadMxima.setBounds(10, 45, 165, 14);
 			lblCapacidadMxima.setHorizontalAlignment(SwingConstants.CENTER);
 		}
 		return lblCapacidadMxima;
@@ -220,8 +170,34 @@ public class InstanceGeneratorDialog extends JDialog {
 		if (capacitySpinner == null) {
 			capacitySpinner = new JSpinner();
 			capacitySpinner.setModel(new SpinnerNumberModel(new Integer(3), new Integer(3), null, new Integer(1)));
-			capacitySpinner.setBounds(110, 43, 114, 20);
+			capacitySpinner.setBounds(185, 45, 114, 20);
+			capacitySpinner.addChangeListener(new ChangeListener() {
+				public void stateChanged(ChangeEvent e) {
+					updateIntervals();
+				}
+			});
 		}
 		return capacitySpinner;
+	}
+
+	private JTextField getTextField() {
+		if (textField == null) {
+			textField = new JTextField();
+			textField.setText("0");
+			textField.setHorizontalAlignment(SwingConstants.CENTER);
+			textField.setEditable(false);
+			textField.setBounds(185, 80, 114, 20);
+			textField.setColumns(10);
+		}
+		return textField;
+	}
+
+	private JLabel getLblIntervalos() {
+		if (lblIntervalos == null) {
+			lblIntervalos = new JLabel(LanguageManager.getInstance().getTexts().getString("label_intervals"));
+			lblIntervalos.setHorizontalAlignment(SwingConstants.CENTER);
+			lblIntervalos.setBounds(10, 80, 165, 14);
+		}
+		return lblIntervalos;
 	}
 }

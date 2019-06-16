@@ -99,6 +99,10 @@ public class InstanceManager {
 	public List<Integer> getIntervalCapacities() {
 		return instanceGenerator.getIntervalCapacities();
 	}
+	
+	public int getMaxInterval() {
+		return instanceGenerator.getMaxInterval();
+	}
 
 	// Writer
 	public void writeInstance(String fileName) {

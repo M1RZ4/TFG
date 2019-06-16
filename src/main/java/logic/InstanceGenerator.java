@@ -21,6 +21,7 @@ public class InstanceGenerator {
 
 	private double[] durations;
 	private double[] dueDates;
+	private int maxInterval;
 	private List<Double> intervalDurations;
 	private List<Integer> intervalCapacities;
 
@@ -51,6 +52,10 @@ public class InstanceGenerator {
 
 	public List<Integer> getIntervalCapacities() {
 		return intervalCapacities;
+	}
+	
+	public int getMaxInterval() {
+		return maxInterval;
 	}
 
 	/**
@@ -90,7 +95,7 @@ public class InstanceGenerator {
 		// Capacidad final
 		int finalCapacity = new Random().nextInt(2) + 1;
 		// Calcular número de intervalos
-		int maxInterval = 2 * maxCapacity;
+		maxInterval = 2 * maxCapacity;
 		if (initialCapacity == finalCapacity && initialCapacity == 1)
 			maxInterval -= 1;
 		else if (initialCapacity == finalCapacity && initialCapacity == 2)

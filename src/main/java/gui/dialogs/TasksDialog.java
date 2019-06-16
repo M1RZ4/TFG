@@ -203,7 +203,24 @@ public class TasksDialog extends JDialog {
 			// Incrementar step
 			step++;
 
+			// Actualiza el tardiness
+			updateTardiness();
+
 		}
+	}
+
+	/**
+	 * Método auxiliar que actualiza el tardiness tras planificar acda tarea
+	 */
+	private void updateTardiness() {
+		double tardiness = 0;
+		int[] startTimes = i.getStartTimes();
+		double[] dueDates = i.getD();
+		double[] durations = i.getP();
+
+		for (int j = 0; j < startTimes.length; j++)
+			tardiness += Math.max(0, startTimes[j] + durations[j] - dueDates[j]);
+		app.getTextFieldTardiness().setText(String.valueOf(tardiness));
 	}
 
 }
