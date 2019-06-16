@@ -64,11 +64,17 @@ public class InstanceManager {
 	}
 
 	public void setMainChart(int step, Rule rule, double g, int tickUnit) {
-		chartManager.setMainChart(step, instance, rule, g, tickUnit);
+		boolean temp = true;
+		if (getD().length > 20)
+			temp = false;
+		chartManager.setMainChart(step, instance, rule, g, tickUnit, temp);
 	}
-	
+
 	public void setMainChart(int step, ScheduledInstance i, int tickUnit) {
-		chartManager.setMainChart(step, i, Rule.MyRule, 0, tickUnit);
+		boolean temp = true;
+		if (getD().length > 20)
+			temp = false;
+		chartManager.setMainChart(step, i, Rule.MyRule, 0, tickUnit, temp);
 	}
 
 	// InstanceGenerator
@@ -99,7 +105,7 @@ public class InstanceManager {
 	public List<Integer> getIntervalCapacities() {
 		return instanceGenerator.getIntervalCapacities();
 	}
-	
+
 	public int getMaxInterval() {
 		return instanceGenerator.getMaxInterval();
 	}

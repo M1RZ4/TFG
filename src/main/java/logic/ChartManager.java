@@ -2,6 +2,7 @@ package main.java.logic;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Shape;
 import java.awt.geom.Rectangle2D;
 import java.util.Arrays;
@@ -265,7 +266,7 @@ public class ChartManager {
 	 * @param tickUnit
 	 *            separación entre marcas de graduación
 	 */
-	public void setMainChart(int step, Instancia instance, Rule rule, double g, int tickUnit) {
+	public void setMainChart(int step, Instancia instance, Rule rule, double g, int tickUnit, boolean displayNumbers) {
 		ScheduledInstance i;
 		switch (rule) {
 		case MyRule:
@@ -286,7 +287,7 @@ public class ChartManager {
 		renderer.setSeriesStroke(1, new BasicStroke(2.0f));
 
 		// Crear las tareas
-		Map<Integer, Integer> capacity = createTasks(renderer, i);
+		Map<Integer, Integer> capacity = createTasks(renderer, i, displayNumbers);
 
 		// Crear el dataset
 		XYDataset ds = setMainChartDataset(i, capacity);
@@ -337,7 +338,8 @@ public class ChartManager {
 	 *            planificación
 	 * @return diccionario de capacidades en el tiempo
 	 */
-	private Map<Integer, Integer> createTasks(XYLineAndShapeRenderer renderer, ScheduledInstance i) {
+	private Map<Integer, Integer> createTasks(XYLineAndShapeRenderer renderer, ScheduledInstance i,
+			boolean displayNumbers) {
 		// Inicializar parámetros de visualización de las tareas
 		BasicStroke stroke = new BasicStroke(1.0f);
 		Color border = Color.BLACK;
@@ -387,10 +389,16 @@ public class ChartManager {
 			// Crear las tareas gráficamente
 			Shape rectangle = new Rectangle2D.Double(startTimes[t], y, durations[t], height);
 			XYShapeAnnotation note = new XYShapeAnnotation(rectangle, stroke, border, fill);
-			XYTextAnnotation text = new XYTextAnnotation("" + ids.get(startTimes[t]),
-					rectangle.getBounds().getCenterX(), rectangle.getBounds().getCenterY());
+			note.setToolTipText(
+					LanguageManager.getInstance().getTexts().getString("chart_task") + " " + ids.get(startTimes[t]));
 			renderer.addAnnotation(note, Layer.BACKGROUND);
-			renderer.addAnnotation(text); // TODO omitir en instancias grandes
+			// Crear las anotaciones (solo en instancias con n < 20)
+			if (displayNumbers) {
+				XYTextAnnotation text = new XYTextAnnotation("" + ids.get(startTimes[t]),
+						rectangle.getBounds().getCenterX(), rectangle.getBounds().getCenterY());
+				text.setFont(new Font("", Font.BOLD, 12));
+				renderer.addAnnotation(text);
+			}
 		}
 
 		// Asignar capacidades
