@@ -266,7 +266,15 @@ public class ChartManager {
 	 *            separación entre marcas de graduación
 	 */
 	public void setMainChart(int step, Instancia instance, Rule rule, double g, int tickUnit) {
-		ScheduledInstance i = new ScheduledInstance(step, instance, rule, g);
+		ScheduledInstance i;
+		switch (rule) {
+		case MyRule:
+			i = (ScheduledInstance) instance;
+			break;
+		default:
+			i = new ScheduledInstance(step, instance, rule, g);
+			break;
+		}
 
 		// Modificar el gráfico
 		XYLineAndShapeRenderer renderer = new XYLineAndShapeRenderer();

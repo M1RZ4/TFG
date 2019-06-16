@@ -8,5 +8,5 @@ package main.java.logic.enums;
  *
  */
 public enum Rule {
-	ATC, EDD, SPT
+	ATC, EDD, SPT, MyRule
 }

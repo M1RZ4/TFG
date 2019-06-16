@@ -20,8 +20,14 @@ public class ScheduledInstance extends Instancia {
 	private int[] ids;
 	private int[] startTimes;
 
+	public ScheduledInstance(Instancia i) {
+		super(i.getNombre());
+		perfilMaquina = i.getPerfilMaquina();
+	}
+
 	public ScheduledInstance(int step, Instancia i, Rule rule, double g) {
 		super(i.getNombre());
+		this.perfilMaquina = i.getPerfilMaquina();
 
 		Planificacion p = null;
 		switch (rule) {
@@ -34,6 +40,8 @@ public class ScheduledInstance extends Instancia {
 		case SPT:
 			p = Gestor.planificaSPT(i);
 			break;
+		case MyRule:
+			return;
 		default:
 			break;
 		}
@@ -67,7 +75,6 @@ public class ScheduledInstance extends Instancia {
 			}
 		}
 
-		this.perfilMaquina = i.getPerfilMaquina();
 		this.d = Arrays.copyOfRange(dueDates, 0, step);
 		this.p = Arrays.copyOfRange(durations, 0, step);
 		this.startTimes = Arrays.copyOfRange(startTimes, 0, step);
@@ -79,5 +86,37 @@ public class ScheduledInstance extends Instancia {
 
 	public int[] getStartTimes() {
 		return startTimes;
+	}
+
+	public void setID(int id) {
+		if (ids == null)
+			ids = new int[0];
+		int[] temp = Arrays.copyOf(ids, ids.length + 1);
+		temp[temp.length - 1] = id;
+		this.ids = temp;
+	}
+
+	public void setD(double d) {
+		if (this.d == null)
+			this.d = new double[0];
+		double[] temp = Arrays.copyOf(this.d, this.d.length + 1);
+		temp[temp.length - 1] = d;
+		this.d = temp;
+	}
+
+	public void setP(double p) {
+		if (this.p == null)
+			this.p = new double[0];
+		double[] temp = Arrays.copyOf(this.p, this.p.length + 1);
+		temp[temp.length - 1] = p;
+		this.p = temp;
+	}
+
+	public void setSti(int sti) {
+		if (startTimes == null)
+			startTimes = new int[0];
+		int[] temp = Arrays.copyOf(startTimes, startTimes.length + 1);
+		temp[temp.length - 1] = sti;
+		startTimes = temp;
 	}
 }

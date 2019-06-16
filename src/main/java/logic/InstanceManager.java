@@ -66,6 +66,10 @@ public class InstanceManager {
 	public void setMainChart(int step, Rule rule, double g, int tickUnit) {
 		chartManager.setMainChart(step, instance, rule, g, tickUnit);
 	}
+	
+	public void setMainChart(int step, ScheduledInstance i, int tickUnit) {
+		chartManager.setMainChart(step, i, Rule.MyRule, 0, tickUnit);
+	}
 
 	// InstanceGenerator
 	public void initializeInstanceGenerator(int numberOfTasks, int maxCapacity) {

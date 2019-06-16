@@ -28,9 +28,9 @@ public class InstanceReader {
 	 *             si el fichero especificado no existe
 	 */
 	public Instancia readInstance(String fileName) throws FileNotFoundException {
-		if (!fileName.endsWith(".txt"))
+		if (!fileName.toLowerCase().endsWith(".txt"))
 			throw new IllegalArgumentException(
-					LanguageManager.getInstance().getTexts().getString("error_file_extension"));
+					LanguageManager.getInstance().getTexts().getString("error_extension"));
 		else if (!new File(fileName).exists())
 			throw new FileNotFoundException(LanguageManager.getInstance().getTexts().getString("error_not_found"));
 		return Gestor.cargarInstancia(fileName);

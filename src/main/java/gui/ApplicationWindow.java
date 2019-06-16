@@ -23,6 +23,7 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JComboBox;
+import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -65,8 +66,8 @@ import main.java.logic.enums.Rule;
 
 /**
  * Clase ApplicationWindow que representa la ventana principal de la aplicación.
- * Se comunica con {@link main.java.logic.InstanceManager InstanceManager} para dar
- * respuesta a las principales funcionalidades de la aplicación
+ * Se comunica con {@link main.java.logic.InstanceManager InstanceManager} para
+ * dar respuesta a las principales funcionalidades de la aplicación
  * 
  * @author Mirza Ojeda Veira
  *
@@ -162,7 +163,8 @@ public class ApplicationWindow {
 		BorderLayout borderLayout = (BorderLayout) frame.getContentPane().getLayout();
 		borderLayout.setVgap(10);
 		borderLayout.setHgap(10);
-		LanguageManager.getInstance().setTexts(ResourceBundle.getBundle("main/resources/texts", new Locale("en")));
+		LanguageManager.getInstance().setTexts(ResourceBundle.getBundle("texts", new Locale("en")));
+		JComponent.setDefaultLocale(Locale.forLanguageTag("en"));
 		frame.setTitle(manager.getText("menu_title"));
 		frame.setBounds(100, 100, 1300, 650);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -241,11 +243,11 @@ public class ApplicationWindow {
 				manager.readInstance(file.getAbsolutePath());
 			} catch (IllegalArgumentException e) {
 				JOptionPane.showMessageDialog(frame, e.getMessage(), manager.getText("error_title"),
-						JOptionPane.INFORMATION_MESSAGE);
+						JOptionPane.ERROR_MESSAGE);
 				return;
 			} catch (FileNotFoundException e) {
 				JOptionPane.showMessageDialog(frame, manager.getText("error_not_found"), manager.getText("error_title"),
-						JOptionPane.INFORMATION_MESSAGE);
+						JOptionPane.ERROR_MESSAGE);
 				return;
 			}
 
@@ -401,9 +403,10 @@ public class ApplicationWindow {
 			mntmEspanol.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					LanguageManager.getInstance()
-							.setTexts(ResourceBundle.getBundle("main/resources/texts", Locale.forLanguageTag("es")));
+							.setTexts(ResourceBundle.getBundle("texts", Locale.forLanguageTag("es")));
 					changeLocaleTexts();
 					updateMnemonics();
+					JComponent.setDefaultLocale(Locale.forLanguageTag("es"));
 				}
 			});
 		}
@@ -417,9 +420,10 @@ public class ApplicationWindow {
 			mntmIngles.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					LanguageManager.getInstance()
-							.setTexts(ResourceBundle.getBundle("main/resources/texts", Locale.forLanguageTag("en")));
+							.setTexts(ResourceBundle.getBundle("texts", Locale.forLanguageTag("en")));
 					changeLocaleTexts();
 					updateMnemonics();
+					JComponent.setDefaultLocale(Locale.forLanguageTag("en"));
 				}
 			});
 		}
@@ -730,7 +734,7 @@ public class ApplicationWindow {
 		double[] durations = manager.getP();
 		int[] ids = i.getIds();
 
-		td = new TasksDialog();
+		td = new TasksDialog(this, (int) getAxisSpinner().getValue());
 		DefaultTableModel model = (DefaultTableModel) td.getTasksTable().getModel();
 		model.setRowCount(0);
 		for (int t = 0; t < dueDates.length; t++) {
@@ -950,6 +954,8 @@ public class ApplicationWindow {
 					if (!btnAnterior.isEnabled())
 						btnAnterior.setEnabled(true);
 					calculateTardiness();
+					if (td != null)
+						td.getBtnPlanificar().setEnabled(false);
 				}
 			});
 		}
@@ -962,8 +968,11 @@ public class ApplicationWindow {
 			btnAnterior.setEnabled(false);
 			btnAnterior.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					if (step > 0)
+					boolean flag = true;
+					if (step > 0) {
 						step--;
+						flag = false;
+					}
 					if (step <= 0) {
 						btnAnterior.setEnabled(false);
 						frame.remove(cp);
@@ -971,11 +980,13 @@ public class ApplicationWindow {
 						cp = new ChartPanel(manager.getChart());
 						frame.getContentPane().add(cp);
 						frame.revalidate();
+						flag = true;
 					} else {
 						setMainChart();
 					}
 					if (displayedTasks) {
 						updateTasks();
+						td.getBtnPlanificar().setEnabled(flag);
 					}
 					if (displayedDurations) {
 						updateDurations();
@@ -1019,6 +1030,8 @@ public class ApplicationWindow {
 					if (!btnAnterior.isEnabled())
 						btnAnterior.setEnabled(true);
 					calculateTardiness();
+					if (td != null)
+						td.getBtnPlanificar().setEnabled(false);
 				}
 			});
 		}
@@ -1133,6 +1146,22 @@ public class ApplicationWindow {
 
 	public static ResourceBundle getTexts() {
 		return LanguageManager.getInstance().getTexts();
+	}
+	
+	public InstanceManager getManager() {
+		return manager;
+	}
+	
+	public ChartPanel getCp() {
+		return cp;
+	}
+	
+	public void setCp(ChartPanel cp) {
+		this.cp = cp;
+	}
+	
+	public JFrame getFrame() {
+		return frame;
 	}
 
 }
