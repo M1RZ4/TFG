@@ -124,7 +124,6 @@ public class ApplicationWindow {
 	private InstanceManager manager = new InstanceManager();
 	private JLabel lblTardiness;
 	private JTextField textFieldTardiness;
-	private JPanel tardinessPanel;
 
 	/**
 	 * Launch the application.
@@ -202,12 +201,6 @@ public class ApplicationWindow {
 			gbc_axisPanel.gridx = 2;
 			gbc_axisPanel.gridy = 0;
 			configPanel.add(getAxisPanel(), gbc_axisPanel);
-			GridBagConstraints gbc_tardinessPanel = new GridBagConstraints();
-			gbc_tardinessPanel.insets = new Insets(0, 0, 0, 5);
-			gbc_tardinessPanel.fill = GridBagConstraints.BOTH;
-			gbc_tardinessPanel.gridx = 0;
-			gbc_tardinessPanel.gridy = 1;
-			configPanel.add(getTardinessPanel(), gbc_tardinessPanel);
 		}
 		return configPanel;
 	}
@@ -1118,14 +1111,6 @@ public class ApplicationWindow {
 			textFieldTardiness.setHorizontalAlignment(JTextField.CENTER);
 		}
 		return textFieldTardiness;
-	}
-
-	private JPanel getTardinessPanel() {
-		if (tardinessPanel == null) {
-			tardinessPanel = new JPanel();
-			tardinessPanel.setLayout(new GridLayout(2, 0, 0, 0));
-		}
-		return tardinessPanel;
 	}
 
 	private void calculateTardiness() {
