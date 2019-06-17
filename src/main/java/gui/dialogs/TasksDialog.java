@@ -25,7 +25,7 @@ import org.jfree.chart.ChartPanel;
 import dominio.Intervalo;
 import main.java.gui.ApplicationWindow;
 import main.java.logic.LanguageManager;
-import main.java.logic.ScheduledInstance;
+import main.java.logic.instances.ScheduledInstance;
 
 /**
  * Clase TasksDialog que representa una diálogo para mostrar la información de

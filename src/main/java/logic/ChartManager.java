@@ -30,6 +30,7 @@ import org.jfree.ui.Layer;
 import dominio.Instancia;
 import dominio.Intervalo;
 import main.java.logic.enums.Rule;
+import main.java.logic.instances.ScheduledInstance;
 
 /**
  * Clase ChartManager encargada de generar los gráficos que se mostrarán en la

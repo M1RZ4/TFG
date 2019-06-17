@@ -51,7 +51,7 @@ public class AnalysisReader implements Reader<Analysis> {
 				maxCapacity[i] = Integer.valueOf(line[i]);
 
 			if (numberOfTasks.length != maxCapacity.length)
-				throw new Exception();
+				throw new IllegalStateException(LanguageManager.getInstance().getTexts().getString("error_analysis"));
 
 			return new Analysis(numberOfInstances, numberOfTasks, maxCapacity);
 		} catch (Exception e) {

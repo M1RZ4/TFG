@@ -8,6 +8,8 @@ import org.jfree.chart.JFreeChart;
 
 import dominio.Instancia;
 import main.java.logic.enums.Rule;
+import main.java.logic.instances.AnalysisInstance;
+import main.java.logic.instances.ScheduledInstance;
 import main.java.logic.io.AnalysisReader;
 import main.java.logic.io.AnalysisWriter;
 import main.java.logic.io.ChartWriter;

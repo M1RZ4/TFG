@@ -7,6 +7,7 @@ import java.util.Random;
 
 import dominio.Instancia;
 import dominio.Intervalo;
+import main.java.logic.instances.AnalysisInstance;
 
 /**
  * Clase InstanceGenerator encargada de generar los vectores y listas con los

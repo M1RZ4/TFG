@@ -88,8 +88,9 @@ public class ExperimentalAnalysisDialog extends JDialog {
 			btnCargar = new JButton(LanguageManager.getInstance().getTexts().getString("button_load"));
 			btnCargar.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					load();
-					save();
+					int error = load();
+					if (error == 0)
+						save();
 				}
 			});
 		}
@@ -99,8 +100,10 @@ public class ExperimentalAnalysisDialog extends JDialog {
 	/**
 	 * Método auxiliar que carga un análisis desde un fichero de texto para realizar
 	 * el estudio experimental
+	 * 
+	 * @return -1 si hay un error, 0 en caso contrario
 	 */
-	private void load() {
+	private int load() {
 		JFileChooser jfc = new JFileChooser();
 		int returnVal = jfc.showOpenDialog(this);
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
@@ -110,18 +113,21 @@ public class ExperimentalAnalysisDialog extends JDialog {
 			} catch (IllegalArgumentException e) {
 				JOptionPane.showMessageDialog(this, e.getMessage(), app.getManager().getText("error_title"),
 						JOptionPane.ERROR_MESSAGE);
-				return;
+				return -1;
 			} catch (FileNotFoundException e) {
 				JOptionPane.showMessageDialog(this, app.getManager().getText("error_not_found"),
 						app.getManager().getText("error_title"), JOptionPane.ERROR_MESSAGE);
-				return;
+				return -1;
 			} catch (IllegalStateException e) {
 				JOptionPane.showMessageDialog(this, e.getMessage(), app.getManager().getText("error_title"),
 						JOptionPane.ERROR_MESSAGE);
+				return -1;
 			}
 			JOptionPane.showMessageDialog(this, app.getManager().getText("message_load"),
 					app.getManager().getText("message_title"), JOptionPane.INFORMATION_MESSAGE);
+			return 0;
 		}
+		return -1;
 	}
 
 	/**
@@ -134,7 +140,13 @@ public class ExperimentalAnalysisDialog extends JDialog {
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
 			File file = jfc.getSelectedFile();
 			app.getManager().initializeInstanceGenerator(0, 0);
-			app.getManager().writeAnalysis((file.getAbsolutePath()));
+			try {
+				app.getManager().writeAnalysis((file.getAbsolutePath()));
+			} catch (IllegalStateException e) {
+				JOptionPane.showMessageDialog(this, e.getMessage(), app.getManager().getText("error_title"),
+						JOptionPane.ERROR_MESSAGE);
+				return;
+			}
 			JOptionPane.showMessageDialog(this, app.getManager().getText("message_save"),
 					app.getManager().getText("message_title"), JOptionPane.INFORMATION_MESSAGE);
 		}

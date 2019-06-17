@@ -61,8 +61,8 @@ import main.java.gui.dialogs.TasksDialog;
 import main.java.gui.menu.BackgroundMenuBar;
 import main.java.logic.InstanceManager;
 import main.java.logic.LanguageManager;
-import main.java.logic.ScheduledInstance;
 import main.java.logic.enums.Rule;
+import main.java.logic.instances.ScheduledInstance;
 
 /**
  * Clase ApplicationWindow que representa la ventana principal de la aplicación.

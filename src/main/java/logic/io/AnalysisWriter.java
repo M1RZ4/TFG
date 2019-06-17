@@ -5,9 +5,17 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.hssf.usermodel.HSSFCellStyle;
+import org.apache.poi.hssf.usermodel.HSSFFont;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.BorderStyle;
+import org.apache.poi.ss.usermodel.FillPatternType;
+import org.apache.poi.ss.usermodel.HorizontalAlignment;
+import org.apache.poi.ss.usermodel.IndexedColors;
+import org.apache.poi.ss.usermodel.VerticalAlignment;
 
 import dominio.Gestor;
 import dominio.Instancia;
@@ -46,63 +54,194 @@ public class AnalysisWriter implements Writer {
 		try (HSSFWorkbook workbook = new HSSFWorkbook()) {
 			HSSFSheet sheet = workbook
 					.createSheet(LanguageManager.getInstance().getTexts().getString("menu_experimental_study"));
+			sheet.setDefaultRowHeight((short) 600);
 			HSSFRow rowhead = sheet.createRow(0);
-			rowhead.createCell(0).setCellValue("MC");
-			rowhead.createCell(1).setCellValue("n");
-			rowhead.createCell(2).setCellValue("EDD");
-			rowhead.createCell(3).setCellValue("SPT");
-			rowhead.createCell(4).setCellValue("ATC-0.25");
-			rowhead.createCell(5).setCellValue("ATC-0.50");
-			rowhead.createCell(6).setCellValue("ATC-0.75");
-			rowhead.createCell(7).setCellValue("ATC-1.00");
-			fillRows(sheet);
+			HSSFCellStyle style = workbook.createCellStyle();
+			style = setHeaderStyle(style, workbook);
+
+			// MC
+			HSSFCell cell = rowhead.createCell(0);
+			cell.setCellValue("MC");
+			cell.setCellStyle(style);
+			sheet.setColumnWidth(0, 4000);
+
+			// n
+			cell = rowhead.createCell(1);
+			cell.setCellValue("n");
+			cell.setCellStyle(style);
+			sheet.setColumnWidth(1, 4000);
+
+			// EDD
+			cell = rowhead.createCell(2);
+			cell.setCellValue("EDD");
+			cell.setCellStyle(style);
+			sheet.setColumnWidth(2, 4000);
+
+			// SPT
+			cell = rowhead.createCell(3);
+			cell.setCellValue("SPT");
+			cell.setCellStyle(style);
+			sheet.setColumnWidth(3, 4000);
+
+			// ATC - 0.25
+			cell = rowhead.createCell(4);
+			cell.setCellValue("ATC-0.25");
+			cell.setCellStyle(style);
+			sheet.setColumnWidth(4, 4000);
+
+			// ATC - 0.50
+			cell = rowhead.createCell(5);
+			cell.setCellValue("ATC-0.50");
+			cell.setCellStyle(style);
+			sheet.setColumnWidth(5, 4000);
+
+			// ATC - 0.75
+			cell = rowhead.createCell(6);
+			cell.setCellValue("ATC-0.75");
+			cell.setCellStyle(style);
+			sheet.setColumnWidth(6, 4000);
+
+			// ATC - 1.00
+			cell = rowhead.createCell(7);
+			cell.setCellValue("ATC-1.00");
+			cell.setCellStyle(style);
+			sheet.setColumnWidth(7, 4000);
+
+			fillRows(sheet, workbook);
+
 			try (FileOutputStream f = new FileOutputStream(fileName + ".xls")) {
 				workbook.write(f);
 			} catch (IOException e) {
-				e.printStackTrace(); // TODO error al crear excel
+				throw new IllegalStateException(LanguageManager.getInstance().getTexts().getString("error_excel"));
 			}
 		} catch (IOException e) {
-			e.printStackTrace(); // TODO error al crear excel
+			throw new IllegalStateException(LanguageManager.getInstance().getTexts().getString("error_excel"));
 		}
+	}
+
+	/**
+	 * Método privado que modifica el estilo de las celdas de cabecera del excel:
+	 * letra blanca en negrita sobre fondo verde con texto centrado en celda con
+	 * bordes dobles
+	 * 
+	 * @param style
+	 *            estilo a modificar
+	 * @param wb
+	 *            workbook del xls
+	 * @return style modificado
+	 */
+	private HSSFCellStyle setHeaderStyle(HSSFCellStyle style, HSSFWorkbook wb) {
+		// Situación del texto
+		style.setAlignment(HorizontalAlignment.CENTER);
+		style.setVerticalAlignment(VerticalAlignment.CENTER);
+
+		// Color de fondo
+		style.setFillForegroundColor(IndexedColors.GREEN.getIndex());
+		style.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+
+		// Bordes
+		style.setBorderBottom(BorderStyle.DOUBLE);
+		style.setBorderTop(BorderStyle.DOUBLE);
+		style.setBorderLeft(BorderStyle.DOUBLE);
+		style.setBorderRight(BorderStyle.DOUBLE);
+
+		// Fuente del texto
+		HSSFFont font = wb.createFont();
+		font.setBold(true);
+		font.setFontHeightInPoints((short) 12);
+		font.setColor(IndexedColors.WHITE.getIndex());
+		style.setFont(font);
+
+		return style;
+	}
+
+	/**
+	 * Método privado que modifica el estilo de las celdas a rellenar del excel:
+	 * texto centrado en las celdas con bordes dobles
+	 * 
+	 * @param style
+	 *            estilo a modificar
+	 * @param wb
+	 *            workbook del xls
+	 * @return style modificado
+	 */
+	private HSSFCellStyle setCellStyle(HSSFCellStyle style, HSSFWorkbook wb) {
+		// Situación del texto
+		style.setAlignment(HorizontalAlignment.CENTER);
+		style.setVerticalAlignment(VerticalAlignment.CENTER);
+
+		// Bordes
+		style.setBorderBottom(BorderStyle.DOUBLE);
+		style.setBorderTop(BorderStyle.DOUBLE);
+		style.setBorderLeft(BorderStyle.DOUBLE);
+		style.setBorderRight(BorderStyle.DOUBLE);
+
+		// Fuente del texto
+		HSSFFont font = wb.createFont();
+		font.setFontHeightInPoints((short) 12);
+		style.setFont(font);
+
+		return style;
 	}
 
 	/**
 	 * Método auxiliar que cumplimenta el excel con los datos del tardiness para
 	 * cada una de los parámetros
 	 */
-	private void fillRows(HSSFSheet sheet) {
+	private void fillRows(HSSFSheet sheet, HSSFWorkbook wb) {
 		double[] averages;
+
+		HSSFCellStyle style = wb.createCellStyle();
+		style = setCellStyle(style, wb);
+
 		for (int i = 0; i < analysis.getNumberOfTasks().length; i++) {
 			HSSFRow row = sheet.createRow(i + 1);
+
 			// MC
-			row.createCell(0).setCellValue(analysis.getMaxCapacity()[i]);
+			HSSFCell cell = row.createCell(0);
+			cell.setCellValue(analysis.getMaxCapacity()[i]);
+			cell.setCellStyle(style);
 
 			// n
-			row.createCell(1).setCellValue(analysis.getNumberOfTasks()[i]);
+			cell = row.createCell(1);
+			cell.setCellValue(analysis.getNumberOfTasks()[i]);
+			cell.setCellStyle(style);
 
 			// EDD
 			averages = calculateAverage(Rule.EDD, 0);
-			row.createCell(2).setCellValue(averages[i]);
+			cell = row.createCell(2);
+			cell.setCellValue(averages[i]);
+			cell.setCellStyle(style);
 
 			// SPT
 			averages = calculateAverage(Rule.SPT, 0);
-			row.createCell(3).setCellValue(averages[i]);
+			cell = row.createCell(3);
+			cell.setCellValue(averages[i]);
+			cell.setCellStyle(style);
 
 			// ATC - 0.25
 			averages = calculateAverage(Rule.ATC, 0.25);
-			row.createCell(4).setCellValue(averages[i]);
+			cell = row.createCell(4);
+			cell.setCellValue(averages[i]);
+			cell.setCellStyle(style);
 
 			// ATC - 0.50
 			averages = calculateAverage(Rule.ATC, 0.5);
-			row.createCell(5).setCellValue(averages[i]);
+			cell = row.createCell(5);
+			cell.setCellValue(averages[i]);
+			cell.setCellStyle(style);
 
 			// ATC - 0.75
 			averages = calculateAverage(Rule.ATC, 0.75);
-			row.createCell(6).setCellValue(averages[i]);
+			cell = row.createCell(6);
+			cell.setCellValue(averages[i]);
+			cell.setCellStyle(style);
 
 			// ATC - 1.00
 			averages = calculateAverage(Rule.ATC, 1);
-			row.createCell(7).setCellValue(averages[i]);
+			cell = row.createCell(7);
+			cell.setCellValue(averages[i]);
+			cell.setCellStyle(style);
 		}
 	}
 
