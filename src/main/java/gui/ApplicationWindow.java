@@ -74,14 +74,14 @@ import main.java.logic.instances.ScheduledInstance;
  */
 public class ApplicationWindow {
 
-	ChartPanel cp;
+	private ChartPanel cp;
 
-	TasksDialog td;
-	boolean displayedTasks = false;
-	DurationsDialog pd;
-	boolean displayedDurations = false;
-	DueDatesDialog dd;
-	boolean displayedDuedates = false;
+	private TasksDialog td;
+	private boolean displayedTasks = false;
+	private DurationsDialog pd;
+	private boolean displayedDurations = false;
+	private DueDatesDialog dd;
+	private boolean displayedDuedates = false;
 
 	private int step;
 

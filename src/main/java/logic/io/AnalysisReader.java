@@ -37,18 +37,28 @@ public class AnalysisReader implements Reader<Analysis> {
 		try (BufferedReader f = new BufferedReader(new FileReader(new File(fileName)))) {
 			// Número de instancias
 			int numberOfInstances = Integer.valueOf(f.readLine().split(":")[1]);
+			if (numberOfInstances < 1)
+				throw new IllegalStateException(LanguageManager.getInstance().getTexts().getString("error_analysis"));
 
 			// Números de tareas
 			String[] line = f.readLine().split(":")[1].split(",");
 			int[] numberOfTasks = new int[line.length];
-			for (int i = 0; i < line.length; i++)
-				numberOfTasks[i] = Integer.valueOf(line[i]);
+			for (int i = 0; i < line.length; i++) {
+				int aux = Integer.valueOf(line[i]);
+				if (aux < 1)
+					throw new IllegalStateException(LanguageManager.getInstance().getTexts().getString("error_analysis"));
+				numberOfTasks[i] = aux;
+				}
 
 			// Capacidades máximas
 			line = f.readLine().split(":")[1].split(",");
 			int[] maxCapacity = new int[line.length];
-			for (int i = 0; i < line.length; i++)
-				maxCapacity[i] = Integer.valueOf(line[i]);
+			for (int i = 0; i < line.length; i++) {
+				int aux = Integer.valueOf(line[i]);
+				if (aux < 3)
+					throw new IllegalStateException(LanguageManager.getInstance().getTexts().getString("error_analysis"));
+				maxCapacity[i] = aux;
+			}
 
 			if (numberOfTasks.length != maxCapacity.length)
 				throw new IllegalStateException(LanguageManager.getInstance().getTexts().getString("error_analysis"));
