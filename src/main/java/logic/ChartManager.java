@@ -288,7 +288,10 @@ public class ChartManager {
 		renderer.setSeriesStroke(1, new BasicStroke(2.0f));
 
 		// Crear las tareas
-		Map<Integer, Integer> capacity = createTasks(renderer, i, displayNumbers);
+		double sum = 0;
+		for (int j = 0; j < instance.getP().length; j++)
+			sum += instance.getP()[j];
+		Map<Integer, Integer> capacity = createTasks(renderer, i, displayNumbers, (int) sum);
 
 		// Crear el dataset
 		XYDataset ds = setMainChartDataset(i, capacity);
@@ -340,7 +343,7 @@ public class ChartManager {
 	 * @return diccionario de capacidades en el tiempo
 	 */
 	private Map<Integer, Integer> createTasks(XYLineAndShapeRenderer renderer, ScheduledInstance i,
-			boolean displayNumbers) {
+			boolean displayNumbers, int maxDuration) {
 		// Inicializar parámetros de visualización de las tareas
 		BasicStroke stroke = new BasicStroke(1.0f);
 		Color border = Color.BLACK;
@@ -384,23 +387,23 @@ public class ChartManager {
 			// Crear las tareas gráficamente
 			Shape rectangle = new Rectangle2D.Double(startTimes[t], y, durations[t], height);
 			XYShapeAnnotation note = new XYShapeAnnotation(rectangle, stroke, border, fill);
-			note.setToolTipText(
-					LanguageManager.getInstance().getTexts().getString("chart_task") + " " + i.getIds()[t]);
+			note.setToolTipText(LanguageManager.getInstance().getTexts().getString("chart_task") + " " + i.getIds()[t]);
 			renderer.addAnnotation(note, Layer.BACKGROUND);
 			// Crear las anotaciones (solo en instancias con n < 20)
 			if (displayNumbers) {
-				XYTextAnnotation text = new XYTextAnnotation("" + i.getIds()[t],
-						rectangle.getBounds().getCenterX(), rectangle.getBounds().getCenterY());
+				XYTextAnnotation text = new XYTextAnnotation("" + i.getIds()[t], rectangle.getBounds().getCenterX(),
+						rectangle.getBounds().getCenterY());
 				text.setFont(new Font("", Font.BOLD, 12));
 				renderer.addAnnotation(text);
 			}
 		}
 
 		// Asignar capacidades
-		for (int j = 0; j < endTimes[endTimes.length - 1]; j++) {
+		for (int j = 0; j < maxDuration; j++) {
+			boolean free = true;
 			for (int k = 0; k < startTimes.length; k++) {
-
 				if (j >= startTimes[k] && j < endTimes[k]) {
+					free = false;
 					if (capacity.get(j) == null) {
 						capacity.put(j, 1);
 					} else {
@@ -408,9 +411,10 @@ public class ChartManager {
 					}
 				}
 			}
+			if (free)
+				capacity.put(j, 0);
 
 		}
-		capacity.put((int) endTimes[endTimes.length - 1], 1);
 		return capacity;
 	}
 
@@ -441,19 +445,36 @@ public class ChartManager {
 				LanguageManager.getInstance().getTexts().getString("chart_occupied_capacity"));
 		Object[] sortedKeys = occupied.keySet().toArray();
 		Arrays.sort(sortedKeys);
+		int last = 0;
 		for (int j = 0; j < sortedKeys.length; j++) {
-			for (int t = 0; t < startTimes.length; t++) {
-				int key = (int) sortedKeys[j];
-				if (key == startTimes[t] || key == endTimes[t]) {
-					if (key > 0 && occupied.get(key) > occupied.get(sortedKeys[j - 1]))
-						tasks.add(key, occupied.get(key) - 1);
-					else if (key > 0 && occupied.get(key) < occupied.get(sortedKeys[j - 1]))
-						tasks.add(key, occupied.get(key - 1));
-					tasks.add(key, occupied.get(key));
+			boolean isTask = false;
+			for (int t = 0; t < i.getD().length; t++) {
+				if (j == startTimes[t] || j == endTimes[t])
+					isTask = true;
+			}
+			if (isTask) {
+				System.out.println("Coincidencia con inicio/fin tarea - j = " + j + " - Valor actual = "
+						+ occupied.get(j) + " - Anterior valor = " + last);
+				if (j > 0) {
+					if (occupied.get(j) > last) {
+						tasks.add(j, last);
+						tasks.add(j, occupied.get(j));
+						last = occupied.get(j);
+						System.out.println("Añadidos puntos en j = " + j);
+					} else if (occupied.get(j) < last) {
+						tasks.add(j, last);
+						tasks.add(j, occupied.get(j));
+						last = occupied.get(j);
+						System.out.println("Añadidos puntos en j = " + j);
+					} else
+						System.out.println("No se han encontrado puntos que añadir en j = " + j);
+				} else {
+					tasks.add(j, occupied.get(j));
+					last = occupied.get(j);
 				}
 			}
 		}
-		tasks.add(endTimes[endTimes.length - 1], 0);
+		// tasks.add(Arrays.stream(endTimes).max().getAsDouble(), 0);
 
 		// Crear serie para la capacidad disponible
 		final XYSeries capacity = createCapacity(i);

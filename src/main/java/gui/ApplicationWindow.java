@@ -1062,7 +1062,7 @@ public class ApplicationWindow {
 	 * Método auxiliar que actualiza el diálogo con el gráfico de duraciones al
 	 * hacer la planificación paso a paso
 	 */
-	private void updateDurations() {
+	public void updateDurations() {
 		Point location = pd.getLocationOnScreen();
 		pd.dispose();
 		createDurationsChart();
@@ -1073,7 +1073,7 @@ public class ApplicationWindow {
 	 * Método auxiliar que actualiza el diálogo con el gráfico de due dates al hacer
 	 * la planificación paso a paso
 	 */
-	private void updateDueDates() {
+	public void updateDueDates() {
 		Point location = dd.getLocationOnScreen();
 		dd.dispose();
 		createDueDatesChart();
@@ -1163,6 +1163,14 @@ public class ApplicationWindow {
 
 	public JFrame getFrame() {
 		return frame;
+	}
+
+	public boolean isDisplayedDurations() {
+		return displayedDurations;
+	}
+
+	public boolean isDisplayedDuedates() {
+		return displayedDuedates;
 	}
 
 }
