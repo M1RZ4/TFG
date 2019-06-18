@@ -79,10 +79,4 @@
    	 	<version>4.1.0</version>
 	</dependency>
    	</dependencies>
-	<exclusions>
-                <exclusion>
-                    <groupId>com.sun.java</groupId>
-                    <artifactId>tools</artifactId>
-                </exclusion>
-            </exclusions>
 </project>
