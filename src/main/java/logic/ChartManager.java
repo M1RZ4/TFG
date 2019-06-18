@@ -354,14 +354,8 @@ public class ChartManager {
 		double[] endTimes = durations.clone(); // Vector de tiempos de fin
 		HashMap<Double, Double> tasks = new HashMap<Double, Double>(); // Diccionario con clave [y] y valor [tiempo de
 																		// fin]
-		HashMap<Integer, Integer> ids = new HashMap<Integer, Integer>(); // Diccionario con clave [tiempo de inicio] y
-																			// valor [ID de la tarea]
 		HashMap<Integer, Integer> capacity = new HashMap<Integer, Integer>(); // Diccionario con clave [tiempo] y valor
 																				// [capacidad ocupada]
-
-		// Asignar IDs
-		for (int j = 0; j < startTimes.length; j++)
-			ids.put(startTimes[j], i.getIds()[j]);
 
 		// Asignar tiempos de fin
 		for (int j = 0; j < endTimes.length; j++)
@@ -391,11 +385,11 @@ public class ChartManager {
 			Shape rectangle = new Rectangle2D.Double(startTimes[t], y, durations[t], height);
 			XYShapeAnnotation note = new XYShapeAnnotation(rectangle, stroke, border, fill);
 			note.setToolTipText(
-					LanguageManager.getInstance().getTexts().getString("chart_task") + " " + ids.get(startTimes[t]));
+					LanguageManager.getInstance().getTexts().getString("chart_task") + " " + i.getIds()[t]);
 			renderer.addAnnotation(note, Layer.BACKGROUND);
 			// Crear las anotaciones (solo en instancias con n < 20)
 			if (displayNumbers) {
-				XYTextAnnotation text = new XYTextAnnotation("" + ids.get(startTimes[t]),
+				XYTextAnnotation text = new XYTextAnnotation("" + i.getIds()[t],
 						rectangle.getBounds().getCenterX(), rectangle.getBounds().getCenterY());
 				text.setFont(new Font("", Font.BOLD, 12));
 				renderer.addAnnotation(text);
