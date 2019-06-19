@@ -1,4 +1,4 @@
-package main.java.gui.dialogs;
+package gui.dialogs;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -20,8 +20,8 @@ import javax.swing.SwingConstants;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import main.java.gui.ApplicationWindow;
-import main.java.logic.LanguageManager;
+import gui.ApplicationWindow;
+import logic.LanguageManager;
 
 /**
  * Clase InstanceGeneratorDialog que representa una diálogo para interactuar con

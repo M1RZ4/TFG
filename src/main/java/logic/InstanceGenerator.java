@@ -1,4 +1,4 @@
-package main.java.logic;
+package logic;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -7,13 +7,13 @@ import java.util.Random;
 
 import dominio.Instancia;
 import dominio.Intervalo;
-import main.java.logic.instances.AnalysisInstance;
+import logic.instances.AnalysisInstance;
 
 /**
  * Clase InstanceGenerator encargada de generar los vectores y listas con los
  * distintos parámtros de tareas e intervalos necesarios para generar los
  * ficheros de instancias por parte de la clase
- * {@link main.java.logic.io.InstanceWriter InstanceWriter}
+ * {@link logic.io.InstanceWriter InstanceWriter}
  * 
  * @author Mirza Ojeda Veira
  *
@@ -41,7 +41,7 @@ public class InstanceGenerator {
 		this.numberOfTasks = numberOfTasks;
 		this.maxCapacity = maxCapacity;
 	}
-
+	
 	public double[] getDurations() {
 		return durations;
 	}

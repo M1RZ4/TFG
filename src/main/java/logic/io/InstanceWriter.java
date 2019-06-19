@@ -1,4 +1,4 @@
-package main.java.logic.io;
+package logic.io;
 
 import java.io.FileWriter;
 import java.io.IOException;
@@ -11,7 +11,7 @@ import dominio.Intervalo;
 /**
  * Clase InstanceWriter encargada de generar ficheros de texto con instancias en
  * función de los parámetros generados con
- * {@link main.java.logic.InstanceGenerator InstanceGenerator}. Implementa la
+ * {@link logic.InstanceGenerator InstanceGenerator}. Implementa la
  * interfaz {@link Writer}
  * 
  * @author Mirza Ojeda Veira

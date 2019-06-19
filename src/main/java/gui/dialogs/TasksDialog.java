@@ -1,4 +1,4 @@
-package main.java.gui.dialogs;
+package gui.dialogs;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -23,9 +23,9 @@ import javax.swing.table.JTableHeader;
 import org.jfree.chart.ChartPanel;
 
 import dominio.Intervalo;
-import main.java.gui.ApplicationWindow;
-import main.java.logic.LanguageManager;
-import main.java.logic.instances.ScheduledInstance;
+import gui.ApplicationWindow;
+import logic.LanguageManager;
+import logic.instances.ScheduledInstance;
 
 /**
  * Clase TasksDialog que representa una diálogo para mostrar la información de

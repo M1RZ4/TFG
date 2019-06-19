@@ -1,4 +1,4 @@
-package main.java.logic.io;
+package logic.io;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -20,9 +20,9 @@ import org.apache.poi.ss.usermodel.VerticalAlignment;
 import dominio.Gestor;
 import dominio.Instancia;
 import dominio.Planificacion;
-import main.java.logic.Analysis;
-import main.java.logic.LanguageManager;
-import main.java.logic.enums.Rule;
+import logic.Analysis;
+import logic.LanguageManager;
+import logic.enums.Rule;
 
 /**
  * Clase AnalysysWriter encargada de generar ficheros excel con los resultados

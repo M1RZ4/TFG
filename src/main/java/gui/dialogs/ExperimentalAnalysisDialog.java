@@ -1,4 +1,4 @@
-package main.java.gui.dialogs;
+package gui.dialogs;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -18,9 +18,9 @@ import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingConstants;
 
-import main.java.gui.ApplicationWindow;
-import main.java.logic.Analysis;
-import main.java.logic.LanguageManager;
+import gui.ApplicationWindow;
+import logic.Analysis;
+import logic.LanguageManager;
 
 /**
  * Clase ExperimentalAnalysisDialog que representa una diálogo para interactuar

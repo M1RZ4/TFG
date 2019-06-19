@@ -1,4 +1,4 @@
-package main.java.logic;
+package logic;
 
 /**
  * Clase Analysis que almacena la información necesaria para realizar un

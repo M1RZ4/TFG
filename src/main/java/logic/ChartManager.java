@@ -1,4 +1,4 @@
-package main.java.logic;
+package logic;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
@@ -29,13 +29,13 @@ import org.jfree.ui.Layer;
 
 import dominio.Instancia;
 import dominio.Intervalo;
-import main.java.logic.enums.Rule;
-import main.java.logic.instances.ScheduledInstance;
+import logic.enums.Rule;
+import logic.instances.ScheduledInstance;
 
 /**
  * Clase ChartManager encargada de generar los gráficos que se mostrarán en la
  * aplicación y que podrán ser exportados por
- * {@link main.java.logic.io.ChartWriter ChartWriter}
+ * {@link logic.io.ChartWriter ChartWriter}
  * 
  * @author Mirza Ojeda Veira
  *
@@ -453,28 +453,22 @@ public class ChartManager {
 					isTask = true;
 			}
 			if (isTask) {
-				System.out.println("Coincidencia con inicio/fin tarea - j = " + j + " - Valor actual = "
-						+ occupied.get(j) + " - Anterior valor = " + last);
 				if (j > 0) {
 					if (occupied.get(j) > last) {
 						tasks.add(j, last);
 						tasks.add(j, occupied.get(j));
 						last = occupied.get(j);
-						System.out.println("Añadidos puntos en j = " + j);
 					} else if (occupied.get(j) < last) {
 						tasks.add(j, last);
 						tasks.add(j, occupied.get(j));
 						last = occupied.get(j);
-						System.out.println("Añadidos puntos en j = " + j);
-					} else
-						System.out.println("No se han encontrado puntos que añadir en j = " + j);
+					}
 				} else {
 					tasks.add(j, occupied.get(j));
 					last = occupied.get(j);
 				}
 			}
 		}
-		// tasks.add(Arrays.stream(endTimes).max().getAsDouble(), 0);
 
 		// Crear serie para la capacidad disponible
 		final XYSeries capacity = createCapacity(i);

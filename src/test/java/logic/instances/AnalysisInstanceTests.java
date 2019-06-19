@@ -1,4 +1,4 @@
-package test.java.instances;
+package logic.instances;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -9,7 +9,7 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 
 import dominio.Intervalo;
-import main.java.logic.instances.AnalysisInstance;
+import logic.instances.AnalysisInstance;
 
 public class AnalysisInstanceTests {
 

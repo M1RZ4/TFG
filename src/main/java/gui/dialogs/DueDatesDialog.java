@@ -1,11 +1,11 @@
-package main.java.gui.dialogs;
+package gui.dialogs;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
 
 import javax.swing.JDialog;
 
-import main.java.logic.LanguageManager;
+import logic.LanguageManager;
 
 /**
  * Clase DueDatesDialog que representa una diálogo para mostrar la distribución

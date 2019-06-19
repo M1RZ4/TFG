@@ -1,4 +1,4 @@
-package main.java.logic.instances;
+package logic.instances;
 
 import java.util.ArrayList;
 

@@ -1,4 +1,4 @@
-package main.java.gui;
+package gui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -53,20 +53,20 @@ import org.jfree.chart.plot.XYPlot;
 import dominio.Gestor;
 import dominio.Instancia;
 import dominio.Planificacion;
-import main.java.gui.dialogs.DueDatesDialog;
-import main.java.gui.dialogs.DurationsDialog;
-import main.java.gui.dialogs.ExperimentalAnalysisDialog;
-import main.java.gui.dialogs.InstanceGeneratorDialog;
-import main.java.gui.dialogs.TasksDialog;
-import main.java.gui.menu.BackgroundMenuBar;
-import main.java.logic.InstanceManager;
-import main.java.logic.LanguageManager;
-import main.java.logic.enums.Rule;
-import main.java.logic.instances.ScheduledInstance;
+import gui.dialogs.DueDatesDialog;
+import gui.dialogs.DurationsDialog;
+import gui.dialogs.ExperimentalAnalysisDialog;
+import gui.dialogs.InstanceGeneratorDialog;
+import gui.dialogs.TasksDialog;
+import gui.menu.BackgroundMenuBar;
+import logic.InstanceManager;
+import logic.LanguageManager;
+import logic.enums.Rule;
+import logic.instances.ScheduledInstance;
 
 /**
  * Clase ApplicationWindow que representa la ventana principal de la aplicación.
- * Se comunica con {@link main.java.logic.InstanceManager InstanceManager} para
+ * Se comunica con {@link logic.InstanceManager InstanceManager} para
  * dar respuesta a las principales funcionalidades de la aplicación
  * 
  * @author Mirza Ojeda Veira
