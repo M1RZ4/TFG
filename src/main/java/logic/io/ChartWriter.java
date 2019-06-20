@@ -26,7 +26,7 @@ public class ChartWriter implements Writer {
 	private JFreeChart chart;
 
 	/**
-	 * Constructor de la clase ChartWriter
+	 * Constructor de la clase {@link ChartWriter}
 	 * 
 	 * @param chart
 	 *            gráfico jfreechart a guardar en PDF

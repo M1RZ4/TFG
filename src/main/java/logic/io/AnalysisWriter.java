@@ -37,6 +37,14 @@ public class AnalysisWriter implements Writer {
 	private Analysis analysis;
 	private List<List<Instancia>> instances;
 
+	/**
+	 * Constructor de la clase {@link AnalysisWriter}
+	 * 
+	 * @param analysis
+	 *            análisis cuyos resultados se van a generar y guardar
+	 * @param instances
+	 *            lista de listas de instancias para el análisis
+	 */
 	public AnalysisWriter(Analysis analysis, List<List<Instancia>> instances) {
 		this.analysis = analysis;
 		this.instances = instances;

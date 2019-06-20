@@ -20,11 +20,29 @@ public class ScheduledInstance extends Instancia {
 	private int[] ids;
 	private int[] startTimes;
 
+	/**
+	 * Constructor de la clase {@link ScheduledInstance}
+	 * 
+	 * @param i
+	 *            instancia a planificar
+	 */
 	public ScheduledInstance(Instancia i) {
 		super(i.getNombre());
 		perfilMaquina = i.getPerfilMaquina();
 	}
 
+	/**
+	 * Constructor de la clase {@link ScheduledInstance}
+	 * 
+	 * @param step
+	 *            paso de la planificación parcial
+	 * @param i
+	 *            instancia a planificar
+	 * @param rule
+	 *            regla de prioridad para la planificación
+	 * @param g
+	 *            parámetro g para la regla ATC
+	 */
 	public ScheduledInstance(int step, Instancia i, Rule rule, double g) {
 		super(i.getNombre());
 		this.perfilMaquina = i.getPerfilMaquina();

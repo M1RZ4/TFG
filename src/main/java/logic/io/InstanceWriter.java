@@ -10,9 +10,8 @@ import dominio.Intervalo;
 
 /**
  * Clase InstanceWriter encargada de generar ficheros de texto con instancias en
- * función de los parámetros generados con
- * {@link logic.InstanceGenerator InstanceGenerator}. Implementa la
- * interfaz {@link Writer}
+ * función de los parámetros generados con {@link logic.InstanceGenerator
+ * InstanceGenerator}. Implementa la interfaz {@link Writer}
  * 
  * @author Mirza Ojeda Veira
  *
@@ -24,6 +23,18 @@ public class InstanceWriter implements Writer {
 	private List<Double> intervalDurations;
 	private List<Integer> intervalCapacities;
 
+	/**
+	 * Constructor para la clase {@link InstanceWriter}
+	 * 
+	 * @param durations
+	 *            vector de duraciones
+	 * @param dueDates
+	 *            vector de due dates
+	 * @param intervalDurations
+	 *            lista de duraciones de los intervalos
+	 * @param intervalCapacities
+	 *            lista de capacidades máximas de los intervalos
+	 */
 	public InstanceWriter(double[] durations, double[] dueDates, List<Double> intervalDurations,
 			List<Integer> intervalCapacities) {
 		this.durations = durations;
@@ -32,6 +43,12 @@ public class InstanceWriter implements Writer {
 		this.intervalCapacities = intervalCapacities;
 	}
 
+	/**
+	 * Constructor para la clase {@link InstanceWriter}
+	 * 
+	 * @param i
+	 *            instancia a guardar
+	 */
 	public InstanceWriter(Instancia i) {
 		this.durations = i.getP();
 		this.dueDates = i.getD();

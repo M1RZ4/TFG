@@ -14,6 +14,14 @@ import dominio.Intervalo;
  */
 public class AnalysisInstance extends Instancia {
 
+	/**
+	 * Constructor de la clase {@link AnalysisInstance}
+	 * 
+	 * @param p
+	 *            vector de duraciones
+	 * @param d
+	 *            vector de due dates
+	 */
 	public AnalysisInstance(double[] p, double[] d) {
 		super("");
 		this.p = p;
