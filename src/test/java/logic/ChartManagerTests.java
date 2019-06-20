@@ -73,4 +73,18 @@ public class ChartManagerTests {
 			fail();
 		}
 	}
+
+	@Test
+	public void setMainChartTest() {
+		Reader<Instancia> r = new InstanceReader();
+		try {
+			Instancia i = r.read(resources + "/i9_4_1.txt");
+			ChartManager c = new ChartManager();
+			assertNull(c.getChart());
+			c.setMainChart(i.getD().length, i, Rule.EDD, 0, 10, true);
+			assertNotNull(c.getChart());
+		} catch (FileNotFoundException e) {
+			fail();
+		}
+	}
 }
