@@ -15,6 +15,7 @@ import dominio.Instancia;
 import logic.LanguageManager;
 
 class InstanceReaderTests {
+	
 	private static File resources;
 
 	@BeforeAll
