@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 class AnalysisTests {
 
 	@Test
-	void testInitialize() {
+	public void testInitialize() {
 		int numberOfInstances = 100;
 		int[] numberOfTasks = new int[] { 10, 15, 20 };
 		int[] maxCapacity = new int[] { 4, 6, 8 };

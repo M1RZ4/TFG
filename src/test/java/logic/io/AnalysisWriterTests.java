@@ -20,13 +20,13 @@ class AnalysisWriterTests {
 	private static File resources;
 
 	@BeforeAll
-	static void setUp() {
+	public static void setUp() {
 		resources = new File("src/test/resources");
 		LanguageManager.getInstance().setTexts(ResourceBundle.getBundle("texts", new Locale("en")));
 	}
 
 	@Test
-	void testWrite() {
+	public void testWrite() {
 		File f = new File(resources + "/analysisWriterTestFile.xls");
 		if (f.exists())
 			f.delete();

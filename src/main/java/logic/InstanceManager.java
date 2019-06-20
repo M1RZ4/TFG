@@ -63,7 +63,6 @@ public class InstanceManager {
 	}
 
 	// ChartManager
-
 	public JFreeChart getChart() {
 		return chartManager.getChart();
 	}

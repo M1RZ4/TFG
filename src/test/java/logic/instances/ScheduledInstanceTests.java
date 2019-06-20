@@ -18,7 +18,7 @@ public class ScheduledInstanceTests {
 	private static Instancia i;
 
 	@BeforeAll
-	static void setUp() {
+	public static void setUp() {
 		resources = new File("src/test/resources");
 		i = Gestor.cargarInstancia(resources + "/i9_4_1.txt");
 	}
@@ -88,7 +88,6 @@ public class ScheduledInstanceTests {
 		ScheduledInstance s = new ScheduledInstance(i);
 		assertNull(s.getIds());
 		s.setID(2);
-		System.out.println(s.getIds()[0] == 2);
 		assertEquals(2, s.getIds()[0]);
 		s.setID(1);
 		assertEquals(2, s.getIds()[0]);
@@ -100,7 +99,6 @@ public class ScheduledInstanceTests {
 		ScheduledInstance s = new ScheduledInstance(i);
 		assertNull(s.getD());
 		s.setD(2);
-		System.out.println(s.getD()[0] == 2);
 		assertEquals(2, s.getD()[0]);
 		s.setD(1);
 		assertEquals(2, s.getD()[0]);
@@ -112,7 +110,6 @@ public class ScheduledInstanceTests {
 		ScheduledInstance s = new ScheduledInstance(i);
 		assertNull(s.getP());
 		s.setP(2);
-		System.out.println(s.getP()[0] == 2);
 		assertEquals(2, s.getP()[0]);
 		s.setP(1);
 		assertEquals(2, s.getP()[0]);
@@ -124,7 +121,6 @@ public class ScheduledInstanceTests {
 		ScheduledInstance s = new ScheduledInstance(i);
 		assertNull(s.getStartTimes());
 		s.setSti(2);
-		System.out.println(s.getStartTimes()[0] == 2);
 		assertEquals(2, s.getStartTimes()[0]);
 		s.setSti(1);
 		assertEquals(2, s.getStartTimes()[0]);

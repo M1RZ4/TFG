@@ -1,6 +1,7 @@
 package logic.io;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -18,21 +19,25 @@ public class ChartWriterTests {
 	private static File resources;
 
 	@BeforeAll
-	static void setUp() {
+	public static void setUp() {
 		resources = new File("src/test/resources");
 		LanguageManager.getInstance().setTexts(ResourceBundle.getBundle("texts", new Locale("en")));
 	}
 
 	@Test
-	void testWrite() throws FileNotFoundException {
+	public void testWrite() {
 		File f = new File(resources + "/chartWriterTestFile.pdf");
 		if (f.exists())
 			f.delete();
 		InstanceManager i = new InstanceManager();
-		i.readInstance(resources + "/i9_4_1.txt");
-		i.loadMainChart(10);
-		Writer w = new ChartWriter(i.getChart());
-		w.write(resources + "/chartWriterTestFile.pdf");
-		assertTrue(f.exists());
+		try {
+			i.readInstance(resources + "/i9_4_1.txt");
+			i.loadMainChart(10);
+			Writer w = new ChartWriter(i.getChart());
+			w.write(resources + "/chartWriterTestFile.pdf");
+			assertTrue(f.exists());
+		} catch (FileNotFoundException e) {
+			fail();
+		}
 	}
 }

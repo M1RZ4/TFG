@@ -9,6 +9,12 @@ package logic.io;
  */
 public interface Writer {
 
+	/**
+	 * Método que crea un fichero con el nombre dado
+	 * 
+	 * @param fileName
+	 *            nombre del fichero a escribir
+	 */
 	public void write(String fileName);
 
 }

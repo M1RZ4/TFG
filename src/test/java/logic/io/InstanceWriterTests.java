@@ -18,20 +18,25 @@ class InstanceWriterTests {
 	private static File resources;
 
 	@BeforeAll
-	static void setUp() {
+	public static void setUp() {
 		resources = new File("src/test/resources");
 		LanguageManager.getInstance().setTexts(ResourceBundle.getBundle("texts", new Locale("en")));
 	}
 
 	@Test
-	void test() throws FileNotFoundException {
+	public void testWrite() {
 		File f = new File(resources + "/instanceWriterTestFile.txt");
 		if (f.exists())
 			f.delete();
-		Instancia i = new InstanceReader().read(resources + "/instanceReaderTestFile.txt");
-		Writer w = new InstanceWriter(i);
-		w.write(resources + "/instanceWriterTestFile.txt");
-		assertTrue(f.exists());
+		Instancia i;
+		try {
+			i = new InstanceReader().read(resources + "/instanceReaderTestFile.txt");
+			Writer w = new InstanceWriter(i);
+			w.write(resources + "/instanceWriterTestFile.txt");
+			assertTrue(f.exists());
+		} catch (FileNotFoundException e) {
+			fail();
+		}
 	}
 
 }
