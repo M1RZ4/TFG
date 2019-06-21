@@ -15,10 +15,13 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.net.URL;
 import java.util.Arrays;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
+import javax.help.HelpBroker;
+import javax.help.HelpSet;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JCheckBoxMenuItem;
@@ -66,8 +69,8 @@ import logic.instances.ScheduledInstance;
 
 /**
  * Clase ApplicationWindow que representa la ventana principal de la aplicación.
- * Se comunica con {@link logic.InstanceManager InstanceManager} para
- * dar respuesta a las principales funcionalidades de la aplicación
+ * Se comunica con {@link logic.InstanceManager InstanceManager} para dar
+ * respuesta a las principales funcionalidades de la aplicación
  * 
  * @author Mirza Ojeda Veira
  *
@@ -170,6 +173,24 @@ public class ApplicationWindow {
 		frame.setLocationRelativeTo(null);
 		frame.getContentPane().add(getConfigPanel(), BorderLayout.SOUTH);
 		frame.getContentPane().add(getMenuBar(), BorderLayout.NORTH);
+		loadHelp();
+	}
+
+	private void loadHelp() {
+		URL hsURL; //TODO llamar al método al cambiar el idioma
+		HelpSet hs;
+		try {
+			File fichero = new File("src/main/resources/help/" + manager.getText("help_set"));
+			hsURL = fichero.toURI().toURL();
+			hs = new HelpSet(null, hsURL);
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(frame, manager.getText("error_help"), manager.getText("error_title"),
+					JOptionPane.ERROR_MESSAGE);
+			return;
+		}
+		HelpBroker hb = hs.createHelpBroker();
+		hb.enableHelpKey(frame.getContentPane(), manager.getText("help_introduction"), hs);
+		hb.enableHelpOnButton(getMntmManual(), manager.getText("help_introduction"), hs);
 	}
 
 	private JPanel getConfigPanel() {
@@ -550,11 +571,6 @@ public class ApplicationWindow {
 			mntmManual = new JMenuItem(manager.getText("menu_user_manual"));
 			mntmManual.setMnemonic(manager.getMnemonic("mnemonic_user_manual"));
 			mntmManual.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_H, ActionEvent.CTRL_MASK));
-			mntmManual.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					// TODO ayuda html
-				}
-			});
 		}
 		return mntmManual;
 	}
