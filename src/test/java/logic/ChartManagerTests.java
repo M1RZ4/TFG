@@ -14,11 +14,8 @@ import org.jfree.chart.JFreeChart;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import dominio.Instancia;
 import logic.enums.Rule;
 import logic.instances.ScheduledInstance;
-import logic.io.InstanceReader;
-import logic.io.Reader;
 
 public class ChartManagerTests {
 
@@ -32,13 +29,12 @@ public class ChartManagerTests {
 
 	@Test
 	public void testLoadMainChart() {
-		Reader<Instancia> r = new InstanceReader();
+		InstanceManager i = new InstanceManager();
 		try {
-			Instancia i = r.read(resources + "/i9_4_1.txt");
-			ChartManager c = new ChartManager();
-			assertNull(c.getChart());
-			c.loadMainChart(i, 10);
-			assertNotNull(c.getChart());
+			i.readInstance(resources + "/i9_4_1.txt");
+			assertNull(i.getChart());
+			i.loadMainChart(10);
+			assertNotNull(i.getChart());
 		} catch (FileNotFoundException e) {
 			fail();
 		}
@@ -46,14 +42,13 @@ public class ChartManagerTests {
 
 	@Test
 	public void testCreateDurationsChart() {
-		Reader<Instancia> r = new InstanceReader();
+		InstanceManager i = new InstanceManager();
 		try {
-			Instancia i = r.read(resources + "/i9_4_1.txt");
-			ScheduledInstance s = new ScheduledInstance(i.getD().length, i, Rule.EDD, 0);
-			ChartManager c = new ChartManager();
-			JFreeChart j = c.createDurationsChart(s.getP(), s.getIds());
+			i.readInstance(resources + "/i9_4_1.txt");
+			ScheduledInstance s = new ScheduledInstance(i.getP().length, i.getInstance(), Rule.EDD, 0);
+			JFreeChart j = i.createDurationsChart(s.getP(), s.getIds());
 			assertNotNull(j);
-			assertEquals(LanguageManager.getInstance().getTexts().getString("chart_durations"), j.getTitle().getText());
+			assertEquals(i.getText("chart_durations"), j.getTitle().getText());
 		} catch (FileNotFoundException e) {
 			fail();
 		}
@@ -61,14 +56,13 @@ public class ChartManagerTests {
 
 	@Test
 	public void testCreateDueDatesChart() {
-		Reader<Instancia> r = new InstanceReader();
+		InstanceManager i = new InstanceManager();
 		try {
-			Instancia i = r.read(resources + "/i9_4_1.txt");
-			ScheduledInstance s = new ScheduledInstance(i.getD().length, i, Rule.EDD, 0);
-			ChartManager c = new ChartManager();
-			JFreeChart j = c.createDueDatesChart(s.getD(), s.getIds());
+			i.readInstance(resources + "/i9_4_1.txt");
+			ScheduledInstance s = new ScheduledInstance(i.getD().length, i.getInstance(), Rule.EDD, 0);
+			JFreeChart j = i.createDueDatesChart(s.getD(), s.getIds());
 			assertNotNull(j);
-			assertEquals(LanguageManager.getInstance().getTexts().getString("chart_due_dates"), j.getTitle().getText());
+			assertEquals(i.getText("chart_due_dates"), j.getTitle().getText());
 		} catch (FileNotFoundException e) {
 			fail();
 		}
@@ -76,15 +70,23 @@ public class ChartManagerTests {
 
 	@Test
 	public void setMainChartTest() {
-		Reader<Instancia> r = new InstanceReader();
+		InstanceManager i = new InstanceManager();
 		try {
-			Instancia i = r.read(resources + "/i9_4_1.txt");
-			ChartManager c = new ChartManager();
-			assertNull(c.getChart());
-			c.setMainChart(i.getD().length, i, Rule.EDD, 0, 10, true);
-			assertNotNull(c.getChart());
+			i.readInstance(resources + "/i9_4_1.txt");
+			assertNull(i.getChart());
+			i.setMainChart(i.getD().length, Rule.EDD, 0, 10);
+			assertNotNull(i.getChart());
+			
+			i = new InstanceManager();
+			i.readInstance(resources + "/i9_4_1.txt");
+			assertNull(i.getChart());
+			ScheduledInstance s = new ScheduledInstance(i.getD().length, i.getInstance(), Rule.EDD, 0);
+			i.setMainChart(s.getD().length, s, 10);
+			assertNotNull(i.getChart());
 		} catch (FileNotFoundException e) {
 			fail();
 		}
 	}
+	
+	
 }

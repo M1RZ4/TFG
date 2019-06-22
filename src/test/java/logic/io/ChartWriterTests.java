@@ -33,8 +33,7 @@ public class ChartWriterTests {
 		try {
 			i.readInstance(resources + "/i9_4_1.txt");
 			i.loadMainChart(10);
-			Writer w = new ChartWriter(i.getChart());
-			w.write(resources + "/chartWriterTestFile.pdf");
+			i.writeChart(resources + "/chartWriterTestFile.pdf");
 			assertTrue(f.exists());
 		} catch (FileNotFoundException e) {
 			fail();

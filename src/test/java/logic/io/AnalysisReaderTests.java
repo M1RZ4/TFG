@@ -12,6 +12,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import logic.Analysis;
+import logic.InstanceManager;
 import logic.LanguageManager;
 
 class AnalysisReaderTests {
@@ -69,8 +70,9 @@ class AnalysisReaderTests {
 	}
 
 	private Analysis readAnalysis(String fileName) throws FileNotFoundException {
-		AnalysisReader a = new AnalysisReader();
-		return a.read(resources + "/" + fileName);
+		InstanceManager i = new InstanceManager();
+		i.readAnalysis(resources + "/" + fileName);
+		return i.getAnalysis();
 	}
 
 }

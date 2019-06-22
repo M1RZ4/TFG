@@ -56,6 +56,9 @@
 					<configuration>
 						<destFile>${project.build.directory}/coverage-reports/jacoco-ut.exec</destFile>
 						<propertyName>surefireArgLine</propertyName>
+						    <excludes>
+								<exclude></exclude>
+							</excludes>
 					</configuration>
 				</execution>
 				<execution>

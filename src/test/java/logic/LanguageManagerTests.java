@@ -12,18 +12,21 @@ class LanguageManagerTests {
 
 	@Test
 	public void testGetTexts() {
+		InstanceManager i = new InstanceManager();
 		setText("en");
-		assertEquals("Graphic Visualizer & Instance generator", getText("menu_title"));
-		assertEquals("Separation between marks:", getText("label_separation_between_marks"));
-		assertEquals("Instance generation successful", getText("message_instance_generator"));
+		assertEquals("Graphic Visualizer & Instance generator", i.getText("menu_title"));
+		assertEquals("Separation between marks:", i.getText("label_separation_between_marks"));
+		assertEquals("Instance generation successful", i.getText("message_instance_generator"));
+		assertEquals('F', i.getMnemonic("mnemonic_file"));
+		assertEquals('L', i.getMnemonic("mnemonic_load"));
+		assertEquals('S', i.getMnemonic("mnemonic_save"));
 		setText("es");
-		assertEquals("Visualizador gráfico & Generador de instancias", getText("menu_title"));
-		assertEquals("Separación entre marcas:", getText("label_separation_between_marks"));
-		assertEquals("Generación de instancia exitosa", getText("message_instance_generator"));
-	}
-
-	private String getText(String key) {
-		return LanguageManager.getInstance().getTexts().getString(key);
+		assertEquals("Visualizador gráfico & Generador de instancias", i.getText("menu_title"));
+		assertEquals("Separación entre marcas:", i.getText("label_separation_between_marks"));
+		assertEquals("Generación de instancia exitosa", i.getText("message_instance_generator"));
+		assertEquals('A', i.getMnemonic("mnemonic_file"));
+		assertEquals('C', i.getMnemonic("mnemonic_load"));
+		assertEquals('G', i.getMnemonic("mnemonic_save"));
 	}
 
 	private void setText(String locale) {

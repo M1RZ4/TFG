@@ -1,16 +1,15 @@
 package logic.io;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import dominio.Instancia;
+import logic.InstanceManager;
 import logic.LanguageManager;
 
 class InstanceWriterTests {
@@ -28,15 +27,12 @@ class InstanceWriterTests {
 		File f = new File(resources + "/instanceWriterTestFile.txt");
 		if (f.exists())
 			f.delete();
-		Instancia i;
-		try {
-			i = new InstanceReader().read(resources + "/instanceReaderTestFile.txt");
-			Writer w = new InstanceWriter(i);
-			w.write(resources + "/instanceWriterTestFile.txt");
-			assertTrue(f.exists());
-		} catch (FileNotFoundException e) {
-			fail();
-		}
+		InstanceManager i = new InstanceManager();
+		i.initializeInstanceGenerator(15, 5);
+		i.createTasks();
+		i.createIntervals();
+		i.writeInstance(resources + "/instanceWriterTestFile.txt");
+		assertTrue(f.exists());
 	}
 
 }

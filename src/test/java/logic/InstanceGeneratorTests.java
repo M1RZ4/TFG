@@ -12,7 +12,8 @@ public class InstanceGeneratorTests {
 
 	@Test
 	public void testCreateTasks() {
-		InstanceGenerator i = new InstanceGenerator(15, 5);
+		InstanceManager i = new InstanceManager();
+		i.initializeInstanceGenerator(15, 5);
 		i.createTasks();
 		assertEquals(15, i.getDueDates().length);
 		assertEquals(15, i.getDurations().length);
@@ -20,7 +21,8 @@ public class InstanceGeneratorTests {
 
 	@Test
 	public void testCreateIntervals() {
-		InstanceGenerator i = new InstanceGenerator(15, 5);
+		InstanceManager i = new InstanceManager();
+		i.initializeInstanceGenerator(15, 5);
 		i.createTasks();
 		i.createIntervals();
 		assertEquals(15, i.getDueDates().length);
@@ -31,11 +33,13 @@ public class InstanceGeneratorTests {
 
 	@Test
 	public void testGenerateInstances() {
-		InstanceGenerator i = new InstanceGenerator(10, 4);
+		InstanceManager i = new InstanceManager();
+		i.initializeInstanceGenerator(10, 4);
 		i.createTasks();
 		i.createIntervals();
-		List<List<Instancia>> list = i
-				.generateInstances(new Analysis(10, new int[] { 10, 15, 20 }, new int[] { 4, 6, 8 }));
+		i.setAnalysis(new Analysis(10, new int[] { 10, 15, 20 }, new int[] { 4, 6, 8 }));
+		List<List<Instancia>> list = i.generateInstances();
+		i.saveInstances(list);
 		assertEquals(3, list.size());
 		assertEquals(10, list.get(0).size());
 	}

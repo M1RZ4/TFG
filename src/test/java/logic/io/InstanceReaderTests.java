@@ -12,10 +12,11 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import dominio.Instancia;
+import logic.InstanceManager;
 import logic.LanguageManager;
 
 class InstanceReaderTests {
-	
+
 	private static File resources;
 
 	@BeforeAll
@@ -69,8 +70,9 @@ class InstanceReaderTests {
 	}
 
 	private Instancia readInstance(String fileName) throws FileNotFoundException {
-		InstanceReader i = new InstanceReader();
-		return i.read(resources + "/" + fileName);
+		InstanceManager i = new InstanceManager();
+		i.readInstance(resources + "/" + fileName);
+		return i.getInstance();
 	}
 
 }
