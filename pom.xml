@@ -37,23 +37,16 @@
 			</plugin>
 			<plugin>
             <artifactId>maven-surefire-plugin</artifactId>
-            <version>2.19</version>
+            <version>2.2.22</version>
 			<configuration>
 				<argLine>${surefireArgLine}</argLine>
 				<skipTests>${skip.unit.tests}</skipTests>
 			</configuration>
-            <dependencies>
-                <dependency>
-                    <groupId>org.junit.platform</groupId>
-                    <artifactId>junit-platform-surefire-provider</artifactId>
-                    <version>1.0.0</version>
-                </dependency>
-            </dependencies>
         </plugin>
 		<plugin>
 			<groupId>org.jacoco</groupId>
 			<artifactId>jacoco-maven-plugin</artifactId>
-			<version>0.8.1</version>
+			<version>0.8.4</version>
 			<executions>
 				<execution>
 					<id>pre-unit-test</id>
@@ -80,29 +73,6 @@
 		</plugin>
 		</plugins>
 	</build>
-	<reporting>
-		<plugins>
-			<plugin>
-   				<groupId>org.codehaus.mojo</groupId>
-    				<artifactId>cobertura-maven-plugin</artifactId>
-    				<version>2.7</version>
-				<reportSets>
-				 	<reportSet>
-				   		<reports>
-				      			<report>cobertura</report>
-				    		</reports>
-				  	</reportSet>
-				</reportSets>
-			    	<configuration>
-					<formats>
-					    <format>html</format>
-					    <format>xml</format>
-					</formats>
-					<check />
-			    	</configuration>
-			</plugin>
-		</plugins>
-	</reporting>
 	
 	<dependencies>
 		<dependency>
