@@ -2,4 +2,5 @@ language: java
 after_success:
  - bash <(curl -s https://codecov.io/bash)
 script: 
+- "mvn compile"
 - "mvn test -Dtest=logic/** test"
