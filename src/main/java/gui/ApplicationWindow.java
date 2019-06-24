@@ -177,7 +177,7 @@ public class ApplicationWindow {
 	}
 
 	private void loadHelp() {
-		URL hsURL; //TODO llamar al método al cambiar el idioma
+		URL hsURL;
 		HelpSet hs;
 		try {
 			File fichero = new File("src/main/resources/help/" + manager.getText("help_set"));
@@ -434,6 +434,7 @@ public class ApplicationWindow {
 							.setTexts(ResourceBundle.getBundle("texts", Locale.forLanguageTag("es")));
 					changeLocaleTexts();
 					updateMnemonics();
+					loadHelp();
 					JComponent.setDefaultLocale(Locale.forLanguageTag("es"));
 				}
 			});
@@ -451,6 +452,7 @@ public class ApplicationWindow {
 							.setTexts(ResourceBundle.getBundle("texts", Locale.forLanguageTag("en")));
 					changeLocaleTexts();
 					updateMnemonics();
+					loadHelp();
 					JComponent.setDefaultLocale(Locale.forLanguageTag("en"));
 				}
 			});

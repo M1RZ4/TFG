@@ -5,7 +5,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>TFG</groupId>
 	<artifactId>TFG</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.0-RELEASE</version>
 	
 	<properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -19,6 +19,7 @@
 		<sourceDirectory>src/main/java</sourceDirectory>
 		<testSourceDirectory>src/test/java</testSourceDirectory>
 		<plugins>
+		
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>3.8.0</version>
@@ -27,6 +28,7 @@
 					<target>1.8</target>
 				</configuration>
 			</plugin>
+			
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-project-info-reports-plugin</artifactId>
@@ -35,94 +37,141 @@
 					<dependencyLocationsEnabled>false</dependencyLocationsEnabled>
 				</configuration>
 			</plugin>
+			
 			<plugin>
-            <artifactId>maven-surefire-plugin</artifactId>
-            <version>2.22.2</version>
-			<configuration>
-				<argLine>${surefireArgLine}</argLine>
-				<skipTests>${skip.unit.tests}</skipTests>
-			</configuration>
-        </plugin>
-		<plugin>
-			<groupId>org.jacoco</groupId>
-			<artifactId>jacoco-maven-plugin</artifactId>
-			<version>0.8.4</version>
-			<executions>
-				<execution>
-					<id>pre-unit-test</id>
-					<goals>
-						<goal>prepare-agent</goal>
-					</goals>
-					<configuration>
-						<destFile>${project.build.directory}/coverage-reports/jacoco-ut.exec</destFile>
-						<propertyName>surefireArgLine</propertyName>
-						    <excludes>
-								<exclude></exclude>
-							</excludes>
-					</configuration>
-				</execution>
-				<execution>
-					<id>post-unit-test</id>
-					<phase>test</phase>
-					<goals>
-						<goal>report</goal>
-					</goals>
-					<configuration>
-						<dataFile>${project.build.directory}/coverage-reports/jacoco-ut.exec</dataFile>
-						<outputDirectory>${project.reporting.outputDirectory}/jacoco-ut</outputDirectory>
-					</configuration>
-				</execution>
-			</executions>
-		</plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>3.1.2</version>
+				<configuration>
+					<archive>
+						<manifest>
+							<addClasspath>true</addClasspath>
+							<classpathPrefix>lib/</classpathPrefix>
+							<mainClass>gui.ApplicationWindow</mainClass>
+						</manifest>
+					</archive>
+				</configuration>
+			</plugin>
+			
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>copy-dependencies</id>
+						<phase>prepare-package</phase>
+						<goals>
+							<goal>copy-dependencies</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${project.build.directory}/lib</outputDirectory>
+							<overWriteReleases>false</overWriteReleases>
+							<overWriteSnapshots>false</overWriteSnapshots>
+							<overWriteIfNewer>true</overWriteIfNewer>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			
+			<plugin>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>2.22.2</version>
+				<configuration>
+					<argLine>${surefireArgLine}</argLine>
+					<skipTests>${skip.unit.tests}</skipTests>
+				</configuration>
+			</plugin>
+			
+			<plugin>
+				<groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>
+				<version>0.8.4</version>
+				<executions>
+					<execution>
+						<id>pre-unit-test</id>
+						<goals>
+							<goal>prepare-agent</goal>
+						</goals>
+						<configuration>
+							<destFile>${project.build.directory}/coverage-reports/jacoco-ut.exec</destFile>
+							<propertyName>surefireArgLine</propertyName>
+								<excludes>
+									<exclude></exclude>
+								</excludes>
+						</configuration>
+					</execution>
+					<execution>
+						<id>post-unit-test</id>
+						<phase>test</phase>
+						<goals>
+							<goal>report</goal>
+						</goals>
+						<configuration>
+							<dataFile>${project.build.directory}/coverage-reports/jacoco-ut.exec</dataFile>
+							<outputDirectory>${project.reporting.outputDirectory}/jacoco-ut</outputDirectory>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			
 		</plugins>
 	</build>
 	
 	<dependencies>
+	
 		<dependency>
 			<groupId>org.jfree</groupId>
 			<artifactId>jfreechart</artifactId>
 			<version>1.0.19</version>
 		</dependency>
+		
 		<dependency>
 			<groupId>com.itextpdf</groupId>
 			<artifactId>itextpdf</artifactId>
 			<version>5.0.6</version>
 		</dependency>
-		<dependency>
-    	<groupId>com.gestor</groupId>
-    		<artifactId>GestorProblema1maquina</artifactId>
-    		<version>1.0</version>
-    		<scope>system</scope>
-    		<systemPath>${project.basedir}/lib/GestorProblema1maquina.jar</systemPath>
-		</dependency>
+		
 		<dependency>
         	<groupId>org.junit.jupiter</groupId>
         	<artifactId>junit-jupiter-api</artifactId>
         	<version>5.4.2</version>
        		<scope>test</scope>
     	</dependency>
+		
     	<dependency>
         	<groupId>org.junit.jupiter</groupId>
         	<artifactId>junit-jupiter-engine</artifactId>
         	<version>5.4.2</version>
         	<scope>test</scope>
     	</dependency>
+		
 		<dependency>
     		<groupId>org.apache.poi</groupId>
     		<artifactId>poi</artifactId>
    	 		<version>4.1.0</version>
 		</dependency>
+		
 		<dependency>
-    	<groupId>junit</groupId>
+			<groupId>junit</groupId>
     		<artifactId>junit</artifactId>
     		<version>4.12</version>
     		<scope>test</scope>
 		</dependency>
+		
 		<dependency>
     		<groupId>com.sun.woodstock.dependlibs</groupId>
    			<artifactId>jhall</artifactId>
     		<version>2.0</version>
-			</dependency>
+		</dependency>
+		
+		<dependency>
+			<groupId>com.gestor</groupId>
+    		<artifactId>GestorProblema1maquina</artifactId>
+    		<version>1.0</version>
+    		<scope>system</scope>
+    		<systemPath>${project.basedir}/lib/GestorProblema1maquina.jar</systemPath>
+		</dependency>
+
    	</dependencies>
    	
 </project>

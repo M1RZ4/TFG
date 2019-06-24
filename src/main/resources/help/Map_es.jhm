@@ -4,12 +4,23 @@
          "http://java.sun.com/products/javahelp/map_1_0.dtd">
 
 <map version="1.0">
-
-<mapID target="introduccion" url="fuentes/introduccion.html" />
-<mapID target="registro" url="fuentes/registro.html" />
-<mapID target="login" url="fuentes/login.html" />
-<mapID target="buscar" url="fuentes/buscar.html" />
-<mapID target="comprar" url="fuentes/comprar.html" />
-<mapID target="morosos" url="fuentes/morosos.html"/>
-
+	<mapID target="introduccion" url="sources/introduccion.html" />
+	<mapID target="cargar" url="sources/cargar.html" />
+	<mapID target="planificar" url="sources/planificar.html" />
+	<mapID target="unaVez" url="sources/unaVez.html" />
+	<mapID target="pasos" url="sources/pasos.html" />
+	<mapID target="manual" url="sources/manual.html" />
+	<mapID target="guardar" url="sources/guardar.html" />
+	<mapID target="ver" url="sources/ver.html" />
+	<mapID target="duraciones" url="sources/duraciones.html" />
+	<mapID target="fechasVencimiento" url="sources/fechasVencimiento.html" />
+	<mapID target="tareas" url="sources/tareas.html" />
+	<mapID target="generar" url="sources/generar.html" />
+	<mapID target="analisis" url="sources/analisis.html" />
+	<mapID target="fichero" url="sources/fichero.html" />
+	<mapID target="parametros" url="sources/parametros.html" />
+	<mapID target="idioma" url="sources/idioma.html" />
+	<mapID target="informacion" url="sources/informacion.html" />
+	<mapID target="ayuda" url="sources/ayuda.html" />
+	<mapID target="salir" url="sources/salir.html" />
 </map>
