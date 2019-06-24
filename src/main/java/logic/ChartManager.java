@@ -267,7 +267,7 @@ public class ChartManager {
 	 * @param tickUnit
 	 *            separación entre marcas de graduación
 	 */
-	public void setMainChart(int step, Instancia instance, Rule rule, double g, int tickUnit, boolean displayNumbers) {
+	public void setMainChart(int step, Instancia instance, Rule rule, double g, int tickUnit, boolean displayNumbers, double[] durations) {
 		ScheduledInstance i;
 		switch (rule) {
 		case MyRule:
@@ -289,8 +289,8 @@ public class ChartManager {
 
 		// Crear las tareas
 		double sum = 0;
-		for (int j = 0; j < instance.getP().length; j++)
-			sum += instance.getP()[j];
+		for (int j = 0; j < durations.length; j++)
+			sum += durations[j];
 		Map<Integer, Integer> capacity = createTasks(renderer, i, displayNumbers, (int) sum);
 
 		// Crear el dataset

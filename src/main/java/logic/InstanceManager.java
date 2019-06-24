@@ -83,14 +83,14 @@ public class InstanceManager {
 		boolean temp = true;
 		if (getD().length > 20)
 			temp = false;
-		chartManager.setMainChart(step, instance, rule, g, tickUnit, temp);
+		chartManager.setMainChart(step, instance, rule, g, tickUnit, temp, getP());
 	}
 
 	public void setMainChart(int step, ScheduledInstance i, int tickUnit) {
 		boolean temp = true;
 		if (getD().length > 20)
 			temp = false;
-		chartManager.setMainChart(step, i, Rule.MyRule, 0, tickUnit, temp);
+		chartManager.setMainChart(step, i, Rule.MyRule, 0, tickUnit, temp, getP());
 	}
 
 	// InstanceGenerator
