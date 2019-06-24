@@ -33,7 +33,7 @@ public class AnalysisReader implements Reader<Analysis> {
 		if (!new File(fileName).exists())
 			throw new FileNotFoundException(LanguageManager.getInstance().getTexts().getString("error_not_found"));
 		if (!fileName.toLowerCase().endsWith(".txt"))
-			throw new FileNotFoundException(LanguageManager.getInstance().getTexts().getString("error_extension"));
+			throw new IllegalArgumentException(LanguageManager.getInstance().getTexts().getString("error_extension"));
 		try (BufferedReader f = new BufferedReader(new FileReader(new File(fileName)))) {
 			// Número de instancias
 			int numberOfInstances = Integer.valueOf(f.readLine().split(":")[1]);

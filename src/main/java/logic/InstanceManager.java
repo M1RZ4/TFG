@@ -139,7 +139,8 @@ public class InstanceManager {
 	public void saveInstances(List<List<Instancia>> list) {
 		File dir = new File("temp");
 		dir.mkdir();
-
+		for (String f : dir.list())
+			new File(dir.getPath(), f).delete();
 		for (int i = 0; i < list.size(); i++) {
 			for (int j = 0; j < list.get(i).size(); j++) {
 				Instancia x = list.get(i).get(j);
