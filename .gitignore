@@ -30,5 +30,3 @@ hs_err_pid*
 .classpath
 .project
 .settings
-dependecy-reduce-pom.xml
-/local-maven-repo/
