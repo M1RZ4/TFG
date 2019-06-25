@@ -176,12 +176,16 @@ public class ApplicationWindow {
 		loadHelp();
 	}
 
+	/**
+	 * Método auxiliar que carga el sistema de ayuda de la aplicación con los
+	 * contenidos del manual de usuario
+	 */
 	private void loadHelp() {
 		URL hsURL;
 		HelpSet hs;
 		try {
-			File fichero = new File("src/main/resources/help/" + manager.getText("help_set"));
-			hsURL = fichero.toURI().toURL();
+			File f = new File("src/main/resources/help/" + manager.getText("help_set"));
+			hsURL = f.toURI().toURL();
 			hs = new HelpSet(null, hsURL);
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(frame, manager.getText("error_help"), manager.getText("error_title"),
