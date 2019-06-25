@@ -181,12 +181,10 @@ public class ApplicationWindow {
 	 * contenidos del manual de usuario
 	 */
 	private void loadHelp() {
-		URL hsURL;
 		HelpSet hs;
 		try {
-			File f = new File("src/main/resources/help/" + manager.getText("help_set"));
-			hsURL = f.toURI().toURL();
-			hs = new HelpSet(null, hsURL);
+			URL url = ClassLoader.getSystemResource("help/" + manager.getText("help_set"));
+			hs = new HelpSet(null, url);
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(frame, manager.getText("error_help"), manager.getText("error_title"),
 					JOptionPane.ERROR_MESSAGE);
