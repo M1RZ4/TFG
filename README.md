@@ -11,25 +11,23 @@
 
 <p>En este trabajo se propone el desarrollo de una herramienta gráfica que permita generar instancias de problemas de scheduling, atendiendo a unos parámetros indicados por el usuario, resolverlas utilizando un algoritmo, y por último visualizar de forma gráfica tanto las instancias como sus soluciones. La implementación se hará mediante una aplicación de escritorio.
 
-Como ejemplo de prueba, se utilizará el problema de secuenciamiento de una máquina con capacidad variable. Actualmente se dispone de un prototipo software para resolver este problema que fue presentado en
+Como ejemplo de prueba, se utilizará el problema de secuenciamiento de una máquina con capacidad variable. Actualmente se dispone de un prototipo software para resolver este problema que fue presentado en:
 
-[1] Francisco Gil, Carlos Mencía, María R. Sierra, Ramiro Varela. Genetic programming to evolve priority rules for on-line scheduling on single machine with variable capacity. MAEB 2018.
+[Francisco Gil, Carlos Mencía, María R. Sierra, Ramiro Varela. Genetic programming to evolve priority rules for on-line scheduling on single machine with variable capacity. MAEB 2018](https://unioviedo-my.sharepoint.com/:b:/g/personal/uo251443_uniovi_es/EdVNq2IlPDRGugjQPPGuPYABQoNfPyECAPdcDpgg1HPnWw?e=MaBwoW)
 
 El alumno hará uso de este código de forma completamente transparente y lo integrará en la herramienta desarrollada en el trabajo.
 
 Es recomendable conocer el lenguaje de programación Java, así como tener conocimientos de librerías gráficas.
 
-Se propone el uso de las librerías:
-
-[2] Swing https://docs.oracle.com/javase/7/docs/api/javax/swing/package-summary.html
-
-[3] JFreeChat http://www.jfree.org/jfreechart/
+Se propone el uso de las librerías [Swing]( https://docs.oracle.com/javase/7/docs/api/javax/swing/package-summary.html) y [JFreeChart](http://www.jfree.org/jfreechart/)
 
 En cualquier caso, el alumno es libre de seleccionar las librerías que considere oportunas.</p>
 
 ## Instrucciones de uso
 
 <p>Si se desea compilar y generar el JAR ejecutable para este proyecto deben seguirse los siguientes pasos:</p>
+
+**_NOTA:_** Ya hay disponible una *release* [aquí]() y, por tanto, no es necesario compilar el código fuente manualmente.
 
 - Descargar o clonar este repositorio
 - Modificar el fichero pom.xml y eliminar las líneas `<scope>` y `<systemPath>` en:
@@ -46,4 +44,4 @@ En cualquier caso, el alumno es libre de seleccionar las librerías que consider
 
 - Situarse en el directorio raíz del repositorio y ejecutar `mvn clean package`
 
-<p>Si se han seguido los pasos correctamente en la raíz del directorio target estará situado el fichero ejecutable TFG-1.0-RELEASE.jar generado</p>
+<p>Si se han seguido los pasos correctamente en la raíz del directorio target estará situado el fichero ejecutable TFG-1.0-RELEASE.jar generado.</p>
