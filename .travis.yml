@@ -1,5 +1,5 @@
 language: java
 before_script:
- - "mvn install:install-file -Dfile=lib\GestorProblema1maquina.jar -DgroupId=com.gestor -DartifactId=GestorProblema1maquina -Dversion=1.0 -Dpackaging=jar -DlocalRepositoryPath=local-maven-repo"
+ - "mvn install:install-file -Dfile=lib/GestorProblema1maquina.jar -DgroupId=com.gestor -DartifactId=GestorProblema1maquina -Dversion=1.0 -Dpackaging=jar -DlocalRepositoryPath=local-maven-repo"
 after_success:
  - bash <(curl -s https://codecov.io/bash)
