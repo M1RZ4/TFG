@@ -29,10 +29,10 @@ En cualquier caso, el alumno es libre de seleccionar las librerías que consider
 
 **_NOTA:_** Ya hay disponible una *release* [aquí]() y, por tanto, no es necesario compilar el código fuente manualmente.
 
-- Descargar o clonar este repositorio
-- Modificar el fichero pom.xml y eliminar las líneas `<scope>` y `<systemPath>` en:
+-   Descargar o clonar este repositorio
+-   Modificar el fichero pom.xml y eliminar las líneas `<scope>` y `<systemPath>` en:
 
-```
+```xml
 <dependency>
   <groupId>com.gestor</groupId>
   <artifactId>GestorProblema1maquina</artifactId>
