@@ -42,6 +42,6 @@ En cualquier caso, el alumno es libre de seleccionar las librerías que consider
 </dependency>
 ```
 
-- Situarse en el directorio raíz del repositorio y ejecutar `mvn clean package`
+-   Situarse en el directorio raíz del repositorio y ejecutar `mvn clean package`
 
 <p>Si se han seguido los pasos correctamente en la raíz del directorio target estará situado el fichero ejecutable TFG-1.0-RELEASE.jar generado.</p>
