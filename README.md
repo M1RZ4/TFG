@@ -4,8 +4,8 @@
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/f2f0d0b009384c8aba7deacb39b7b541)](https://app.codacy.com/project/M1RZ4/TFG/dashboard)
 [![codecov](https://codecov.io/gh/M1RZ4/TFG/branch/master/graph/badge.svg)](https://codecov.io/gh/M1RZ4/TFG)
 
-  - **Autor**: Mirza Ojeda Veira
-  - **Tutores**: Francisco Javier Gil Gala y Ramiro José Varela Arias
+ -  **Autor**: Mirza Ojeda Veira
+ -  **Tutores**: Francisco Javier Gil Gala y Ramiro José Varela Arias
 
 ## Descripción de la propuesta
 
