@@ -27,7 +27,7 @@ En cualquier caso, el alumno es libre de seleccionar las librerías que consider
 
 <p>Si se desea compilar y generar el JAR ejecutable para este proyecto deben seguirse los siguientes pasos:</p>
 
-**_NOTA:_** Ya hay disponible una *release* [aquí]() y, por tanto, no es necesario compilar el código fuente manualmente.
+**_NOTA:_** Ya hay disponible una *release* [aquí](https://github.com/M1RZ4/TFG/releases) y, por tanto, no es necesario compilar el código fuente manualmente.
 
 -   Descargar o clonar este repositorio
 -   Modificar el fichero pom.xml y eliminar las líneas `<scope>` y `<systemPath>` en:
