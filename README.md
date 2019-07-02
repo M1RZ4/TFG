@@ -29,6 +29,7 @@ En cualquier caso, el alumno es libre de seleccionar las librerías que consider
 
 **_NOTA:_** Ya hay disponible una *release* [aquí](https://github.com/M1RZ4/TFG/releases) y, por tanto, no es necesario compilar el código fuente manualmente.
 
+-   [Descargar](https://maven.apache.org/download.cgi) e [instalar](https://maven.apache.org/install.html) Apache Maven
 -   Descargar o clonar este repositorio
 -   Modificar el fichero pom.xml y eliminar las líneas `<scope>` y `<systemPath>` en:
 
