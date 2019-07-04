@@ -172,6 +172,8 @@
 			<groupId>com.gestor</groupId>
     		<artifactId>GestorProblema1maquina</artifactId>
     		<version>1.0</version>
+		<scope>system</scope >
+		<systemPath>${project.basedir}/lib/GestorProblema1maquina.jar</systemPath>
 		</dependency>
 
    	</dependencies>
