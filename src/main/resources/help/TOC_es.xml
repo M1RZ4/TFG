@@ -4,7 +4,7 @@
          "http://java.sun.com/products/javahelp/toc_1_0.dtd">
 
 <toc version="1.0">  
-  <tocitem text="Introduccion" target="introduccion" />
+  <tocitem text="Introducci&oacute;n" target="introduccion" />
   <tocitem text="Cargar instancias" target="cargar" />
   <tocitem text="Planificar instancias" target="planificar">
   	<tocitem text="De una vez" target="unaVez" />
@@ -12,18 +12,18 @@
   	<tocitem text="Manualmente" target="manual" />
   </tocitem>
   <tocitem text="Guardar instancias" target="guardar" />
-  <tocitem text="Ver informacion adicional" target="ver">
-  	<tocitem text="Gráfico de duraciones" target="duraciones" />
-  	<tocitem text="Gráfico de fechas de vencimiento" target="fechasVencimiento" />
+  <tocitem text="Ver informaci&oacute;n adicional" target="ver">
+  	<tocitem text="Gr&aacute;fico de duraciones" target="duraciones" />
+  	<tocitem text="Gr&aacute;fico de fechas de vencimiento" target="fechasVencimiento" />
   	<tocitem text="Tabla de tareas" target="tareas" />
   </tocitem>
   <tocitem text="Generar instancias" target="generar" />
-  <tocitem text="Analisis experimental" target="analisis">
+  <tocitem text="An&aacute;lisis experimental" target="analisis">
   	<tocitem text="Desde fichero" target="fichero" />
-  	<tocitem text="Por parámetros" target="parametros" />
+  	<tocitem text="Por par&aacute;metros" target="parametros" />
   </tocitem>
   <tocitem text="Idioma" target="idioma" />
-  <tocitem text="Informacion del proyecto" target="informacion" />
+  <tocitem text="Informaci&oacute;n del proyecto" target="informacion" />
   <tocitem text="Ayuda" target="ayuda" />
   <tocitem text="Salir" target="salir" />
 </toc>

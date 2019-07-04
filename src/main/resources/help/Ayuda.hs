@@ -3,7 +3,6 @@
   PUBLIC "-//Sun Microsystems Inc.//DTD JavaHelp HelpSet Version 1.0//EN"
          "http://java.sun.com/products/javahelp/helpset_1_0.dtd">
 
-
 <helpset version="1.0">
   <!-- title -->
   <title>Manual de usuario</title>
@@ -23,19 +22,10 @@
   </view>
 
   <view>
-    <name>Indice</name>
-    <label>Indice</label>
+    <name>&Iacute;ndice</name>
+    <label>&Iuacute;ndice</label>
     <type>javax.help.IndexView</type>
     <data>Index_es.xml</data>
-  </view>
-
-  <view>
-    <name>Busqueda</name>
-    <label>Busqueda</label>
-    <type>javax.help.SearchView</type>
-    <data engine="com.sun.java.help.search.DefaultSearchEngine">
-      JavaHelpSearch
-    </data>
   </view>
 
 </helpset>

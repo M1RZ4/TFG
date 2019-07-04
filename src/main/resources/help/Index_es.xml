@@ -7,7 +7,7 @@
 	<indexitem text="acceder a la ayuda" target="ayuda" />
 	<indexitem text="cambiar idioma" target="idioma" />
 	<indexitem text="cargar instancias" target="cargar" />
-	<indexitem text="descripción de la aplicación" target="introduccion" />
+	<indexitem text="descripci&oacute;n de la aplicación" target="introduccion" />
 	<indexitem text="generar instancias" target ="generar" />
 	<indexitem text="guardar instancias" target="guardar" />
 	<indexitem text="planificar instancias" target="planificar">
@@ -15,15 +15,15 @@
 		<indexitem text="planificar manualmente" target="manual" />
 		<indexitem text="planificar paso a paso" target="pasos" />
 	</indexitem>
-	<indexitem tex="realizar un análisis experimental" target="analisis">
-		<indexitem text="realizar un análisis desde fichero" target="fichero" />
-		<indexitem text="realizar un análisis por parámetros" target="parametros" />
+	<indexitem text="realizar un an&aacute;lisis experimental" target="analisis">
+		<indexitem text="realizar un an&aacute;lisis desde fichero" target="fichero" />
+		<indexitem text="realizar un an&aacute;lisis por parámetros" target="parametros" />
 	</indexitem>
-	<indexitem text="salir de la aplicación" target="salir" />
+	<indexitem text="salir de la aplicaci&oacute;n" target="salir" />
 	<indexitem text="ver información adicional" target="ver">
-		<indexitem text="ver gráfico de duraciones" target="duraciones" />
-		<indexitem text="ver gráfico de fechas de vencimiento" target="fechasVencimiento" />
+		<indexitem text="ver gr&aacute;fico de duraciones" target="duraciones" />
+		<indexitem text="ver gr&aacute;fico de fechas de vencimiento" target="fechasVencimiento" />
 		<indexitem text="ver tabla de tareas" target="tareas" />
 	</indexitem>
-	<indexitem text="ver información del proyecto" target="informacion" />
+	<indexitem text="ver informaci&oacute;n del proyecto" target="informacion" />
 </index>

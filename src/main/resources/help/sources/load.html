@@ -1,0 +1,58 @@
+<html>
+<head>
+<title>Load instances</title>
+<link rel=StyleSheet type="text/css" href="css/style.css" />
+</head>
+<body>
+	<h1>Load instances</h1>
+	<p>To load an instance it's neccesary to have an file with this
+		format:</p>
+	<div id=format>
+		<p>
+			<strong>NOP</strong>: number of tasks
+		</p>
+		<p>
+			<strong>NINT</strong>: number of intervals
+		</p>
+		<p>NINT lines, each one with three integers: [IntervalStart
+			IntervalEnd IntervalCapacity] (300000 in IntervalEnd means infinite)</p>
+		<p>NOP lines, each one with three integers: [TaskIndex
+			TaskDuration TaskDueDate]</p>
+	</div>
+	<p>Once you have a file, instance load can be accessed in different
+		ways:</p>
+	<ul>
+		<li>Using menu option File > Load</li>
+		<li>Using shortcut Ctrl+O</li>
+		<li>Using the Load button in the bottom left corner of the main
+			window</li>
+	</ul>
+	<p>You can also modify the numeric value specified next to the
+		Separation between marks label to choose which separation between
+		graduation marks you want to display as you load the instance.</p>
+	<p></p>
+	<img src="img/load1.PNG">
+	<p>Once you access the option, a dialog is displayed where you can
+		navigate through your folders to choose which file you want to load in
+		different ways:</p>
+	<ul>
+		<li>Writing the name of the file to load</li>
+		<li>Selecting manually the file to load</li>
+	</ul>
+	<p></p>
+	<img src="img/load2.PNG">
+	<p>If the chosen file doesn't exist or has an invalid extension
+		(different from txt) the system will warn the user:</p>
+	<p></p>
+	<img src="img/load3.PNG">
+	<p></p>
+	<img src="img/load4.PNG">
+	<p>If the file exists and has a valid extension, but it has wrong
+		format, the system will not warn the user, but the instance won't be
+		loaded.</p>
+	<p>If the instance is succesfully loaded, it will be displayed in
+		the main window:</p>
+	<p></p>
+	<img src="img/load5.PNG">
+</body>
+</html>

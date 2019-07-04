@@ -4,5 +4,25 @@
          "http://java.sun.com/products/javahelp/index_1_0.dtd">
  
 <index version="1.0">
+	<indexitem text="change language" target="language" />
 	<indexitem text="description of the application" target="introduction" />
+	<indexitem text="generate instances" target ="generate" />
+	<indexitem text="leave the application" target="exit" />
+	<indexitem text="load instances" target="load" />
+	<indexitem text="perform an experimental analysis" target="analysis">
+		<indexitem text="perform an experimental analysis by parameters" target="parameters" />
+		<indexitem text="perform an experimental analysis from file" target="file" />
+	</indexitem>
+	<indexitem text="save instances" target="save" />
+	<indexitem text="schedule instances" target="schedule">
+		<indexitem text="schedule instances at once" target="oneTime" />
+		<indexitem text="schedule instances manually" target="manually" />		
+		<indexitem text="schedule instances step by step" target="steps" />
+	</indexitem>
+	<indexitem text="view additional information" target="view">
+		<indexitem text="view due dates chart" target="dueDates" />
+		<indexitem text="view durations chart" target="durations" />
+		<indexitem text="view tasks table" target="tasks" />
+	</indexitem>
+	<indexitem text="view project information" target="information" />
 </index>

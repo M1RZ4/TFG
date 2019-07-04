@@ -1,9 +1,16 @@
- body { font-size: 14pt;
-	font-family: Tahoma, Geneva, Arial, sans-serif;
-	color: cyan }
+h1 {
+	font: 18px bold Calibri Light, sans-serif;
+}
 
- h1 { 	font-size: 24px;
-	font-family: Tahoma, Geneva, Arial, sans-serif;
-	color: cyan } 
+body {
+	font: 12px Calibri, sans-serif;
+	margin-left: 10px;
+}
 
- ul {	list-style-type: circle;}
+#format {
+	padding-left: 20px;
+	font-style: italic;
+	border-style: solid;
+	margin-top: 10px;
+	padding-bottom: 10px;
+}

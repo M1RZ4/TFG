@@ -4,5 +4,26 @@
          "http://java.sun.com/products/javahelp/toc_1_0.dtd">
 
 <toc version="1.0">  
-  <tocitem text="Introduction" target="introduction"/>
+  <tocitem text="Introduction" target="introduction" />
+  <tocitem text="Load instances" target="load" />
+  <tocitem text="Schedule instances" target="schedule">
+  	<tocitem text="At once" target="oneTime" />
+  	<tocitem text="Step by step" target="steps" />
+  	<tocitem text="Manually" target="manually" />
+  </tocitem>
+  <tocitem text="Save instances" target="save" />
+  <tocitem text="View additional information" target="view">
+  	<tocitem text="Durations chart" target="durations" />
+  	<tocitem text="Due dates chart" target="dueDates" />
+  	<tocitem text="Tasks table" target="tasks" />
+  </tocitem>
+  <tocitem text="Generate instances" target="generate" />
+  <tocitem text="Experimental analysis" target="analysis">
+  	<tocitem text="From file" target="file" />
+  	<tocitem text="By parameters" target="parameters" />
+  </tocitem>
+  <tocitem text="Language" target="language" />
+  <tocitem text="Project information" target="information" />
+  <tocitem text="Help" target="help" />
+  <tocitem text="Exit" target="exit" />
 </toc>

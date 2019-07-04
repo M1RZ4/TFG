@@ -1,0 +1,62 @@
+<html>
+<head>
+<title>Cargar instancias</title>
+<link rel=StyleSheet type="text/css" href="css/style.css" />
+</head>
+<body>
+	<h1>Cargar instancias</h1>
+	<p>Para cargar una instancia es necesario disponer de un fichero
+		con el siguiente formato</p>
+	<div id=format>
+		<p>
+			<strong>NOP</strong>: n&uacute;mero de tareas
+		</p>
+		<p>
+			<strong>NINT</strong> :n&uacute;mero de intervalos de capacidad
+		</p>
+		<p>NINT l&iacute;neas, cada una con tres enteros:
+			[ComienzoIntervalo FinIntervalo CapacidadIntervalo] (300000 en
+			FinIntervalo indica infinito)</p>
+		<p>NOP l&iacute;neas, cada una con tres enteros:
+			[&Iacute;ndiceTarea Duraci&oacute;nTarea DueDateTarea]</p>
+	</div>
+	<p>Una vez se posee un fichero correcto puede accederse a la carga
+		de instancias de varias formas:</p>
+	<ul>
+		<li>Utilizando la opci&oacute;n de men&uacute; Archivo > Cargar</li>
+		<li>Utilizando el atajo Ctrl+O</li>
+		<li>Utilizando el bot&oacute;n Cargar de la parte inferior
+			izquierda de la ventana principal</li>
+	</ul>
+	<p>Adem&aacute;s, se puede modificar el valor num&eacute;rico
+		especificado junto a la etiqueta Separaci&oacute;n entre marcas para
+		escoger con que separaci&oacute;n inicial entre marcas de
+		graduaci&oacute;n se desea visualizar la instancia al cargarla.</p>
+	<p></p>
+	<img src="img/cargar1.PNG">
+	<p>Una vez accedida a la opci&oacute;n se desplegar&aacute; un
+		di&aacute;logo donde el usuario podr&aacute; navegar por sus
+		directorios y escoger el fichero a cargar. Para ello podr&aacute;:</p>
+	<ul>
+		<li>Escribir el nombre del fichero a cargar</li>
+		<li>Seleccionar manualmente el fichero a cargar</li>
+	</ul>
+	<p></p>
+	<img src="img/cargar2.PNG">
+	<p>En caso de que el fichero seleccionado no exista o tenga una
+		extensi&oacute;n inv&aacute;lida (distinta a txt) se informar&aacute;
+		al usuario del error:</p>
+	<p></p>
+	<img src="img/cargar3.PNG">
+	<p></p>
+	<img src="img/cargar4.PNG">
+	<p>En caso de que el fichero seleccionado exista y tenga
+		extensi&oacute;n correcta, pero est&oacute; mal formado (no cumple el
+		formato), no se informar&aacute; del error al usuario, pero no se
+		cargar&aacute; la instancia.</p>
+	<p>Si la instancia se carga correctamente, se visualizar&aacute; en
+		pantalla:</p>
+	<p></p>
+	<img src="img/cargar5.PNG">
+</body>
+</html>

@@ -1,0 +1,56 @@
+<html>
+<head>
+<title>Perform an experimental analysis from file</title>
+<link rel=StyleSheet type="text/css" href="css/style.css" />
+</head>
+<body>
+	<h1>Perform an experimental analysis from file</h1>
+	<p>Once you access the experimental analysis dialog, to perform
+		such analysis from file is neccesary to have a file with this format:</p>
+	<div id="format">
+		<p>N:X</p>
+		<p>T:Y0,Y1,Y2…</p>
+		<p>C:Z0,Z1,Z2…</p>
+	</div>
+	<p>Each line represents a parameter for the analysis performance,
+		followed by : and one or more numbers separated with ,:</p>
+	<ul>
+		<li>N is the number of instances and it's a possitive number (X)</li>
+		<li>T is the number of tasks for each instance and is's a list of
+			possitive numbers (Y0, Y1, Y2…)</li>
+		<li>C is the maximum capacity for each instance and it's a list
+			of numbers greater than 3 (Z0, Z1, Z2…)</li>
+	</ul>
+	<p>One you have an analysis file, you only have to click the Load
+		button at the bottom of the dialog.</p>
+	<p></p>
+	<img src="img/experimentalAnalysis2.PNG">
+	<p>Once you access the option, a dialog is displayed where you can
+		navigate through your folders to choose which file you want to load in
+		different ways:</p>
+	<ul>
+		<li>Writing the name of the file to load</li>
+		<li>Selecting manually the file to load</li>
+	</ul>
+	<p></p>
+	<img src="img/load2.PNG">
+	<p>if the chosen file doesn't exist, has an invalid extension
+		(different from txt) or has an invalid format, the system will warn
+		the user:</p>
+	<p></p>
+	<img src="img/experimentalAnalysis3.PNG">
+	<p></p>
+	<img src="img/experimentalAnalysis4.PNG">
+	<p></p>
+	<img src="img/experimentalAnalysis5.PNG">
+	<p>Once the analysis is loaded, it will be processed (it may take a
+		few seconds, based on the number of combinations) and, when finished,
+		a dialog will be displayed where you can navigate through your folders
+		to choose the name of the file to save (it's not required to specify
+		the extension, the system will automatically add the xls extension to
+		the file). Generated file can be opened with any software that
+		supports xls.</p>
+	<p></p>
+	<img src="img/AnalysisResults.PNG">
+</body>
+</html>

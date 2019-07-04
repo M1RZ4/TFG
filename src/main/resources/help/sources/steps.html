@@ -1,0 +1,34 @@
+<html>
+<head>
+<title>Schedule instances step by step</title>
+<link rel=StyleSheet type="text/css" href="css/style.css" />
+</head>
+<body>
+	<h1>Schedule instances step by step</h1>
+	<p>To perform a step by step scheduling you can use the Previous
+		and Next buttons at the bottom of the main window, and select a rule
+		in the drop-down, marked with the Rule label at the left bottom corner
+		of the window.</p>
+	<ul>
+		<li>If you use the Next button the scheduling will be performed
+			with all the scheduled tasks plus the next task got by the chosen
+			rule. This button is default enabled and it only gets disabled when
+			you get a full scheduling</li>
+		<li>If you use the Previous button the scheduling will be
+			performed with all the scheduled tasks minus the last task got by the
+			chosen rule. This button is default disbaled and it only gets enabled
+			when you click the Next or Final buttons at least once. The button
+			gets disabled when you get an unscheduled instance</li>
+	</ul>
+	<p>The option to modify the g parameter is only enabled when the
+		chosen rule is ATC, and it allows you to chose values between 0.01 and
+		1.</p>
+	<p>You can also modify the numeric value specified next to the
+		Separation between marks label to choose which separation between
+		graduation marks you want to display as you schedule the instance.</p>
+	<p></p>
+	<img src="img/stepsScheduling1.PNG">
+	<p>Everytime a new task is scheduled the tardiness value, displayed
+		at the bottom right corner of the main window, will be updated.</p>
+</body>
+</html>

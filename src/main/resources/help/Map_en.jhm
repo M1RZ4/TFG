@@ -5,4 +5,22 @@
 
 <map version="1.0">
 	<mapID target="introduction" url="sources/introduction.html" />
+	<mapID target="load" url="sources/load.html" />
+	<mapID target="schedule" url="sources/schedule.html" />
+	<mapID target="oneTime" url="sources/oneTime.html" />
+	<mapID target="steps" url="sources/steps.html" />
+	<mapID target="manually" url="sources/manually.html" />
+	<mapID target="save" url="sources/save.html" />
+	<mapID target="view" url="sources/view.html" />
+	<mapID target="durations" url="sources/durations.html" />
+	<mapID target="dueDates" url="sources/dueDates.html" />
+	<mapID target="tasks" url="sources/tasks.html" />
+	<mapID target="generate" url="sources/generate.html" />
+	<mapID target="analysis" url="sources/analysis.html" />
+	<mapID target="file" url="sources/file.html" />
+	<mapID target="parameters" url="sources/parameters.html" />
+	<mapID target="language" url="sources/language.html" />
+	<mapID target="information" url="sources/information.html" />
+	<mapID target="help" url="sources/help.html" />
+	<mapID target="exit" url="sources/exit.html" />
 </map>
