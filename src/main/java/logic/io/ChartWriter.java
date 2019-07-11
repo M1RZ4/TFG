@@ -46,8 +46,8 @@ public class ChartWriter implements Writer {
 	public void write(String fileName) {
 		PdfWriter writer = null;
 		Document document = new Document();
-		int width = 600;
-		int height = 400;
+		int width = 1280;
+		int height = 720;
 		document.setPageSize(new Rectangle(0, 0, width, height));
 		try {
 			writer = PdfWriter.getInstance(document, new FileOutputStream(fileName));
