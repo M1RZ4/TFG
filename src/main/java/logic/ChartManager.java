@@ -9,6 +9,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.DoubleStream;
 
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.JFreeChart;
@@ -34,8 +35,8 @@ import logic.instances.ScheduledInstance;
 
 /**
  * Clase ChartManager encargada de generar los gráficos que se mostrarán en la
- * aplicación y que podrán ser exportados por
- * {@link logic.io.ChartWriter ChartWriter}
+ * aplicación y que podrán ser exportados por {@link logic.io.ChartWriter
+ * ChartWriter}
  * 
  * @author Mirza Ojeda Veira
  *
@@ -69,8 +70,7 @@ public class ChartManager {
 		NumberAxis domain = (NumberAxis) plot.getDomainAxis();
 
 		Intervalo interval = intervals.get(intervals.size() - 1);
-		int maxDomain = interval.getInicio();
-		maxDomain += maxDomain / 10;
+		int maxDomain = (int) (interval.getInicio() + DoubleStream.of(i.getP()).max().getAsDouble());
 		if (interval.getFin() < 300000)
 			maxDomain = interval.getFin();
 
@@ -218,15 +218,13 @@ public class ChartManager {
 	 * @return serie con la capacidad
 	 */
 	private XYSeries createCapacity(Instancia i) {
+		double max = DoubleStream.of(i.getP()).max().getAsDouble();
 		final XYSeries capacity = new XYSeries(
 				LanguageManager.getInstance().getTexts().getString("chart_avaliable_capacity"));
 		for (int j = 0; j < i.getPerfilMaquina().size(); j++) {
 			if (j == i.getPerfilMaquina().size() - 1) {
 				capacity.add(i.getPerfilMaquina().get(j).getInicio(), i.getPerfilMaquina().get(j).getCap());
-				capacity.add(
-						i.getPerfilMaquina().get(j).getInicio()
-								+ i.getPerfilMaquina().get(i.getPerfilMaquina().size() - 1).getInicio() / 10,
-						i.getPerfilMaquina().get(j).getCap());
+				capacity.add(i.getPerfilMaquina().get(j).getInicio() + max, i.getPerfilMaquina().get(j).getCap());
 			} else {
 				capacity.add(i.getPerfilMaquina().get(j).getInicio(), i.getPerfilMaquina().get(j).getCap());
 				capacity.add(i.getPerfilMaquina().get(j).getFin(), i.getPerfilMaquina().get(j).getCap());
@@ -267,7 +265,8 @@ public class ChartManager {
 	 * @param tickUnit
 	 *            separación entre marcas de graduación
 	 */
-	public void setMainChart(int step, Instancia instance, Rule rule, double g, int tickUnit, boolean displayNumbers, double[] durations) {
+	public void setMainChart(int step, Instancia instance, Rule rule, double g, int tickUnit, boolean displayNumbers,
+			double[] durations) {
 		ScheduledInstance i;
 		switch (rule) {
 		case MyRule:
@@ -307,8 +306,7 @@ public class ChartManager {
 		NumberAxis domain = (NumberAxis) plot.getDomainAxis();
 
 		Intervalo interval = intervals.get(intervals.size() - 1);
-		double maxDomain = interval.getInicio();
-		maxDomain += maxDomain / 10;
+		int maxDomain = (int) (interval.getInicio() + DoubleStream.of(i.getP()).max().getAsDouble());
 		if (interval.getFin() < 300000)
 			maxDomain = interval.getFin();
 
