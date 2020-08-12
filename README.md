@@ -46,3 +46,7 @@ En cualquier caso, el alumno es libre de seleccionar las librerías que consider
 -   Situarse en el directorio raíz del repositorio y ejecutar `mvn package`
 
 <p>Si se han seguido los pasos correctamente en la raíz del directorio target estará situado el fichero ejecutable TFG-1.0-RELEASE.jar generado.</p>
+
+## Documentación
+
+<p>Puede consultarse toda la documentación asociada al trabajo [aquí](https://drive.google.com/file/d/1G2W4DuKawl-8iy637abudfRErPA5HdwA/view?usp=sharing)</p>
