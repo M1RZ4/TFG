@@ -49,4 +49,4 @@ En cualquier caso, el alumno es libre de seleccionar las librerías que consider
 
 ## Documentación
 
-<p>Puede consultarse toda la documentación asociada al trabajo [aquí](https://drive.google.com/file/d/1G2W4DuKawl-8iy637abudfRErPA5HdwA/view?usp=sharing)</p>
+Puede consultarse toda la documentación asociada al trabajo [aquí](https://drive.google.com/file/d/1G2W4DuKawl-8iy637abudfRErPA5HdwA/view?usp=sharing)
